@@ -1,0 +1,678 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ToolFest — Free Online Tools for PDF & Images</title>
+  <meta name="description" content="Free online tools for PDF conversion, image compression, resizing and more. No signup required." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0a0a0f;
+      --surface: #13131a;
+      --surface2: #1c1c27;
+      --border: rgba(255,255,255,0.07);
+      --accent: #e8ff47;
+      --accent2: #47c8ff;
+      --text: #f0f0f0;
+      --muted: #6b6b80;
+      --pdf-color: #ff6b6b;
+      --img-color: #47c8ff;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 300;
+      overflow-x: hidden;
+    }
+
+    /* NOISE TEXTURE */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 999;
+      opacity: 0.4;
+    }
+
+    /* NAV */
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1.2rem 3rem;
+      background: rgba(10,10,15,0.85);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .logo {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: 1.5rem;
+      letter-spacing: -0.03em;
+      color: var(--text);
+      text-decoration: none;
+    }
+
+    .logo span { color: var(--accent); }
+
+    nav ul {
+      list-style: none;
+      display: flex;
+      gap: 2rem;
+    }
+
+    nav ul a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 0.9rem;
+      letter-spacing: 0.02em;
+      transition: color 0.2s;
+    }
+
+    nav ul a:hover { color: var(--text); }
+
+    /* HERO */
+    .hero {
+      min-height: 90vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 6rem 2rem 4rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-glow {
+      position: absolute;
+      width: 600px;
+      height: 600px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(232,255,71,0.08) 0%, transparent 70%);
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: rgba(232,255,71,0.1);
+      border: 1px solid rgba(232,255,71,0.25);
+      color: var(--accent);
+      padding: 0.4rem 1rem;
+      border-radius: 100px;
+      font-size: 0.8rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 2rem;
+      animation: fadeUp 0.6s ease both;
+    }
+
+    .hero h1 {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: clamp(3rem, 8vw, 7rem);
+      line-height: 0.95;
+      letter-spacing: -0.04em;
+      margin-bottom: 1.5rem;
+      animation: fadeUp 0.6s 0.1s ease both;
+    }
+
+    .hero h1 em {
+      font-style: normal;
+      color: var(--accent);
+    }
+
+    .hero p {
+      font-size: 1.15rem;
+      color: var(--muted);
+      max-width: 500px;
+      line-height: 1.7;
+      margin-bottom: 3rem;
+      animation: fadeUp 0.6s 0.2s ease both;
+    }
+
+    .hero-ctas {
+      display: flex;
+      gap: 1rem;
+      animation: fadeUp 0.6s 0.3s ease both;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.85rem 2rem;
+      border-radius: 8px;
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 500;
+      font-size: 0.95rem;
+      text-decoration: none;
+      transition: all 0.2s;
+      cursor: pointer;
+      border: none;
+    }
+
+    .btn-primary {
+      background: var(--accent);
+      color: #0a0a0f;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 30px rgba(232,255,71,0.3);
+    }
+
+    .btn-ghost {
+      background: transparent;
+      color: var(--text);
+      border: 1px solid var(--border);
+    }
+
+    .btn-ghost:hover {
+      border-color: rgba(255,255,255,0.2);
+      background: var(--surface);
+    }
+
+    /* STATS BAR */
+    .stats-bar {
+      display: flex;
+      justify-content: center;
+      gap: 4rem;
+      padding: 2rem;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      background: var(--surface);
+    }
+
+    .stat {
+      text-align: center;
+    }
+
+    .stat-num {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: 2rem;
+      color: var(--accent);
+      letter-spacing: -0.03em;
+    }
+
+    .stat-label {
+      font-size: 0.8rem;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-top: 0.25rem;
+    }
+
+    /* TOOLS SECTION */
+    .section {
+      padding: 5rem 3rem;
+      max-width: 1300px;
+      margin: 0 auto;
+    }
+
+    .section-header {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      margin-bottom: 3rem;
+    }
+
+    .section-tag {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--muted);
+      margin-bottom: 0.5rem;
+    }
+
+    .section-title {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: 2.5rem;
+      letter-spacing: -0.03em;
+    }
+
+    .section-link {
+      color: var(--accent);
+      text-decoration: none;
+      font-size: 0.9rem;
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+      transition: gap 0.2s;
+      padding-bottom: 0.5rem;
+    }
+
+    .section-link:hover { gap: 0.6rem; }
+
+    /* TOOL CARDS GRID */
+    .tools-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .tool-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 2rem;
+      text-decoration: none;
+      color: inherit;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      transition: all 0.25s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .tool-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      transition: opacity 0.3s;
+      border-radius: 16px;
+    }
+
+    .tool-card.pdf::before {
+      background: radial-gradient(circle at top left, rgba(255,107,107,0.08), transparent 60%);
+    }
+
+    .tool-card.img::before {
+      background: radial-gradient(circle at top left, rgba(71,200,255,0.08), transparent 60%);
+    }
+
+    .tool-card:hover { transform: translateY(-4px); border-color: rgba(255,255,255,0.15); }
+    .tool-card:hover::before { opacity: 1; }
+
+    .tool-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.4rem;
+    }
+
+    .tool-icon.pdf { background: rgba(255,107,107,0.15); }
+    .tool-icon.img { background: rgba(71,200,255,0.15); }
+
+    .tool-name {
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      font-size: 1.15rem;
+      letter-spacing: -0.02em;
+    }
+
+    .tool-desc {
+      color: var(--muted);
+      font-size: 0.88rem;
+      line-height: 1.6;
+      flex: 1;
+    }
+
+    .tool-tag {
+      display: inline-flex;
+      align-items: center;
+      padding: 0.3rem 0.75rem;
+      border-radius: 100px;
+      font-size: 0.75rem;
+      font-weight: 500;
+      letter-spacing: 0.04em;
+      align-self: flex-start;
+    }
+
+    .tool-tag.pdf { background: rgba(255,107,107,0.12); color: var(--pdf-color); }
+    .tool-tag.img { background: rgba(71,200,255,0.12); color: var(--img-color); }
+
+    .tool-arrow {
+      color: var(--muted);
+      font-size: 1.2rem;
+      align-self: flex-end;
+      transition: color 0.2s, transform 0.2s;
+    }
+
+    .tool-card:hover .tool-arrow { color: var(--text); transform: translate(3px, -3px); }
+
+    /* FEATURED HERO CARD */
+    .featured-card {
+      background: linear-gradient(135deg, #1a1a0d 0%, #131320 100%);
+      border: 1px solid rgba(232,255,71,0.2);
+      border-radius: 24px;
+      padding: 3rem;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+      align-items: center;
+      margin-bottom: 4rem;
+      position: relative;
+      overflow: hidden;
+      text-decoration: none;
+      color: inherit;
+      transition: all 0.3s;
+    }
+
+    .featured-card:hover { border-color: rgba(232,255,71,0.4); transform: translateY(-3px); }
+
+    .featured-card::after {
+      content: '';
+      position: absolute;
+      right: -60px;
+      top: -60px;
+      width: 300px;
+      height: 300px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(232,255,71,0.07), transparent 70%);
+      pointer-events: none;
+    }
+
+    .featured-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--accent);
+      margin-bottom: 1rem;
+    }
+
+    .featured-label::before {
+      content: '';
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--accent);
+      animation: pulse 2s infinite;
+    }
+
+    .featured-title {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: 2.2rem;
+      letter-spacing: -0.03em;
+      line-height: 1.1;
+      margin-bottom: 1rem;
+    }
+
+    .featured-desc {
+      color: var(--muted);
+      line-height: 1.7;
+      margin-bottom: 1.5rem;
+    }
+
+    .featured-visual {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      height: 200px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 5rem;
+      position: relative;
+    }
+
+    /* CATEGORIES ROW */
+    .cat-row {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 3rem;
+      flex-wrap: wrap;
+    }
+
+    .cat-btn {
+      padding: 0.6rem 1.4rem;
+      border-radius: 100px;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      color: var(--muted);
+      font-size: 0.85rem;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-family: 'DM Sans', sans-serif;
+    }
+
+    .cat-btn.active, .cat-btn:hover {
+      border-color: rgba(255,255,255,0.2);
+      color: var(--text);
+      background: var(--surface2);
+    }
+
+    /* FOOTER */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 3rem;
+      text-align: center;
+      color: var(--muted);
+      font-size: 0.85rem;
+    }
+
+    footer a { color: var(--muted); }
+
+    .footer-logo {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: 1.8rem;
+      letter-spacing: -0.03em;
+      color: var(--text);
+      margin-bottom: 0.75rem;
+    }
+
+    .footer-logo span { color: var(--accent); }
+
+    /* ANIMATIONS */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.4; }
+    }
+
+    .animate-in {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+
+    .animate-in.visible {
+      opacity: 1;
+      transform: none;
+    }
+
+    @media (max-width: 768px) {
+      nav { padding: 1rem 1.5rem; }
+      nav ul { display: none; }
+      .hero h1 { font-size: clamp(2.5rem, 12vw, 4rem); }
+      .section { padding: 3rem 1.5rem; }
+      .featured-card { grid-template-columns: 1fr; }
+      .featured-visual { display: none; }
+      .stats-bar { gap: 2rem; flex-wrap: wrap; }
+      .section-header { flex-direction: column; align-items: flex-start; gap: 1rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a href="/" class="logo">Tool<span>Fest</span></a>
+    <ul>
+      <li><a href="/pdf-tools/">PDF Tools</a></li>
+      <li><a href="/image-tools/">Image Tools</a></li>
+      <li><a href="#all-tools">All Tools</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-glow"></div>
+    <div class="hero-badge">⚡ 100% Free · No Signup · Works in Browser</div>
+    <h1>Every tool<br>you <em>actually</em><br>need.</h1>
+    <p>PDF converters, image compressors, and more — fast, private, no watermarks. Everything runs in your browser.</p>
+    <div class="hero-ctas">
+      <a href="/pdf-tools/" class="btn btn-primary">PDF Tools →</a>
+      <a href="/image-tools/" class="btn btn-ghost">Image Tools</a>
+    </div>
+  </section>
+
+  <!-- STATS -->
+  <div class="stats-bar">
+    <div class="stat">
+      <div class="stat-num">12+</div>
+      <div class="stat-label">Tools</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">0</div>
+      <div class="stat-label">Sign‑ups needed</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">100%</div>
+      <div class="stat-label">Free forever</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">🔒</div>
+      <div class="stat-label">Private & Secure</div>
+    </div>
+  </div>
+
+  <!-- PDF SECTION -->
+  <div class="section" id="all-tools">
+    <div class="animate-in">
+      <a href="/pdf-tools/" class="featured-card">
+        <div>
+          <div class="featured-label">Most Popular</div>
+          <div class="featured-title">Word to PDF<br>Converter</div>
+          <p class="featured-desc">Convert your .docx Word files to PDF instantly — no upload to servers, 100% private, runs entirely in your browser.</p>
+          <span class="btn btn-primary" style="display:inline-flex">Open Tool →</span>
+        </div>
+        <div class="featured-visual">📄</div>
+      </a>
+    </div>
+
+    <div class="section-header animate-in">
+      <div>
+        <div class="section-tag">🗂 Category</div>
+        <div class="section-title">PDF Tools</div>
+      </div>
+      <a href="/pdf-tools/" class="section-link">View all PDF tools →</a>
+    </div>
+
+    <div class="tools-grid animate-in">
+      <a href="/pdf-tools/word-to-pdf.html" class="tool-card pdf">
+        <div class="tool-icon pdf">📝</div>
+        <div class="tool-name">Word to PDF</div>
+        <p class="tool-desc">Convert .docx Word documents to high-quality PDF files instantly. No quality loss.</p>
+        <div class="tool-tag pdf">PDF</div>
+        <span class="tool-arrow">↗</span>
+      </a>
+      <a href="/pdf-tools/merge-pdf.html" class="tool-card pdf">
+        <div class="tool-icon pdf">🔗</div>
+        <div class="tool-name">Merge PDFs</div>
+        <p class="tool-desc">Combine multiple PDF files into one document. Drag to reorder pages before merging.</p>
+        <div class="tool-tag pdf">PDF</div>
+        <span class="tool-arrow">↗</span>
+      </a>
+      <a href="/pdf-tools/compress-pdf.html" class="tool-card pdf">
+        <div class="tool-icon pdf">🗜</div>
+        <div class="tool-name">Compress PDF</div>
+        <p class="tool-desc">Reduce PDF file size without losing visual quality. Great for email and uploads.</p>
+        <div class="tool-tag pdf">PDF</div>
+        <span class="tool-arrow">↗</span>
+      </a>
+      <a href="/pdf-tools/pdf-to-jpg.html" class="tool-card pdf">
+        <div class="tool-icon pdf">🖼</div>
+        <div class="tool-name">PDF to JPG</div>
+        <p class="tool-desc">Extract all pages from a PDF as high-resolution JPG images in one click.</p>
+        <div class="tool-tag pdf">PDF</div>
+        <span class="tool-arrow">↗</span>
+      </a>
+    </div>
+
+    <!-- IMAGE SECTION -->
+    <div class="section-header animate-in" style="margin-top: 5rem">
+      <div>
+        <div class="section-tag">🖼 Category</div>
+        <div class="section-title">Image Tools</div>
+      </div>
+      <a href="/image-tools/" class="section-link">View all image tools →</a>
+    </div>
+
+    <div class="tools-grid animate-in">
+      <a href="/image-tools/compress.html" class="tool-card img">
+        <div class="tool-icon img">🗜</div>
+        <div class="tool-name">Image Compressor</div>
+        <p class="tool-desc">Reduce image file size by up to 90% while keeping it looking sharp. Supports JPG, PNG, WebP.</p>
+        <div class="tool-tag img">Image</div>
+        <span class="tool-arrow">↗</span>
+      </a>
+      <a href="/image-tools/resize.html" class="tool-card img">
+        <div class="tool-icon img">↔️</div>
+        <div class="tool-name">Resize Image</div>
+        <p class="tool-desc">Resize any image to exact pixel dimensions or by percentage. Keeps aspect ratio optional.</p>
+        <div class="tool-tag img">Image</div>
+        <span class="tool-arrow">↗</span>
+      </a>
+      <a href="/image-tools/convert.html" class="tool-card img">
+        <div class="tool-icon img">🔄</div>
+        <div class="tool-name">Convert Format</div>
+        <p class="tool-desc">Convert between JPG, PNG, WebP, GIF and more formats instantly in your browser.</p>
+        <div class="tool-tag img">Image</div>
+        <span class="tool-arrow">↗</span>
+      </a>
+      <a href="/image-tools/crop.html" class="tool-card img">
+        <div class="tool-icon img">✂️</div>
+        <div class="tool-name">Crop Image</div>
+        <p class="tool-desc">Crop your images to any size with a visual drag-and-drop editor. Export at full quality.</p>
+        <div class="tool-tag img">Image</div>
+        <span class="tool-arrow">↗</span>
+      </a>
+    </div>
+  </div>
+
+  <footer>
+    <div class="footer-logo">Tool<span>Fest</span></div>
+    <p style="margin-bottom:1rem">Free tools that respect your privacy. Everything runs in your browser — your files never leave your device.</p>
+    <p><a href="/">Home</a> · <a href="/pdf-tools/">PDF Tools</a> · <a href="/image-tools/">Image Tools</a></p>
+    <p style="margin-top:1.5rem; font-size:0.78rem; opacity:0.5">© 2025 ToolFest · toolfest.in</p>
+  </footer>
+
+  <script>
+    // Scroll animations
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((e, i) => {
+        if (e.isIntersecting) {
+          setTimeout(() => e.target.classList.add('visible'), i * 80);
+        }
+      });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.animate-in').forEach(el => observer.observe(el));
+  </script>
+</body>
+</html>

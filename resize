@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Resize Image Online Free — ToolFest</title>
+  <meta name="description" content="Resize images to exact pixel dimensions or by percentage online for free. Supports JPG, PNG, WebP. No upload, 100% browser-based." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../assets/css/shared.css" />
+  <style>
+    .info-row {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .info-chip {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 0.5rem 1rem;
+      font-size: 0.82rem;
+      color: var(--muted);
+    }
+
+    .info-chip strong { color: var(--text); }
+
+    .lock-row {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin: 0.5rem 0 1rem;
+    }
+
+    .toggle {
+      width: 36px;
+      height: 20px;
+      background: var(--surface2);
+      border-radius: 100px;
+      position: relative;
+      cursor: pointer;
+      border: 1px solid var(--border);
+      transition: background 0.2s;
+      flex-shrink: 0;
+    }
+
+    .toggle.on { background: var(--accent); }
+
+    .toggle::after {
+      content: '';
+      position: absolute;
+      width: 14px;
+      height: 14px;
+      background: var(--text);
+      border-radius: 50%;
+      top: 2px;
+      left: 2px;
+      transition: left 0.2s;
+    }
+
+    .toggle.on::after { left: 18px; }
+
+    .toggle-label { font-size: 0.85rem; color: var(--muted); }
+    .toggle.on + .toggle-label { color: var(--text); }
+
+    .preview-img-wrap {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.5rem;
+      text-align: center;
+    }
+
+    .preview-img-wrap img {
+      max-width: 100%;
+      max-height: 350px;
+      border-radius: 8px;
+      display: block;
+      margin: 0 auto;
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a href="../" class="logo">Tool<span>Fest</span></a>
+    <ul>
+      <li><a href="../pdf-tools/">PDF Tools</a></li>
+      <li><a href="../image-tools/" style="color:var(--text)">Image Tools</a></li>
+      <li><a href="../">Home</a></li>
+    </ul>
+  </nav>
+
+  <div class="page-hero">
+    <div class="page-hero-text">
+      <div class="breadcrumb">
+        <a href="../">ToolFest</a> <span>›</span> <a href="../image-tools/">Image Tools</a> <span>›</span> Resize
+      </div>
+      <h1 class="page-title">Resize<br><span style="color:var(--img-color)">Image</span></h1>
+      <p class="page-desc">Resize to exact pixels or by percentage. Lock aspect ratio. Download instantly.</p>
+    </div>
+    <div class="page-hero-badge">↔️</div>
+  </div>
+
+  <div class="tool-layout">
+    <div class="tool-main">
+
+      <div class="dropzone" id="dropzone">
+        <input type="file" id="fileInput" accept="image/*" />
+        <div class="dropzone-icon">🖼</div>
+        <div class="dropzone-title">Drop your image here</div>
+        <div class="dropzone-sub">JPG · PNG · WebP · GIF · BMP</div>
+      </div>
+
+      <div id="infoRow" class="info-row" style="display:none">
+        <div class="info-chip">Original: <strong id="origDims">—</strong></div>
+        <div class="info-chip">File size: <strong id="origFileSize">—</strong></div>
+        <div class="info-chip">Format: <strong id="origFormat">—</strong></div>
+      </div>
+
+      <div id="previewWrap" class="preview-img-wrap" style="display:none">
+        <img id="previewImg" />
+      </div>
+
+      <div id="statusMsg" class="status-msg" style="display:none"></div>
+
+      <button class="btn btn-primary" id="resizeBtn" disabled onclick="resizeImage()">
+        Resize Image
+      </button>
+
+      <button class="btn btn-download" id="downloadBtn" style="display:none" onclick="downloadResult()">
+        ⬇ Download Resized Image
+      </button>
+
+    </div>
+
+    <div class="tool-sidebar">
+      <div class="panel">
+        <div class="panel-title">Resize Settings</div>
+
+        <div class="form-group">
+          <label class="form-label">Mode</label>
+          <select class="form-select" id="resizeMode" onchange="toggleMode()">
+            <option value="px">Pixels (exact)</option>
+            <option value="pct">Percentage (%)</option>
+          </select>
+        </div>
+
+        <div id="pxInputs">
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Width (px)</label>
+              <input type="number" class="form-input" id="widthInput" placeholder="Width" oninput="syncDimension('w')" min="1" />
+            </div>
+            <div class="form-group">
+              <label class="form-label">Height (px)</label>
+              <input type="number" class="form-input" id="heightInput" placeholder="Height" oninput="syncDimension('h')" min="1" />
+            </div>
+          </div>
+
+          <div class="lock-row">
+            <div class="toggle on" id="lockToggle" onclick="toggleLock()"></div>
+            <span class="toggle-label" id="lockLabel">Lock aspect ratio</span>
+          </div>
+        </div>
+
+        <div id="pctInputs" style="display:none">
+          <div class="form-group">
+            <label class="form-label">Scale</label>
+            <div class="range-wrap">
+              <input type="range" id="pctSlider" min="10" max="200" value="50" oninput="updatePct()" />
+              <div class="range-val" id="pctVal">50%</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Output Format</label>
+          <select class="form-select" id="outputFmt">
+            <option value="same">Same as original</option>
+            <option value="image/jpeg">JPEG</option>
+            <option value="image/png">PNG</option>
+            <option value="image/webp">WebP</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Quality (for JPEG/WebP)</label>
+          <div class="range-wrap">
+            <input type="range" id="qualSlider" min="10" max="100" value="90" oninput="document.getElementById('qualVal').textContent=this.value" />
+            <div class="range-val" id="qualVal">90</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-title">More Image Tools</div>
+        <div class="other-tools-grid">
+          <a href="compress.html" class="other-tool-link">🗜 Compress Image</a>
+          <a href="convert.html" class="other-tool-link">🔄 Convert Format</a>
+          <a href="crop.html" class="other-tool-link">✂️ Crop Image</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="seo-section">
+    <div class="seo-card">
+      <h3>Resize for social media</h3>
+      <p>Different platforms need different image sizes. Resize your images to exactly the right dimensions for Instagram, Twitter, LinkedIn and more.</p>
+    </div>
+    <div class="seo-card">
+      <h3>Aspect ratio lock</h3>
+      <p>Enable aspect ratio lock to resize proportionally — change either the width or height and the other adjusts automatically.</p>
+    </div>
+    <div class="seo-card">
+      <h3>No quality loss</h3>
+      <p>Set quality to 100 to resize images without any compression or quality reduction. Perfect for professional photo workflows.</p>
+    </div>
+  </div>
+
+  <footer>
+    <div class="footer-logo">Tool<span>Fest</span></div>
+    <p style="margin-bottom:1rem">Free image resizer · Aspect ratio lock · No upload</p>
+    <p><a href="../">Home</a> · <a href="../pdf-tools/">PDF Tools</a> · <a href="../image-tools/">Image Tools</a></p>
+    <p style="margin-top:1.5rem; font-size:0.78rem; opacity:0.5">© 2025 ToolFest · toolfest.in</p>
+  </footer>
+
+  <script>
+    let origImg = null, origFile = null, resultBlob = null;
+    let aspectRatio = 1, locked = true;
+
+    const dz = document.getElementById('dropzone');
+    const fi = document.getElementById('fileInput');
+
+    dz.addEventListener('dragover', e => { e.preventDefault(); dz.classList.add('drag-over'); });
+    dz.addEventListener('dragleave', () => dz.classList.remove('drag-over'));
+    dz.addEventListener('drop', e => { e.preventDefault(); dz.classList.remove('drag-over'); loadImage(e.dataTransfer.files[0]); });
+    fi.addEventListener('change', () => loadImage(fi.files[0]));
+
+    function loadImage(file) {
+      if (!file || !file.type.startsWith('image/')) return;
+      origFile = file;
+      resultBlob = null;
+
+      const url = URL.createObjectURL(file);
+      const img = new Image();
+      img.onload = () => {
+        origImg = img;
+        aspectRatio = img.width / img.height;
+        document.getElementById('widthInput').value = img.width;
+        document.getElementById('heightInput').value = img.height;
+        document.getElementById('origDims').textContent = `${img.width} × ${img.height}px`;
+        document.getElementById('origFileSize').textContent = formatBytes(file.size);
+        document.getElementById('origFormat').textContent = file.type.split('/')[1].toUpperCase();
+        document.getElementById('infoRow').style.display = 'flex';
+
+        const preview = document.getElementById('previewImg');
+        preview.src = url;
+        document.getElementById('previewWrap').style.display = 'block';
+
+        document.getElementById('resizeBtn').disabled = false;
+        document.getElementById('downloadBtn').style.display = 'none';
+        document.getElementById('statusMsg').style.display = 'none';
+      };
+      img.src = url;
+    }
+
+    function toggleMode() {
+      const mode = document.getElementById('resizeMode').value;
+      document.getElementById('pxInputs').style.display = mode === 'px' ? 'block' : 'none';
+      document.getElementById('pctInputs').style.display = mode === 'pct' ? 'block' : 'none';
+    }
+
+    function toggleLock() {
+      locked = !locked;
+      const t = document.getElementById('lockToggle');
+      t.classList.toggle('on', locked);
+      document.getElementById('lockLabel').textContent = locked ? 'Lock aspect ratio' : 'Aspect ratio unlocked';
+    }
+
+    function syncDimension(changed) {
+      if (!origImg || !locked) return;
+      if (changed === 'w') {
+        const w = parseInt(document.getElementById('widthInput').value);
+        if (w) document.getElementById('heightInput').value = Math.round(w / aspectRatio);
+      } else {
+        const h = parseInt(document.getElementById('heightInput').value);
+        if (h) document.getElementById('widthInput').value = Math.round(h * aspectRatio);
+      }
+    }
+
+    function updatePct() {
+      const v = document.getElementById('pctSlider').value;
+      document.getElementById('pctVal').textContent = v + '%';
+    }
+
+    function resizeImage() {
+      if (!origImg) return;
+      let targetW, targetH;
+      const mode = document.getElementById('resizeMode').value;
+
+      if (mode === 'px') {
+        targetW = parseInt(document.getElementById('widthInput').value) || origImg.width;
+        targetH = parseInt(document.getElementById('heightInput').value) || origImg.height;
+      } else {
+        const pct = parseInt(document.getElementById('pctSlider').value) / 100;
+        targetW = Math.round(origImg.width * pct);
+        targetH = Math.round(origImg.height * pct);
+      }
+
+      const canvas = document.createElement('canvas');
+      canvas.width = targetW;
+      canvas.height = targetH;
+      const ctx = canvas.getContext('2d');
+      ctx.drawImage(origImg, 0, 0, targetW, targetH);
+
+      const fmt = document.getElementById('outputFmt').value;
+      const mime = fmt === 'same' ? (origFile.type || 'image/jpeg') : fmt;
+      const qual = parseInt(document.getElementById('qualSlider').value) / 100;
+
+      canvas.toBlob(blob => {
+        resultBlob = blob;
+        document.getElementById('previewImg').src = URL.createObjectURL(blob);
+        document.getElementById('origDims').innerHTML = `<strong>${targetW} × ${targetH}px</strong>`;
+        document.getElementById('downloadBtn').style.display = 'flex';
+        showStatus(`✓ Resized to ${targetW} × ${targetH}px (${formatBytes(blob.size)})`, 'success');
+      }, mime, qual);
+    }
+
+    function downloadResult() {
+      if (!resultBlob) return;
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(resultBlob);
+      const ext = resultBlob.type.split('/')[1];
+      a.download = (origFile.name.replace(/\.[^.]+$/, '') || 'image') + '_resized.' + ext;
+      a.click();
+    }
+
+    function formatBytes(b) {
+      if (b < 1024) return b + ' B';
+      if (b < 1048576) return (b/1024).toFixed(1) + ' KB';
+      return (b/1048576).toFixed(2) + ' MB';
+    }
+
+    function showStatus(msg, type) {
+      const el = document.getElementById('statusMsg');
+      el.textContent = msg;
+      el.className = `status-msg ${type}`;
+      el.style.display = 'block';
+    }
+  </script>
+</body>
+</html>

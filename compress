@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Image Compressor — Free Online JPG PNG WebP | ToolFest</title>
+  <meta name="description" content="Compress JPG, PNG and WebP images online for free. Reduce image file size by up to 90% without losing quality. No upload, 100% browser-based." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../assets/css/shared.css" />
+  <style>
+    .compare-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+
+    .compare-panel {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
+
+    .compare-header {
+      padding: 0.75rem 1.25rem;
+      font-size: 0.8rem;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .compare-size {
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      font-size: 0.95rem;
+      color: var(--text);
+    }
+
+    .compare-img {
+      width: 100%;
+      height: 220px;
+      object-fit: contain;
+      display: block;
+      background: #111;
+    }
+
+    .savings-badge {
+      background: rgba(232,255,71,0.15);
+      border: 1px solid rgba(232,255,71,0.3);
+      color: var(--accent);
+      padding: 0.75rem 1.25rem;
+      border-radius: var(--radius);
+      text-align: center;
+      font-family: 'Syne', sans-serif;
+    }
+
+    .savings-num {
+      font-size: 2.5rem;
+      font-weight: 800;
+      letter-spacing: -0.04em;
+    }
+
+    .savings-label {
+      font-size: 0.8rem;
+      font-weight: 400;
+      color: rgba(232,255,71,0.7);
+      margin-top: 0.2rem;
+    }
+
+    .batch-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      max-height: 300px;
+      overflow-y: auto;
+    }
+
+    .batch-item {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.75rem 1rem;
+      background: var(--surface2);
+      border-radius: 10px;
+      font-size: 0.85rem;
+    }
+
+    .batch-preview {
+      width: 40px;
+      height: 40px;
+      object-fit: cover;
+      border-radius: 6px;
+      flex-shrink: 0;
+    }
+
+    .batch-info { flex: 1; min-width: 0; }
+
+    .batch-name {
+      font-weight: 500;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .batch-sizes { font-size: 0.75rem; color: var(--muted); margin-top: 0.2rem; }
+
+    .batch-dl {
+      background: none;
+      border: none;
+      color: var(--img-color);
+      cursor: pointer;
+      font-size: 1.1rem;
+      padding: 0.2rem;
+      transition: opacity 0.2s;
+    }
+
+    .batch-dl:hover { opacity: 0.7; }
+
+    @media (max-width: 600px) {
+      .compare-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a href="../" class="logo">Tool<span>Fest</span></a>
+    <ul>
+      <li><a href="../pdf-tools/">PDF Tools</a></li>
+      <li><a href="../image-tools/" style="color:var(--text)">Image Tools</a></li>
+      <li><a href="../">Home</a></li>
+    </ul>
+  </nav>
+
+  <div class="page-hero">
+    <div class="page-hero-text">
+      <div class="breadcrumb">
+        <a href="../">ToolFest</a> <span>›</span> <a href="../image-tools/">Image Tools</a> <span>›</span> Compress
+      </div>
+      <h1 class="page-title">Image<br><span style="color:var(--img-color)">Compressor</span></h1>
+      <p class="page-desc">Shrink JPG, PNG and WebP images up to 90% smaller. Batch compress multiple files at once. No uploads, runs in your browser.</p>
+    </div>
+    <div class="page-hero-badge">🗜</div>
+  </div>
+
+  <div class="tool-layout">
+    <div class="tool-main">
+
+      <div class="dropzone" id="dropzone">
+        <input type="file" id="fileInput" accept="image/jpeg,image/png,image/webp,image/gif" multiple />
+        <div class="dropzone-icon">🖼</div>
+        <div class="dropzone-title">Drop images here</div>
+        <div class="dropzone-sub">JPG · PNG · WebP · GIF · Multiple files supported</div>
+      </div>
+
+      <div id="batchSection" style="display:none">
+        <div class="panel">
+          <div class="panel-title">Files to compress</div>
+          <div class="batch-list" id="batchList"></div>
+        </div>
+
+        <div id="savingsBadge" class="savings-badge" style="display:none">
+          <div class="savings-num" id="savingsNum">—</div>
+          <div class="savings-label">Total size reduced</div>
+        </div>
+
+        <button class="btn btn-primary" id="compressBtn" onclick="compressAll()">
+          Compress All Images
+        </button>
+
+        <button class="btn btn-download" id="dlAllBtn" style="display:none" onclick="downloadAll()">
+          ⬇ Download All (ZIP)
+        </button>
+      </div>
+
+      <!-- COMPARE -->
+      <div id="compareSection" style="display:none">
+        <div style="font-family:'Syne',sans-serif;font-weight:700;margin-bottom:0.75rem;font-size:1.1rem">Before vs After</div>
+        <div class="compare-grid">
+          <div class="compare-panel">
+            <div class="compare-header">
+              <span>Original</span>
+              <span class="compare-size" id="origSize">—</span>
+            </div>
+            <img id="origImg" class="compare-img" />
+          </div>
+          <div class="compare-panel">
+            <div class="compare-header" style="border-color:rgba(71,200,255,0.2)">
+              <span style="color:var(--img-color)">Compressed</span>
+              <span class="compare-size" id="compSize">—</span>
+            </div>
+            <img id="compImg" class="compare-img" />
+          </div>
+        </div>
+      </div>
+
+      <div id="statusMsg" class="status-msg" style="display:none"></div>
+
+    </div>
+
+    <div class="tool-sidebar">
+      <div class="panel">
+        <div class="panel-title">Compression Settings</div>
+        <div class="form-group">
+          <label class="form-label">Quality</label>
+          <div class="range-wrap">
+            <input type="range" id="qualitySlider" min="10" max="95" value="75" oninput="updateQualityLabel()" />
+            <div class="range-val" id="qualityVal">75</div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Output Format</label>
+          <select class="form-select" id="outputFormat">
+            <option value="same">Same as input</option>
+            <option value="image/jpeg">JPEG</option>
+            <option value="image/png">PNG</option>
+            <option value="image/webp">WebP (smallest)</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Max Dimension (px)</label>
+          <select class="form-select" id="maxDim">
+            <option value="0">No limit</option>
+            <option value="1920">1920px (Full HD)</option>
+            <option value="1280">1280px (HD)</option>
+            <option value="800">800px (Web)</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-title">Privacy</div>
+        <div style="font-size:0.85rem;color:var(--muted);line-height:1.7">
+          🔒 Files are never uploaded. All compression happens locally in your browser using the Canvas API.<br><br>
+          ✅ No watermarks · ♾ Unlimited files
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-title">More Image Tools</div>
+        <div class="other-tools-grid">
+          <a href="resize.html" class="other-tool-link">↔️ Resize Image</a>
+          <a href="convert.html" class="other-tool-link">🔄 Convert Format</a>
+          <a href="crop.html" class="other-tool-link">✂️ Crop Image</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="seo-section">
+    <div class="seo-card">
+      <h3>Reduce image size for web</h3>
+      <p>Large images slow down websites. Use our compressor to optimize JPG, PNG and WebP images before uploading them to your site, blog or social media.</p>
+    </div>
+    <div class="seo-card">
+      <h3>Batch compression</h3>
+      <p>Upload multiple images at once and compress them all in one click. Download individually or get all compressed files as a ZIP archive.</p>
+    </div>
+    <div class="seo-card">
+      <h3>WebP — the future of images</h3>
+      <p>Convert your images to WebP format for up to 30% smaller files than JPEG with the same quality. Supported by all modern browsers.</p>
+    </div>
+  </div>
+
+  <footer>
+    <div class="footer-logo">Tool<span>Fest</span></div>
+    <p style="margin-bottom:1rem">Free image compressor · Batch support · No upload</p>
+    <p><a href="../">Home</a> · <a href="../pdf-tools/">PDF Tools</a> · <a href="../image-tools/">Image Tools</a></p>
+    <p style="margin-top:1.5rem; font-size:0.78rem; opacity:0.5">© 2025 ToolFest · toolfest.in</p>
+  </footer>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+  <script>
+    let files = [];
+    let compressed = [];
+
+    const dz = document.getElementById('dropzone');
+    const fi = document.getElementById('fileInput');
+
+    dz.addEventListener('dragover', e => { e.preventDefault(); dz.classList.add('drag-over'); });
+    dz.addEventListener('dragleave', () => dz.classList.remove('drag-over'));
+    dz.addEventListener('drop', e => { e.preventDefault(); dz.classList.remove('drag-over'); handleFiles(e.dataTransfer.files); });
+    fi.addEventListener('change', () => handleFiles(fi.files));
+
+    function updateQualityLabel() {
+      document.getElementById('qualityVal').textContent = document.getElementById('qualitySlider').value;
+    }
+
+    function handleFiles(fileList) {
+      files = [...fileList].filter(f => f.type.startsWith('image/'));
+      compressed = [];
+      if (!files.length) return;
+      renderBatchList();
+      document.getElementById('batchSection').style.display = 'flex';
+      document.getElementById('batchSection').style.flexDirection = 'column';
+      document.getElementById('batchSection').style.gap = '1rem';
+      document.getElementById('dlAllBtn').style.display = 'none';
+      document.getElementById('savingsBadge').style.display = 'none';
+      document.getElementById('compareSection').style.display = 'none';
+      document.getElementById('statusMsg').style.display = 'none';
+    }
+
+    function renderBatchList() {
+      const list = document.getElementById('batchList');
+      list.innerHTML = files.map((f, i) => `
+        <div class="batch-item" id="batchItem${i}">
+          <img class="batch-preview" id="prev${i}" />
+          <div class="batch-info">
+            <div class="batch-name">${f.name}</div>
+            <div class="batch-sizes" id="sizes${i}">${formatBytes(f.size)}</div>
+          </div>
+          <button class="batch-dl" id="dl${i}" style="display:none" onclick="downloadSingle(${i})">⬇</button>
+        </div>`).join('');
+
+      // Load previews
+      files.forEach((f, i) => {
+        const reader = new FileReader();
+        reader.onload = e => { document.getElementById(`prev${i}`).src = e.target.result; };
+        reader.readAsDataURL(f);
+      });
+    }
+
+    async function compressAll() {
+      compressed = [];
+      const quality = parseInt(document.getElementById('qualitySlider').value) / 100;
+      const format = document.getElementById('outputFormat').value;
+      const maxDim = parseInt(document.getElementById('maxDim').value);
+
+      document.getElementById('compressBtn').disabled = true;
+      document.getElementById('compressBtn').textContent = 'Compressing…';
+
+      let totalOriginal = 0, totalCompressed = 0;
+
+      for (let i = 0; i < files.length; i++) {
+        const file = files[i];
+        totalOriginal += file.size;
+
+        try {
+          const blob = await compressImage(file, quality, format, maxDim);
+          compressed[i] = blob;
+          totalCompressed += blob.size;
+
+          document.getElementById(`sizes${i}`).innerHTML =
+            `${formatBytes(file.size)} → <span style="color:var(--accent)">${formatBytes(blob.size)}</span> (${Math.round((1 - blob.size/file.size)*100)}% saved)`;
+          document.getElementById(`dl${i}`).style.display = 'inline';
+
+          // Show compare for first image
+          if (i === 0) showCompare(file, blob);
+
+        } catch (e) {
+          document.getElementById(`sizes${i}`).innerHTML += ' <span style="color:#ff6b6b">Error</span>';
+        }
+      }
+
+      const saved = totalOriginal - totalCompressed;
+      const pct = Math.round((saved / totalOriginal) * 100);
+      document.getElementById('savingsNum').textContent = `${pct}% · ${formatBytes(saved)} saved`;
+      document.getElementById('savingsBadge').style.display = 'block';
+
+      document.getElementById('compressBtn').disabled = false;
+      document.getElementById('compressBtn').textContent = 'Compress All Images';
+
+      if (files.length > 1) {
+        document.getElementById('dlAllBtn').style.display = 'flex';
+      }
+
+      showStatus('✓ All images compressed!', 'success');
+    }
+
+    function compressImage(file, quality, format, maxDim) {
+      return new Promise((resolve, reject) => {
+        const img = new Image();
+        const url = URL.createObjectURL(file);
+        img.onload = () => {
+          URL.revokeObjectURL(url);
+          let { width, height } = img;
+
+          if (maxDim > 0 && (width > maxDim || height > maxDim)) {
+            const scale = maxDim / Math.max(width, height);
+            width = Math.round(width * scale);
+            height = Math.round(height * scale);
+          }
+
+          const canvas = document.createElement('canvas');
+          canvas.width = width;
+          canvas.height = height;
+          const ctx = canvas.getContext('2d');
+          ctx.drawImage(img, 0, 0, width, height);
+
+          const mime = format === 'same' ? (file.type || 'image/jpeg') : format;
+          canvas.toBlob(blob => {
+            if (blob) resolve(blob);
+            else reject(new Error('Failed'));
+          }, mime, quality);
+        };
+        img.onerror = reject;
+        img.src = url;
+      });
+    }
+
+    function showCompare(origFile, compBlob) {
+      const origUrl = URL.createObjectURL(origFile);
+      const compUrl = URL.createObjectURL(compBlob);
+      document.getElementById('origImg').src = origUrl;
+      document.getElementById('compImg').src = compUrl;
+      document.getElementById('origSize').textContent = formatBytes(origFile.size);
+      document.getElementById('compSize').textContent = formatBytes(compBlob.size);
+      document.getElementById('compareSection').style.display = 'block';
+    }
+
+    function downloadSingle(i) {
+      if (!compressed[i]) return;
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(compressed[i]);
+      const ext = compressed[i].type.split('/')[1];
+      a.download = files[i].name.replace(/\.[^.]+$/, '') + '_compressed.' + ext;
+      a.click();
+    }
+
+    async function downloadAll() {
+      const zip = new JSZip();
+      compressed.forEach((blob, i) => {
+        if (!blob) return;
+        const ext = blob.type.split('/')[1];
+        const name = files[i].name.replace(/\.[^.]+$/, '') + '_compressed.' + ext;
+        zip.file(name, blob);
+      });
+      const content = await zip.generateAsync({ type: 'blob' });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(content);
+      a.download = 'toolfest_compressed.zip';
+      a.click();
+    }
+
+    function formatBytes(bytes) {
+      if (bytes < 1024) return bytes + ' B';
+      if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + ' KB';
+      return (bytes / (1024 * 1024)).toFixed(2) + ' MB';
+    }
+
+    function showStatus(msg, type) {
+      const el = document.getElementById('statusMsg');
+      el.textContent = msg;
+      el.className = `status-msg ${type}`;
+      el.style.display = 'block';
+    }
+  </script>
+</body>
+</html>
