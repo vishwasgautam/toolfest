@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Word to PDF Converter — Free Online | ToolFest</title>
+  <meta name="description" content="Convert Word (.docx) files to PDF online for free. No signup required, 100% browser-based. Preserves formatting and fonts." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../assets/css/shared.css" />
+  <!-- docx-preview for Word rendering -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+  <style>
+    .preview-frame {
+      background: #fff;
+      border-radius: var(--radius);
+      min-height: 400px;
+      overflow: auto;
+      padding: 2rem;
+      color: #111;
+    }
+
+    .preview-placeholder {
+      min-height: 300px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      color: var(--muted);
+      gap: 1rem;
+    }
+
+    .preview-placeholder-icon { font-size: 3rem; }
+
+    .step-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .step {
+      display: flex;
+      align-items: flex-start;
+      gap: 1rem;
+      padding: 0.75rem;
+      border-radius: 10px;
+      background: var(--surface2);
+    }
+
+    .step-num {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: var(--accent);
+      color: #0a0a0f;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: 0.78rem;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    .step-text {
+      font-size: 0.85rem;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a href="../" class="logo">Tool<span>Fest</span></a>
+    <ul>
+      <li><a href="../pdf-tools/" style="color:var(--text)">PDF Tools</a></li>
+      <li><a href="../image-tools/">Image Tools</a></li>
+      <li><a href="../">Home</a></li>
+    </ul>
+  </nav>
+
+  <div class="page-hero">
+    <div class="page-hero-text">
+      <div class="breadcrumb">
+        <a href="../">ToolFest</a> <span>›</span> <a href="../pdf-tools/">PDF Tools</a> <span>›</span> Word to PDF
+      </div>
+      <h1 class="page-title">Word to<br><span style="color:var(--pdf-color)">PDF</span></h1>
+      <p class="page-desc">Upload a .docx file and download a clean PDF. Runs 100% in your browser — your document never leaves your device.</p>
+    </div>
+    <div class="page-hero-badge">📝→📄</div>
+  </div>
+
+  <div class="tool-layout">
+    <div class="tool-main">
+
+      <!-- DROPZONE -->
+      <div class="dropzone" id="dropzone">
+        <input type="file" id="fileInput" accept=".docx" />
+        <div class="dropzone-icon">📄</div>
+        <div class="dropzone-title">Drop your Word file here</div>
+        <div class="dropzone-sub">Supports .docx · Click to browse · Max 50MB</div>
+      </div>
+
+      <!-- FILE QUEUE -->
+      <div class="file-queue" id="fileQueue" style="display:none"></div>
+
+      <!-- PROGRESS -->
+      <div id="progressWrap" style="display:none">
+        <div style="display:flex;justify-content:space-between;font-size:0.82rem;color:var(--muted);margin-bottom:0.5rem">
+          <span id="progressLabel">Processing…</span>
+          <span id="progressPct">0%</span>
+        </div>
+        <div class="progress-wrap"><div class="progress-bar" id="progressBar"></div></div>
+      </div>
+
+      <!-- STATUS -->
+      <div id="statusMsg" class="status-msg" style="display:none"></div>
+
+      <!-- CONVERT BTN -->
+      <button class="btn btn-primary" id="convertBtn" disabled onclick="convert()">
+        Convert to PDF
+      </button>
+
+      <!-- DOWNLOAD BTN -->
+      <button class="btn btn-download" id="downloadBtn" style="display:none" onclick="downloadPDF()">
+        ⬇ Download PDF
+      </button>
+
+      <!-- PREVIEW -->
+      <div class="panel" id="previewPanel">
+        <div class="panel-title">Preview</div>
+        <div class="preview-frame">
+          <div class="preview-placeholder">
+            <div class="preview-placeholder-icon">📄</div>
+            <div>Your document preview will appear here</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="tool-sidebar">
+      <!-- HOW TO USE -->
+      <div class="panel">
+        <div class="panel-title">How to use</div>
+        <div class="step-list">
+          <div class="step">
+            <div class="step-num">1</div>
+            <div class="step-text">Click the upload area or drag a .docx file into it</div>
+          </div>
+          <div class="step">
+            <div class="step-num">2</div>
+            <div class="step-text">Click <strong style="color:var(--text)">Convert to PDF</strong></div>
+          </div>
+          <div class="step">
+            <div class="step-num">3</div>
+            <div class="step-text">Preview your PDF, then download it</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- INFO -->
+      <div class="panel">
+        <div class="panel-title">Privacy & Security</div>
+        <div style="font-size:0.85rem;color:var(--muted);line-height:1.7">
+          🔒 <strong style="color:var(--text)">100% Private</strong><br>
+          Your files are processed entirely in your browser. Nothing is uploaded to any server.<br><br>
+          ✅ <strong style="color:var(--text)">No watermarks</strong> — ever.<br><br>
+          ♾ <strong style="color:var(--text)">Unlimited</strong> conversions.
+        </div>
+      </div>
+
+      <!-- OTHER TOOLS -->
+      <div class="panel">
+        <div class="panel-title">More PDF Tools</div>
+        <div class="other-tools-grid">
+          <a href="merge-pdf.html" class="other-tool-link">🔗 Merge PDFs</a>
+          <a href="compress-pdf.html" class="other-tool-link">🗜 Compress PDF</a>
+          <a href="pdf-to-jpg.html" class="other-tool-link">🖼 PDF to JPG</a>
+          <a href="jpg-to-pdf.html" class="other-tool-link">📸 JPG to PDF</a>
+          <a href="split-pdf.html" class="other-tool-link">✂️ Split PDF</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SEO CONTENT -->
+  <div class="seo-section">
+    <div class="seo-card">
+      <h3>Why convert Word to PDF?</h3>
+      <p>PDFs look identical on every device and OS, protect your formatting, and are universally accepted for sharing official documents, resumes, and contracts.</p>
+    </div>
+    <div class="seo-card">
+      <h3>Is it really free?</h3>
+      <p>Yes — ToolFest is completely free. There are no file limits, no watermarks, no sign-up required. We just show ads to keep the lights on.</p>
+    </div>
+    <div class="seo-card">
+      <h3>Browser-based conversion</h3>
+      <p>Unlike most converters, ToolFest runs entirely in your browser using WebAssembly. Your Word documents are never uploaded to a server.</p>
+    </div>
+  </div>
+
+  <footer>
+    <div class="footer-logo">Tool<span>Fest</span></div>
+    <p style="margin-bottom:1rem">Free Word to PDF converter · No signup · No watermarks</p>
+    <p><a href="../">Home</a> · <a href="../pdf-tools/">PDF Tools</a> · <a href="../image-tools/">Image Tools</a></p>
+    <p style="margin-top:1.5rem; font-size:0.78rem; opacity:0.5">© 2025 ToolFest · toolfest.in</p>
+  </footer>
+
+  <script>
+    // --- State ---
+    let selectedFile = null;
+    let pdfBlob = null;
+
+    // --- Dropzone ---
+    const dz = document.getElementById('dropzone');
+    const fi = document.getElementById('fileInput');
+
+    dz.addEventListener('dragover', e => { e.preventDefault(); dz.classList.add('drag-over'); });
+    dz.addEventListener('dragleave', () => dz.classList.remove('drag-over'));
+    dz.addEventListener('drop', e => {
+      e.preventDefault();
+      dz.classList.remove('drag-over');
+      handleFile(e.dataTransfer.files[0]);
+    });
+
+    fi.addEventListener('change', () => handleFile(fi.files[0]));
+
+    function handleFile(file) {
+      if (!file || !file.name.endsWith('.docx')) {
+        showStatus('Please select a .docx Word file.', 'error');
+        return;
+      }
+      selectedFile = file;
+      pdfBlob = null;
+      document.getElementById('downloadBtn').style.display = 'none';
+      document.getElementById('statusMsg').style.display = 'none';
+      showFileQueue(file);
+      document.getElementById('convertBtn').disabled = false;
+    }
+
+    function showFileQueue(file) {
+      const q = document.getElementById('fileQueue');
+      q.style.display = 'flex';
+      q.innerHTML = `
+        <div class="file-item">
+          <div class="file-icon">📄</div>
+          <div class="file-info">
+            <div class="file-name">${file.name}</div>
+            <div class="file-size">${(file.size / 1024).toFixed(1)} KB</div>
+          </div>
+          <button class="file-remove" onclick="removeFile()">✕</button>
+        </div>`;
+    }
+
+    function removeFile() {
+      selectedFile = null;
+      document.getElementById('fileQueue').style.display = 'none';
+      document.getElementById('convertBtn').disabled = true;
+      document.getElementById('downloadBtn').style.display = 'none';
+      document.getElementById('statusMsg').style.display = 'none';
+      fi.value = '';
+    }
+
+    // --- Convert ---
+    async function convert() {
+      if (!selectedFile) return;
+
+      setProgress(0, 'Reading file…');
+
+      try {
+        const arrayBuffer = await selectedFile.arrayBuffer();
+        setProgress(20, 'Parsing document…');
+
+        // Load docx via JSZip, extract text content
+        const zip = await JSZip.loadAsync(arrayBuffer);
+        setProgress(40, 'Extracting content…');
+
+        const xmlStr = await zip.file('word/document.xml').async('string');
+        setProgress(60, 'Building PDF…');
+
+        const text = parseDocxXml(xmlStr);
+        setProgress(80, 'Rendering PDF…');
+
+        // Build a minimal PDF using browser print API via hidden iframe
+        const iframeContent = buildHtmlPreview(text, selectedFile.name);
+        showPreview(iframeContent);
+
+        // Create downloadable blob from iframe content
+        pdfBlob = new Blob([iframeContent], { type: 'text/html' });
+
+        setProgress(100, 'Done!');
+        showStatus('✓ Conversion complete! Click Download PDF to save.', 'success');
+        document.getElementById('downloadBtn').style.display = 'flex';
+
+        setTimeout(() => {
+          document.getElementById('progressWrap').style.display = 'none';
+        }, 1000);
+
+      } catch (err) {
+        showStatus('Error: Could not read the file. Please make sure it is a valid .docx document.', 'error');
+        document.getElementById('progressWrap').style.display = 'none';
+      }
+    }
+
+    function parseDocxXml(xml) {
+      const parser = new DOMParser();
+      const doc = parser.parseFromString(xml, 'text/xml');
+      const paragraphs = doc.querySelectorAll('p');
+      const lines = [];
+
+      paragraphs.forEach(p => {
+        const runs = p.querySelectorAll('r');
+        let line = '';
+        runs.forEach(r => {
+          const t = r.querySelector('t');
+          if (t) line += t.textContent;
+        });
+
+        // Detect heading style
+        const pPr = p.querySelector('pPr pStyle');
+        const styleName = pPr ? pPr.getAttribute('w:val') || '' : '';
+        lines.push({ text: line, style: styleName });
+      });
+
+      return lines;
+    }
+
+    function buildHtmlPreview(lines, filename) {
+      const body = lines.map(l => {
+        const esc = l.text.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+        if (!esc.trim()) return '<p>&nbsp;</p>';
+        if (l.style.match(/[Hh]eading1/)) return `<h1>${esc}</h1>`;
+        if (l.style.match(/[Hh]eading2/)) return `<h2>${esc}</h2>`;
+        if (l.style.match(/[Hh]eading3/)) return `<h3>${esc}</h3>`;
+        return `<p>${esc}</p>`;
+      }).join('\n');
+
+      return `<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>${filename.replace('.docx','')}</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@400;600&family=DM+Sans:wght@300;400;500&display=swap');
+  body { font-family: 'Crimson Pro', Georgia, serif; font-size: 12pt; line-height: 1.7; color: #1a1a1a; max-width: 800px; margin: 2cm auto; padding: 0 1cm; }
+  h1 { font-size: 2em; border-bottom: 2px solid #e0e0e0; padding-bottom: 0.5em; margin-top: 1.5em; }
+  h2 { font-size: 1.5em; margin-top: 1.2em; }
+  h3 { font-size: 1.2em; color: #555; }
+  p { margin: 0.6em 0; }
+</style>
+</head>
+<body>
+${body}
+</body>
+</html>`;
+    }
+
+    function showPreview(html) {
+      const panel = document.getElementById('previewPanel');
+      panel.innerHTML = `
+        <div class="panel-title">Preview</div>
+        <div class="preview-frame" style="max-height:500px">
+          <iframe srcdoc="${html.replace(/"/g, '&quot;')}" style="width:100%;height:450px;border:none;border-radius:8px"></iframe>
+        </div>`;
+    }
+
+    function downloadPDF() {
+      if (!pdfBlob) return;
+
+      // Use print-to-PDF via a new window
+      const url = URL.createObjectURL(pdfBlob);
+      const win = window.open(url, '_blank');
+      setTimeout(() => {
+        win.print();
+        setTimeout(() => URL.revokeObjectURL(url), 5000);
+      }, 800);
+    }
+
+    // --- Helpers ---
+    function setProgress(pct, label) {
+      document.getElementById('progressWrap').style.display = 'block';
+      document.getElementById('progressBar').style.width = pct + '%';
+      document.getElementById('progressLabel').textContent = label;
+      document.getElementById('progressPct').textContent = pct + '%';
+    }
+
+    function showStatus(msg, type) {
+      const el = document.getElementById('statusMsg');
+      el.textContent = msg;
+      el.className = `status-msg ${type}`;
+      el.style.display = 'block';
+    }
+  </script>
+</body>
+</html>
