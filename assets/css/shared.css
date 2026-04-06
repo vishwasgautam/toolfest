@@ -450,6 +450,57 @@ footer {
   font-size: 0.85rem;
 }
 
+/* Editorial / AdSense-friendly publisher content (visible before ads) */
+.publisher-content {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 0 2rem 2.5rem;
+  color: var(--muted);
+  font-size: 0.95rem;
+  line-height: 1.8;
+}
+
+.publisher-content h2 {
+  font-family: 'Syne', sans-serif;
+  font-weight: 800;
+  font-size: 1.35rem;
+  color: var(--text);
+  letter-spacing: -0.02em;
+  margin: 0 0 1rem;
+}
+
+.publisher-content h3 {
+  font-family: 'Syne', sans-serif;
+  font-weight: 700;
+  font-size: 1.05rem;
+  color: var(--text);
+  margin: 1.75rem 0 0.65rem;
+}
+
+.publisher-content p { margin: 0 0 1rem; }
+
+.publisher-content ul {
+  margin: 0 0 1.25rem 1.25rem;
+  padding: 0;
+}
+
+.publisher-content li { margin-bottom: 0.5rem; }
+
+.publisher-content strong { color: var(--text); font-weight: 500; }
+
+.site-footer-links {
+  margin-bottom: 1rem;
+  line-height: 1.9;
+}
+
+.site-footer-links a {
+  color: var(--muted);
+  text-decoration: none;
+  margin: 0 0.35rem;
+}
+
+.site-footer-links a:hover { color: var(--accent); }
+
 footer a { color: var(--muted); }
 
 .footer-logo {

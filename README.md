@@ -35,6 +35,8 @@ Publisher ID and GA4 are centralized in **`assets/js/site-analytics.js`** (curre
 
 To change IDs later, edit only `assets/js/site-analytics.js`.
 
+**`ads.txt`** at the repo root authorizes Google to sell your inventory. After deploy, confirm it loads at `https://toolfest.in/ads.txt`. If you change publisher ID, update this file to match.
+
 ## SEO (toolfest.in)
 
 - **`sitemap.xml`** lists canonical URLs under `https://toolfest.in/`. Submit it in [Google Search Console](https://search.google.com/search-console) (and Bing Webmaster Tools) after you connect the custom domain.
