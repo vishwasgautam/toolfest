@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script src="../assets/js/site-analytics.js"></script>
+  <title>PDF to JPG — Export Pages as Images | ToolFest</title>
+  <meta name="description" content="Convert each PDF page to a JPG image. Download one image or a ZIP for multi-page PDFs. Private in-browser conversion." />
+  <link rel="canonical" href="https://toolfest.in/pdf-tools/pdf-to-jpg.html" />
+  <meta name="robots" content="index, follow, max-image-preview:large" />
+  <link rel="alternate" hreflang="en-IN" href="https://toolfest.in/pdf-tools/pdf-to-jpg.html" />
+  <link rel="alternate" hreflang="en-US" href="https://toolfest.in/pdf-tools/pdf-to-jpg.html" />
+  <link rel="alternate" hreflang="x-default" href="https://toolfest.in/pdf-tools/pdf-to-jpg.html" />
+  <meta property="og:locale" content="en_IN" />
+  <meta property="og:locale:alternate" content="en_US" />
+  <meta property="og:site_name" content="ToolFest" />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://toolfest.in/pdf-tools/pdf-to-jpg.html" />
+  <meta property="og:title" content="PDF to JPG — Export Pages as Images | ToolFest" />
+  <meta property="og:description" content="Convert each PDF page to a JPG image. Download one image or a ZIP for multi-page PDFs. Private in-browser conversion." />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="PDF to JPG — Export Pages as Images | ToolFest" />
+  <meta name="twitter:description" content="Convert each PDF page to a JPG image. Download one image or a ZIP for multi-page PDFs. Private in-browser conversion." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../assets/css/shared.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+</head>
+<body>
+  <nav>
+    <a href="../" class="logo">Tool<span>Fest</span></a>
+    <ul>
+      <li><a href="../pdf-tools/" style="color:var(--text)">PDF</a></li>
+      <li><a href="../image-tools/">Image</a></li>
+      <li><a href="../">Home</a></li>
+    </ul>
+  </nav>
+
+  <div class="page-hero">
+    <div class="page-hero-text">
+      <div class="breadcrumb"><a href="../">ToolFest</a> <span>›</span> <a href="./">PDF</a> <span>›</span> PDF to JPG</div>
+      <h1 class="page-title">PDF → <span style="color:var(--pdf-color)">JPG</span></h1>
+      <p class="page-desc">Rasterize pages at 2× resolution for clear thumbnails and slides. Multi-page PDFs download as ZIP.</p>
+    </div>
+    <div class="page-hero-badge">🖼</div>
+  </div>
+
+  <div class="tool-layout">
+    <div class="tool-main">
+      <div class="ad-slot" aria-label="Advertisement">Ad slot</div>
+      <div class="dropzone" id="dz">
+        <input type="file" id="fi" accept="application/pdf" />
+        <div class="dropzone-icon">📄</div>
+        <div class="dropzone-title">Choose a PDF</div>
+        <div class="dropzone-sub">Max practical size depends on your device memory</div>
+      </div>
+      <div class="form-group" style="max-width:280px">
+        <label class="form-label">JPEG quality</label>
+        <div class="range-wrap">
+          <input type="range" id="qual" min="0.5" max="1" step="0.05" value="0.92" />
+          <span class="range-val" id="qualLab">92%</span>
+        </div>
+      </div>
+      <div id="statusMsg" class="status-msg" style="display:none"></div>
+      <button class="btn btn-primary" id="goBtn" disabled>Convert to JPG</button>
+    </div>
+    <div class="tool-sidebar">
+      <div class="panel">
+        <div class="panel-title">Note</div>
+        <p style="font-size:0.85rem;color:var(--muted);line-height:1.65">Uses Mozilla PDF.js in your browser. Some protected PDFs cannot be opened.</p>
+      </div>
+      <div class="panel">
+        <div class="panel-title">More</div>
+        <div class="other-tools-grid">
+          <a href="jpg-to-pdf.html" class="other-tool-link">📸 JPG to PDF</a>
+          <a href="split-pdf.html" class="other-tool-link">✂️ Split PDF</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <div class="footer-logo">Tool<span>Fest</span></div>
+    <p><a href="../">Home</a> · <a href="./">PDF Tools</a></p>
+    <p style="margin-top:1rem;font-size:0.78rem;opacity:0.5">© 2026 ToolFest</p>
+  </footer>
+
+  <script>
+    pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+
+    let file = null;
+    const dz = document.getElementById('dz'), fi = document.getElementById('fi');
+    const qual = document.getElementById('qual');
+    qual.addEventListener('input', () => {
+      document.getElementById('qualLab').textContent = Math.round(parseFloat(qual.value) * 100) + '%';
+    });
+
+    dz.addEventListener('dragover', e => { e.preventDefault(); dz.classList.add('drag-over'); });
+    dz.addEventListener('dragleave', () => dz.classList.remove('drag-over'));
+    dz.addEventListener('drop', e => { e.preventDefault(); dz.classList.remove('drag-over'); pick(e.dataTransfer.files[0]); });
+    fi.addEventListener('change', () => pick(fi.files[0]));
+
+    function pick(f) {
+      if (!f || (!f.type.includes('pdf') && !f.name.toLowerCase().endsWith('.pdf'))) return;
+      file = f;
+      document.getElementById('goBtn').disabled = false;
+      document.getElementById('statusMsg').style.display = 'none';
+    }
+
+    document.getElementById('goBtn').onclick = async () => {
+      if (!file) return;
+      const btn = document.getElementById('goBtn');
+      btn.disabled = true;
+      btn.textContent = 'Rendering…';
+      try {
+        const data = new Uint8Array(await file.arrayBuffer());
+        const pdf = await pdfjsLib.getDocument({ data }).promise;
+        const n = pdf.numPages;
+        const q = parseFloat(qual.value);
+        const base = file.name.replace(/\.pdf$/i, '') || 'page';
+        const blobs = [];
+
+        for (let i = 1; i <= n; i++) {
+          const page = await pdf.getPage(i);
+          const scale = 2;
+          const viewport = page.getViewport({ scale });
+          const canvas = document.createElement('canvas');
+          canvas.width = viewport.width;
+          canvas.height = viewport.height;
+          const ctx = canvas.getContext('2d');
+          await page.render({ canvasContext: ctx, viewport }).promise;
+          const blob = await new Promise(res => canvas.toBlob(res, 'image/jpeg', q));
+          blobs.push(blob);
+        }
+
+        if (n === 1) {
+          const a = document.createElement('a');
+          a.href = URL.createObjectURL(blobs[0]);
+          a.download = base + '.jpg';
+          a.click();
+        } else {
+          const zip = new JSZip();
+          blobs.forEach((b, i) => zip.file(`${base}_${i + 1}.jpg`, b));
+          const zblob = await zip.generateAsync({ type: 'blob' });
+          const a = document.createElement('a');
+          a.href = URL.createObjectURL(zblob);
+          a.download = base + '_pages.zip';
+          a.click();
+        }
+        show(`✓ Exported ${n} JPG(s).`, 'success');
+      } catch (e) {
+        show('Could not convert. The PDF may be encrypted or unsupported.', 'error');
+      }
+      btn.disabled = false;
+      btn.textContent = 'Convert to JPG';
+    };
+    function show(msg, type) {
+      const el = document.getElementById('statusMsg');
+      el.textContent = msg;
+      el.className = 'status-msg ' + type;
+      el.style.display = 'block';
+    }
+  </script>
+</body>
+</html>

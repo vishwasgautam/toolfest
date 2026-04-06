@@ -3,9 +3,30 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ToolFest — Free Online Tools for PDF & Images</title>
-  <meta name="description" content="Free online tools for PDF conversion, image compression, resizing and more. No signup required." />
+  <script src="assets/js/site-analytics.js"></script>
+  <title>ToolFest — Free Online PDF &amp; Image Tools, EMI, SIP &amp; GST (India) | toolfest.in</title>
+  <meta name="description" content="24+ free online tools at toolfest.in: Word to PDF, merge and split PDF, compress images, EMI and SIP calculator, GST calculator for India, JSON formatter, word counter, QR code and password generator. Private, no signup." />
+  <link rel="canonical" href="https://toolfest.in/" />
+  <meta name="robots" content="index, follow, max-image-preview:large" />
+  <link rel="alternate" hreflang="en-IN" href="https://toolfest.in/" />
+  <link rel="alternate" hreflang="en-US" href="https://toolfest.in/" />
+  <link rel="alternate" hreflang="x-default" href="https://toolfest.in/" />
+  <meta property="og:locale" content="en_IN" />
+  <meta property="og:locale:alternate" content="en_US" />
+  <meta property="og:site_name" content="ToolFest" />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://toolfest.in/" />
+  <meta property="og:title" content="ToolFest — Free Online PDF &amp; Image Tools, EMI, SIP &amp; GST (India) | toolfest.in" />
+  <meta property="og:description" content="24+ free online tools at toolfest.in: Word to PDF, merge and split PDF, compress images, EMI and SIP calculator, GST calculator for India, JSON formatter, word counter, QR code and password generator. Private, no signup." />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="ToolFest — Free Online PDF &amp; Image Tools, EMI, SIP &amp; GST (India) | toolfest.in" />
+  <meta name="twitter:description" content="24+ free online tools at toolfest.in: Word to PDF, merge and split PDF, compress images, EMI and SIP calculator, GST calculator for India, JSON formatter, word counter, QR code and password generator. Private, no signup." />
+  <meta name="keywords" content="toolfest, toolfest.in, free online tools, Word to PDF, merge PDF, PDF to JPG, image compressor, EMI calculator India, SIP calculator, GST calculator, JSON formatter, word counter, password generator, QR code generator" />
+  <meta name="author" content="ToolFest" />
+  <meta name="theme-color" content="#0a0a0f" />
+  <!-- After Google Search Console verification, add: <meta name="google-site-verification" content="YOUR_CODE" /> -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -21,6 +42,29 @@
       --muted: #6b6b80;
       --pdf-color: #ff6b6b;
       --img-color: #47c8ff;
+      --finance-color: #a78bfa;
+      --text-tool-color: #34d399;
+      --gen-color: #fb923c;
+    }
+
+    .ad-home {
+      max-width: 1300px;
+      margin: 0 auto;
+      padding: 0 3rem 2.5rem;
+    }
+    .ad-home-inner {
+      min-height: 100px;
+      border: 1px dashed rgba(255,255,255,0.12);
+      border-radius: 14px;
+      background: rgba(255,255,255,0.02);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--muted);
+      font-size: 0.8rem;
+      text-align: center;
+      line-height: 1.5;
+      padding: 1rem;
     }
 
     html { scroll-behavior: smooth; }
@@ -304,6 +348,16 @@
       background: radial-gradient(circle at top left, rgba(71,200,255,0.08), transparent 60%);
     }
 
+    .tool-card.finance::before {
+      background: radial-gradient(circle at top left, rgba(167,139,250,0.08), transparent 60%);
+    }
+    .tool-card.text::before {
+      background: radial-gradient(circle at top left, rgba(52,211,153,0.08), transparent 60%);
+    }
+    .tool-card.gen::before {
+      background: radial-gradient(circle at top left, rgba(251,146,60,0.08), transparent 60%);
+    }
+
     .tool-card:hover { transform: translateY(-4px); border-color: rgba(255,255,255,0.15); }
     .tool-card:hover::before { opacity: 1; }
 
@@ -319,6 +373,9 @@
 
     .tool-icon.pdf { background: rgba(255,107,107,0.15); }
     .tool-icon.img { background: rgba(71,200,255,0.15); }
+    .tool-icon.finance { background: rgba(167,139,250,0.15); }
+    .tool-icon.text { background: rgba(52,211,153,0.15); }
+    .tool-icon.gen { background: rgba(251,146,60,0.15); }
 
     .tool-name {
       font-family: 'Syne', sans-serif;
@@ -347,6 +404,9 @@
 
     .tool-tag.pdf { background: rgba(255,107,107,0.12); color: var(--pdf-color); }
     .tool-tag.img { background: rgba(71,200,255,0.12); color: var(--img-color); }
+    .tool-tag.finance { background: rgba(167,139,250,0.12); color: var(--finance-color); }
+    .tool-tag.text { background: rgba(52,211,153,0.12); color: var(--text-tool-color); }
+    .tool-tag.gen { background: rgba(251,146,60,0.12); color: var(--gen-color); }
 
     .tool-arrow {
       color: var(--muted);
@@ -506,6 +566,29 @@
       transform: none;
     }
 
+    .skip-link {
+      position: absolute;
+      left: -9999px;
+      top: auto;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+    }
+    .skip-link:focus {
+      position: fixed;
+      left: 1rem;
+      top: 1rem;
+      width: auto;
+      height: auto;
+      z-index: 1000;
+      padding: 0.75rem 1rem;
+      background: var(--accent);
+      color: #0a0a0f;
+      font-weight: 600;
+      border-radius: 8px;
+      overflow: visible;
+    }
+
     @media (max-width: 768px) {
       nav { padding: 1rem 1.5rem; }
       nav ul { display: none; }
@@ -517,34 +600,152 @@
       .section-header { flex-direction: column; align-items: flex-start; gap: 1rem; }
     }
   </style>
+
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebSite",
+      "@id": "https://toolfest.in/#website",
+      "name": "ToolFest",
+      "alternateName": [
+        "toolfest.in",
+        "Tool Fest"
+      ],
+      "url": "https://toolfest.in/",
+      "description": "Free online PDF, image, finance, and text tools for India, the US, and worldwide. No signup; runs in your browser.",
+      "inLanguage": [
+        "en-IN",
+        "en-US",
+        "en"
+      ],
+      "publisher": {
+        "@id": "https://toolfest.in/#organization"
+      }
+    },
+    {
+      "@type": "Organization",
+      "@id": "https://toolfest.in/#organization",
+      "name": "ToolFest",
+      "url": "https://toolfest.in/"
+    },
+    {
+      "@type": "ItemList",
+      "@id": "https://toolfest.in/#main-tools",
+      "name": "ToolFest free online tools",
+      "numberOfItems": 12,
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Word to PDF",
+          "url": "https://toolfest.in/pdf-tools/word-to-pdf.html"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Merge PDF online",
+          "url": "https://toolfest.in/pdf-tools/merge-pdf.html"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "Split PDF",
+          "url": "https://toolfest.in/pdf-tools/split-pdf.html"
+        },
+        {
+          "@type": "ListItem",
+          "position": 4,
+          "name": "Image compressor",
+          "url": "https://toolfest.in/image-tools/compress.html"
+        },
+        {
+          "@type": "ListItem",
+          "position": 5,
+          "name": "EMI calculator",
+          "url": "https://toolfest.in/finance-tools/emi-calculator.html"
+        },
+        {
+          "@type": "ListItem",
+          "position": 6,
+          "name": "GST calculator India",
+          "url": "https://toolfest.in/finance-tools/gst-calculator.html"
+        },
+        {
+          "@type": "ListItem",
+          "position": 7,
+          "name": "SIP calculator",
+          "url": "https://toolfest.in/finance-tools/sip-calculator.html"
+        },
+        {
+          "@type": "ListItem",
+          "position": 8,
+          "name": "PDF to JPG",
+          "url": "https://toolfest.in/pdf-tools/pdf-to-jpg.html"
+        },
+        {
+          "@type": "ListItem",
+          "position": 9,
+          "name": "Word counter",
+          "url": "https://toolfest.in/text-tools/word-counter.html"
+        },
+        {
+          "@type": "ListItem",
+          "position": 10,
+          "name": "JSON formatter",
+          "url": "https://toolfest.in/text-tools/json-formatter.html"
+        },
+        {
+          "@type": "ListItem",
+          "position": 11,
+          "name": "Password generator",
+          "url": "https://toolfest.in/generators/password-generator.html"
+        },
+        {
+          "@type": "ListItem",
+          "position": 12,
+          "name": "QR code generator",
+          "url": "https://toolfest.in/generators/qr-code-generator.html"
+        }
+      ]
+    }
+  ]
+}
+  </script>
 </head>
 <body>
+  <a class="skip-link" href="#main-content">Skip to tools</a>
 
   <nav>
-    <a href="/" class="logo">Tool<span>Fest</span></a>
+    <a href="./" class="logo">Tool<span>Fest</span></a>
     <ul>
-      <li><a href="/pdf-tools/">PDF Tools</a></li>
-      <li><a href="/image-tools/">Image Tools</a></li>
-      <li><a href="#all-tools">All Tools</a></li>
+      <li><a href="pdf-tools/">PDF</a></li>
+      <li><a href="image-tools/">Image</a></li>
+      <li><a href="finance-tools/">Finance</a></li>
+      <li><a href="text-tools/">Text &amp; JSON</a></li>
+      <li><a href="generators/">Generators</a></li>
+      <li><a href="#all-tools">All tools</a></li>
     </ul>
   </nav>
 
+  <main id="main-content">
   <!-- HERO -->
   <section class="hero">
     <div class="hero-glow"></div>
     <div class="hero-badge">⚡ 100% Free · No Signup · Works in Browser</div>
     <h1>Every tool<br>you <em>actually</em><br>need.</h1>
-    <p>PDF converters, image compressors, and more — fast, private, no watermarks. Everything runs in your browser.</p>
+    <p>PDF converters, image compressors, EMI, SIP, GST, and more — fast, private, no watermarks. Everything runs in your browser on <strong style="font-weight:500;color:var(--text)">toolfest.in</strong>.</p>
     <div class="hero-ctas">
-      <a href="/pdf-tools/" class="btn btn-primary">PDF Tools →</a>
-      <a href="/image-tools/" class="btn btn-ghost">Image Tools</a>
+      <a href="pdf-tools/word-to-pdf.html" class="btn btn-primary">Word to PDF →</a>
+      <a href="finance-tools/emi-calculator.html" class="btn btn-ghost">EMI calculator</a>
     </div>
   </section>
 
   <!-- STATS -->
   <div class="stats-bar">
     <div class="stat">
-      <div class="stat-num">12+</div>
+      <div class="stat-num">24+</div>
       <div class="stat-label">Tools</div>
     </div>
     <div class="stat">
@@ -561,10 +762,14 @@
     </div>
   </div>
 
+  <div class="ad-home" aria-label="Advertisement">
+    <div class="ad-home-inner">AdSense publisher script loads site-wide from <code style="color:var(--accent)">assets/js/site-analytics.js</code>. Replace this box with a display ad unit (<code style="color:var(--accent)">&lt;ins class="adsbygoogle"&gt;</code> + push) from your AdSense dashboard, or turn on <strong>Auto ads</strong> there.</div>
+  </div>
+
   <!-- PDF SECTION -->
   <div class="section" id="all-tools">
     <div class="animate-in">
-      <a href="/pdf-tools/" class="featured-card">
+      <a href="pdf-tools/word-to-pdf.html" class="featured-card">
         <div>
           <div class="featured-label">Most Popular</div>
           <div class="featured-title">Word to PDF<br>Converter</div>
@@ -580,35 +785,49 @@
         <div class="section-tag">🗂 Category</div>
         <div class="section-title">PDF Tools</div>
       </div>
-      <a href="/pdf-tools/" class="section-link">View all PDF tools →</a>
+      <a href="pdf-tools/" class="section-link">View all PDF tools →</a>
     </div>
 
     <div class="tools-grid animate-in">
-      <a href="/pdf-tools/word-to-pdf.html" class="tool-card pdf">
+      <a href="pdf-tools/word-to-pdf.html" class="tool-card pdf">
         <div class="tool-icon pdf">📝</div>
         <div class="tool-name">Word to PDF</div>
         <p class="tool-desc">Convert .docx Word documents to high-quality PDF files instantly. No quality loss.</p>
         <div class="tool-tag pdf">PDF</div>
         <span class="tool-arrow">↗</span>
       </a>
-      <a href="/pdf-tools/merge-pdf.html" class="tool-card pdf">
+      <a href="pdf-tools/merge-pdf.html" class="tool-card pdf">
         <div class="tool-icon pdf">🔗</div>
         <div class="tool-name">Merge PDFs</div>
         <p class="tool-desc">Combine multiple PDF files into one document. Drag to reorder pages before merging.</p>
         <div class="tool-tag pdf">PDF</div>
         <span class="tool-arrow">↗</span>
       </a>
-      <a href="/pdf-tools/compress-pdf.html" class="tool-card pdf">
+      <a href="pdf-tools/compress-pdf.html" class="tool-card pdf">
         <div class="tool-icon pdf">🗜</div>
         <div class="tool-name">Compress PDF</div>
         <p class="tool-desc">Reduce PDF file size without losing visual quality. Great for email and uploads.</p>
         <div class="tool-tag pdf">PDF</div>
         <span class="tool-arrow">↗</span>
       </a>
-      <a href="/pdf-tools/pdf-to-jpg.html" class="tool-card pdf">
+      <a href="pdf-tools/pdf-to-jpg.html" class="tool-card pdf">
         <div class="tool-icon pdf">🖼</div>
         <div class="tool-name">PDF to JPG</div>
         <p class="tool-desc">Extract all pages from a PDF as high-resolution JPG images in one click.</p>
+        <div class="tool-tag pdf">PDF</div>
+        <span class="tool-arrow">↗</span>
+      </a>
+      <a href="pdf-tools/jpg-to-pdf.html" class="tool-card pdf">
+        <div class="tool-icon pdf">📸</div>
+        <div class="tool-name">JPG to PDF</div>
+        <p class="tool-desc">Combine photos or scans into one PDF — great for applications and e‑mail.</p>
+        <div class="tool-tag pdf">PDF</div>
+        <span class="tool-arrow">↗</span>
+      </a>
+      <a href="pdf-tools/split-pdf.html" class="tool-card pdf">
+        <div class="tool-icon pdf">✂️</div>
+        <div class="tool-name">Split PDF</div>
+        <p class="tool-desc">Save each page as its own PDF in a ZIP file.</p>
         <div class="tool-tag pdf">PDF</div>
         <span class="tool-arrow">↗</span>
       </a>
@@ -620,32 +839,32 @@
         <div class="section-tag">🖼 Category</div>
         <div class="section-title">Image Tools</div>
       </div>
-      <a href="/image-tools/" class="section-link">View all image tools →</a>
+      <a href="image-tools/" class="section-link">View all image tools →</a>
     </div>
 
     <div class="tools-grid animate-in">
-      <a href="/image-tools/compress.html" class="tool-card img">
+      <a href="image-tools/compress.html" class="tool-card img">
         <div class="tool-icon img">🗜</div>
         <div class="tool-name">Image Compressor</div>
         <p class="tool-desc">Reduce image file size by up to 90% while keeping it looking sharp. Supports JPG, PNG, WebP.</p>
         <div class="tool-tag img">Image</div>
         <span class="tool-arrow">↗</span>
       </a>
-      <a href="/image-tools/resize.html" class="tool-card img">
+      <a href="image-tools/resize.html" class="tool-card img">
         <div class="tool-icon img">↔️</div>
         <div class="tool-name">Resize Image</div>
         <p class="tool-desc">Resize any image to exact pixel dimensions or by percentage. Keeps aspect ratio optional.</p>
         <div class="tool-tag img">Image</div>
         <span class="tool-arrow">↗</span>
       </a>
-      <a href="/image-tools/convert.html" class="tool-card img">
+      <a href="image-tools/convert.html" class="tool-card img">
         <div class="tool-icon img">🔄</div>
         <div class="tool-name">Convert Format</div>
         <p class="tool-desc">Convert between JPG, PNG, WebP, GIF and more formats instantly in your browser.</p>
         <div class="tool-tag img">Image</div>
         <span class="tool-arrow">↗</span>
       </a>
-      <a href="/image-tools/crop.html" class="tool-card img">
+      <a href="image-tools/crop.html" class="tool-card img">
         <div class="tool-icon img">✂️</div>
         <div class="tool-name">Crop Image</div>
         <p class="tool-desc">Crop your images to any size with a visual drag-and-drop editor. Export at full quality.</p>
@@ -653,13 +872,99 @@
         <span class="tool-arrow">↗</span>
       </a>
     </div>
+
+    <!-- FINANCE (India + global) -->
+    <div class="section-header animate-in" style="margin-top: 5rem">
+      <div>
+        <div class="section-tag">₹ $ Category</div>
+        <div class="section-title">Finance calculators</div>
+      </div>
+      <a href="finance-tools/" class="section-link">View all →</a>
+    </div>
+
+    <div class="tools-grid animate-in">
+      <a href="finance-tools/emi-calculator.html" class="tool-card finance">
+        <div class="tool-icon finance">🏠</div>
+        <div class="tool-name">EMI calculator</div>
+        <p class="tool-desc">Home, car, or personal loan EMI — monthly payment, total interest, and payoff (used across India &amp; US).</p>
+        <div class="tool-tag finance">Finance</div>
+        <span class="tool-arrow">↗</span>
+      </a>
+      <a href="finance-tools/sip-calculator.html" class="tool-card finance">
+        <div class="tool-icon finance">📈</div>
+        <div class="tool-name">SIP calculator</div>
+        <p class="tool-desc">Mutual fund style monthly SIP — estimate corpus from return % and years.</p>
+        <div class="tool-tag finance">Finance</div>
+        <span class="tool-arrow">↗</span>
+      </a>
+      <a href="finance-tools/gst-calculator.html" class="tool-card finance">
+        <div class="tool-icon finance">🧾</div>
+        <div class="tool-name">GST calculator</div>
+        <p class="tool-desc">Add or remove Indian GST (5%, 12%, 18%, 28%) from amounts — inclusive or exclusive.</p>
+        <div class="tool-tag finance">India</div>
+        <span class="tool-arrow">↗</span>
+      </a>
+    </div>
+
+    <!-- TEXT & CODE -->
+    <div class="section-header animate-in" style="margin-top: 5rem">
+      <div>
+        <div class="section-tag">✍️ Category</div>
+        <div class="section-title">Text &amp; developers</div>
+      </div>
+      <a href="text-tools/" class="section-link">View all →</a>
+    </div>
+
+    <div class="tools-grid animate-in">
+      <a href="text-tools/word-counter.html" class="tool-card text">
+        <div class="tool-icon text">🔢</div>
+        <div class="tool-name">Word counter</div>
+        <p class="tool-desc">Words, characters, paragraphs, and reading time for essays, blogs, and captions.</p>
+        <div class="tool-tag text">Text</div>
+        <span class="tool-arrow">↗</span>
+      </a>
+      <a href="text-tools/json-formatter.html" class="tool-card text">
+        <div class="tool-icon text">{ }</div>
+        <div class="tool-name">JSON formatter</div>
+        <p class="tool-desc">Prettify or minify JSON; validate syntax before pasting into apps or APIs.</p>
+        <div class="tool-tag text">Dev</div>
+        <span class="tool-arrow">↗</span>
+      </a>
+    </div>
+
+    <!-- GENERATORS -->
+    <div class="section-header animate-in" style="margin-top: 5rem">
+      <div>
+        <div class="section-tag">⚡ Category</div>
+        <div class="section-title">Generators</div>
+      </div>
+      <a href="generators/" class="section-link">View all →</a>
+    </div>
+
+    <div class="tools-grid animate-in">
+      <a href="generators/password-generator.html" class="tool-card gen">
+        <div class="tool-icon gen">🔐</div>
+        <div class="tool-name">Password generator</div>
+        <p class="tool-desc">Strong random passwords with length and charset options — copy in one tap.</p>
+        <div class="tool-tag gen">Security</div>
+        <span class="tool-arrow">↗</span>
+      </a>
+      <a href="generators/qr-code-generator.html" class="tool-card gen">
+        <div class="tool-icon gen">▣</div>
+        <div class="tool-name">QR code</div>
+        <p class="tool-desc">Links, UPI, Wi‑Fi strings — generate a QR image and download PNG.</p>
+        <div class="tool-tag gen">QR</div>
+        <span class="tool-arrow">↗</span>
+      </a>
+    </div>
   </div>
+  </main>
 
   <footer>
     <div class="footer-logo">Tool<span>Fest</span></div>
-    <p style="margin-bottom:1rem">Free tools that respect your privacy. Everything runs in your browser — your files never leave your device.</p>
-    <p><a href="/">Home</a> · <a href="/pdf-tools/">PDF Tools</a> · <a href="/image-tools/">Image Tools</a></p>
-    <p style="margin-top:1.5rem; font-size:0.78rem; opacity:0.5">© 2025 ToolFest · toolfest.in</p>
+    <p style="margin-bottom:1rem">Free tools that respect your privacy. PDF and image tools run in your browser — your files stay on your device.</p>
+    <p><a href="./">Home</a> · <a href="pdf-tools/">PDF</a> · <a href="image-tools/">Image</a> · <a href="finance-tools/">Finance</a> · <a href="text-tools/">Text</a> · <a href="generators/">Generators</a> · <a href="privacy.html">Privacy</a></p>
+    <p style="margin-top:1.5rem; font-size:0.78rem; opacity:0.5">© 2026 ToolFest · <a href="https://toolfest.in/" rel="noopener">toolfest.in</a></p>
   </footer>
 
   <script>

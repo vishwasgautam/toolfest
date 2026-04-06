@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script src="../assets/js/site-analytics.js"></script>
+  <title>SIP Calculator — Mutual Fund Returns Estimate | ToolFest</title>
+  <meta name="description" content="SIP calculator: monthly investment, expected annual return, investment period. See estimated future value. Popular for Indian mutual fund planning." />
+  <link rel="canonical" href="https://toolfest.in/finance-tools/sip-calculator.html" />
+  <meta name="robots" content="index, follow, max-image-preview:large" />
+  <link rel="alternate" hreflang="en-IN" href="https://toolfest.in/finance-tools/sip-calculator.html" />
+  <link rel="alternate" hreflang="en-US" href="https://toolfest.in/finance-tools/sip-calculator.html" />
+  <link rel="alternate" hreflang="x-default" href="https://toolfest.in/finance-tools/sip-calculator.html" />
+  <meta property="og:locale" content="en_IN" />
+  <meta property="og:locale:alternate" content="en_US" />
+  <meta property="og:site_name" content="ToolFest" />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://toolfest.in/finance-tools/sip-calculator.html" />
+  <meta property="og:title" content="SIP Calculator — Mutual Fund Returns Estimate | ToolFest" />
+  <meta property="og:description" content="SIP calculator: monthly investment, expected annual return, investment period. See estimated future value. Popular for Indian mutual fund planning." />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="SIP Calculator — Mutual Fund Returns Estimate | ToolFest" />
+  <meta name="twitter:description" content="SIP calculator: monthly investment, expected annual return, investment period. See estimated future value. Popular for Indian mutual fund planning." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../assets/css/shared.css" />
+</head>
+<body>
+  <nav>
+    <a href="../" class="logo">Tool<span>Fest</span></a>
+    <ul>
+      <li><a href="../finance-tools/" style="color:var(--text)">Finance</a></li>
+      <li><a href="../">Home</a></li>
+    </ul>
+  </nav>
+
+  <div class="page-hero">
+    <div class="page-hero-text">
+      <div class="breadcrumb"><a href="../">ToolFest</a> <span>›</span> <a href="./">Finance</a> <span>›</span> SIP</div>
+      <h1 class="page-title">SIP <span style="color:var(--finance-color)">calculator</span></h1>
+      <p class="page-desc">End-of-month SIP (typical mutual fund debit). Does not predict market performance — uses your assumed return only.</p>
+    </div>
+    <div class="page-hero-badge">📈</div>
+  </div>
+
+  <div class="tool-layout">
+    <div class="tool-main">
+      <div class="ad-slot">Ad slot</div>
+      <div class="panel">
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Monthly SIP</label>
+            <input type="number" class="form-input" id="sip" value="5000" min="1" step="1" />
+          </div>
+          <div class="form-group">
+            <label class="form-label">Expected return % / year</label>
+            <input type="number" class="form-input" id="ret" value="12" min="0" step="0.1" />
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Years</label>
+          <input type="number" class="form-input" id="yrs" value="15" min="1" step="1" />
+        </div>
+        <button type="button" class="btn btn-primary" onclick="calc()">Calculate</button>
+      </div>
+      <div class="panel" id="out" style="display:none">
+        <div class="panel-title">Estimated future value</div>
+        <p class="result-highlight" id="fv">—</p>
+        <div style="margin-top:1.25rem;font-size:0.9rem;line-height:1.8;color:var(--muted)">
+          <div>Total invested: <strong style="color:var(--text)" id="inv">—</strong></div>
+          <div>Estimated gains: <strong style="color:var(--text)" id="gain">—</strong></div>
+        </div>
+      </div>
+    </div>
+    <div class="tool-sidebar">
+      <div class="panel">
+        <div class="panel-title">Note</div>
+        <p style="font-size:0.85rem;color:var(--muted);line-height:1.65">Real returns fluctuate. Use conservative estimates for long-term goals.</p>
+      </div>
+      <div class="panel">
+        <div class="other-tools-grid">
+          <a href="emi-calculator.html" class="other-tool-link">🏠 EMI</a>
+          <a href="gst-calculator.html" class="other-tool-link">🧾 GST</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <div class="footer-logo">Tool<span>Fest</span></div>
+    <p><a href="../">Home</a></p>
+    <p style="font-size:0.78rem;opacity:0.5;margin-top:1rem">© 2026 ToolFest · Not investment advice</p>
+  </footer>
+
+  <script>
+    function fmt(n) {
+      return n.toLocaleString(undefined, { maximumFractionDigits: 0 });
+    }
+    function calc() {
+      const P = parseFloat(document.getElementById('sip').value) || 0;
+      const annual = parseFloat(document.getElementById('ret').value) / 100 || 0;
+      const years = parseFloat(document.getElementById('yrs').value) || 0;
+      const n = years * 12;
+      const r = annual / 12;
+      if (!P || !n) return;
+      let fv;
+      if (r === 0) fv = P * n;
+      else fv = P * ((Math.pow(1 + r, n) - 1) / r);
+      const invested = P * n;
+      document.getElementById('fv').textContent = fmt(fv);
+      document.getElementById('inv').textContent = fmt(invested);
+      document.getElementById('gain').textContent = fmt(fv - invested);
+      document.getElementById('out').style.display = 'block';
+    }
+    calc();
+    ['sip','ret','yrs'].forEach(id => document.getElementById(id).addEventListener('input', calc));
+  </script>
+</body>
+</html>

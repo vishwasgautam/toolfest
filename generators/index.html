@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script src="../assets/js/site-analytics.js"></script>
+  <title>Password & QR Generators | ToolFest</title>
+  <meta name="description" content="Strong random password generator and QR code maker. Client-side only — nothing sent to our servers." />
+  <link rel="canonical" href="https://toolfest.in/generators/" />
+  <meta name="robots" content="index, follow, max-image-preview:large" />
+  <link rel="alternate" hreflang="en-IN" href="https://toolfest.in/generators/" />
+  <link rel="alternate" hreflang="en-US" href="https://toolfest.in/generators/" />
+  <link rel="alternate" hreflang="x-default" href="https://toolfest.in/generators/" />
+  <meta property="og:locale" content="en_IN" />
+  <meta property="og:locale:alternate" content="en_US" />
+  <meta property="og:site_name" content="ToolFest" />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://toolfest.in/generators/" />
+  <meta property="og:title" content="Password &amp; QR Generators | ToolFest" />
+  <meta property="og:description" content="Strong random password generator and QR code maker. Client-side only — nothing sent to our servers." />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Password &amp; QR Generators | ToolFest" />
+  <meta name="twitter:description" content="Strong random password generator and QR code maker. Client-side only — nothing sent to our servers." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../assets/css/shared.css" />
+  <style>
+    .hub-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1.25rem; max-width: 800px; margin: 0 auto; padding: 0 2rem 3rem; }
+    .hub-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 1.75rem;
+      text-decoration: none;
+      color: inherit;
+      transition: transform 0.2s, border-color 0.2s;
+    }
+    .hub-card:hover { transform: translateY(-3px); border-color: rgba(251, 146, 60, 0.4); }
+    .hub-card h2 { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 1.15rem; margin-bottom: 0.5rem; }
+    .hub-card p { font-size: 0.88rem; color: var(--muted); line-height: 1.55; }
+    .hub-emoji { font-size: 2rem; display: block; margin-bottom: 0.5rem; }
+  </style>
+</head>
+<body>
+  <nav>
+    <a href="../" class="logo">Tool<span>Fest</span></a>
+    <ul>
+      <li><a href="../pdf-tools/">PDF</a></li>
+      <li><a href="../image-tools/">Image</a></li>
+      <li><a href="../finance-tools/">Finance</a></li>
+      <li><a href="../text-tools/">Text</a></li>
+      <li><a href="../generators/" style="color:var(--text)">Generators</a></li>
+      <li><a href="../">Home</a></li>
+    </ul>
+  </nav>
+
+  <div class="page-hero">
+    <div class="page-hero-text">
+      <div class="breadcrumb"><a href="../">ToolFest</a> <span>›</span> Generators</div>
+      <h1 class="page-title">Quick <span style="color:var(--gen-color)">generators</span></h1>
+      <p class="page-desc">Passwords for new accounts and QR codes for Wi‑Fi, UPI, menus, and links — all generated in your browser.</p>
+    </div>
+    <div class="page-hero-badge">⚡</div>
+  </div>
+
+  <div class="hub-grid">
+    <a class="hub-card" href="password-generator.html"><span class="hub-emoji">🔐</span><h2>Password generator</h2><p>Length, symbols, numbers — copy in one click.</p></a>
+    <a class="hub-card" href="qr-code-generator.html"><span class="hub-emoji">▣</span><h2>QR code</h2><p>Encode URL or any text; download as PNG.</p></a>
+  </div>
+
+  <footer>
+    <div class="footer-logo">Tool<span>Fest</span></div>
+    <p><a href="../">Home</a></p>
+    <p style="margin-top:1rem;font-size:0.78rem;opacity:0.5">© 2026 ToolFest</p>
+  </footer>
+</body>
+</html>

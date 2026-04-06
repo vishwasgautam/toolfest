@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script src="../assets/js/site-analytics.js"></script>
+  <title>EMI Calculator — Home, Car, Personal Loan | ToolFest</title>
+  <meta name="description" content="Free EMI calculator: loan amount, interest rate, tenure in months or years. See monthly payment and total interest. For India & US loan planning." />
+  <link rel="canonical" href="https://toolfest.in/finance-tools/emi-calculator.html" />
+  <meta name="robots" content="index, follow, max-image-preview:large" />
+  <link rel="alternate" hreflang="en-IN" href="https://toolfest.in/finance-tools/emi-calculator.html" />
+  <link rel="alternate" hreflang="en-US" href="https://toolfest.in/finance-tools/emi-calculator.html" />
+  <link rel="alternate" hreflang="x-default" href="https://toolfest.in/finance-tools/emi-calculator.html" />
+  <meta property="og:locale" content="en_IN" />
+  <meta property="og:locale:alternate" content="en_US" />
+  <meta property="og:site_name" content="ToolFest" />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://toolfest.in/finance-tools/emi-calculator.html" />
+  <meta property="og:title" content="EMI Calculator — Home, Car, Personal Loan | ToolFest" />
+  <meta property="og:description" content="Free EMI calculator: loan amount, interest rate, tenure in months or years. See monthly payment and total interest. For India &amp; US loan planning." />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="EMI Calculator — Home, Car, Personal Loan | ToolFest" />
+  <meta name="twitter:description" content="Free EMI calculator: loan amount, interest rate, tenure in months or years. See monthly payment and total interest. For India &amp; US loan planning." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../assets/css/shared.css" />
+</head>
+<body>
+  <nav>
+    <a href="../" class="logo">Tool<span>Fest</span></a>
+    <ul>
+      <li><a href="../finance-tools/" style="color:var(--text)">Finance</a></li>
+      <li><a href="../">Home</a></li>
+    </ul>
+  </nav>
+
+  <div class="page-hero">
+    <div class="page-hero-text">
+      <div class="breadcrumb"><a href="../">ToolFest</a> <span>›</span> <a href="./">Finance</a> <span>›</span> EMI</div>
+      <h1 class="page-title">EMI <span style="color:var(--finance-color)">calculator</span></h1>
+      <p class="page-desc">Standard reducing-balance EMI used by most banks in India and the United States.</p>
+    </div>
+    <div class="page-hero-badge">🏠</div>
+  </div>
+
+  <div class="tool-layout">
+    <div class="tool-main">
+      <div class="ad-slot">Ad slot</div>
+      <div class="panel">
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Loan amount</label>
+            <input type="number" class="form-input" id="principal" value="500000" min="1" step="1" />
+          </div>
+          <div class="form-group">
+            <label class="form-label">Annual interest %</label>
+            <input type="number" class="form-input" id="rate" value="10.5" min="0.1" step="0.01" />
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Tenure (years)</label>
+            <input type="number" class="form-input" id="years" value="20" min="0.1" step="0.1" />
+          </div>
+          <div class="form-group">
+            <label class="form-label">Or months</label>
+            <input type="number" class="form-input" id="months" placeholder="optional" min="1" step="1" />
+          </div>
+        </div>
+        <button type="button" class="btn btn-primary" onclick="calc()">Calculate EMI</button>
+      </div>
+      <div class="panel" id="out" style="display:none">
+        <div class="panel-title">Result</div>
+        <p class="result-highlight" id="emi">—</p>
+        <p style="color:var(--muted);font-size:0.9rem;margin-top:0.75rem">per month</p>
+        <div style="margin-top:1.25rem;font-size:0.9rem;line-height:1.8;color:var(--muted)">
+          <div>Total payment: <strong style="color:var(--text)" id="total">—</strong></div>
+          <div>Total interest: <strong style="color:var(--text)" id="interest">—</strong></div>
+        </div>
+      </div>
+    </div>
+    <div class="tool-sidebar">
+      <div class="panel">
+        <div class="panel-title">Formula</div>
+        <p style="font-size:0.82rem;color:var(--muted);line-height:1.6">EMI = P × r × (1+r)<sup>n</sup> / ((1+r)<sup>n</sup> − 1), where r is monthly rate and n is number of months.</p>
+      </div>
+      <div class="panel">
+        <div class="other-tools-grid">
+          <a href="sip-calculator.html" class="other-tool-link">📈 SIP calculator</a>
+          <a href="gst-calculator.html" class="other-tool-link">🧾 GST calculator</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <div class="footer-logo">Tool<span>Fest</span></div>
+    <p style="font-size:0.85rem;color:var(--muted)">Estimates only. Actual EMI may vary with fees and lender rules.</p>
+    <p style="margin-top:1rem"><a href="../">Home</a></p>
+    <p style="font-size:0.78rem;opacity:0.5;margin-top:0.5rem">© 2026 ToolFest</p>
+  </footer>
+
+  <script>
+    function fmt(n) {
+      return n.toLocaleString(undefined, { maximumFractionDigits: 0 });
+    }
+    function calc() {
+      let P = parseFloat(document.getElementById('principal').value);
+      const annual = parseFloat(document.getElementById('rate').value) / 100;
+      let n = parseFloat(document.getElementById('months').value);
+      const y = parseFloat(document.getElementById('years').value);
+      if (!n && y) n = Math.round(y * 12);
+      if (!n || n < 1) n = 12;
+      if (!P || P <= 0 || !annual) return;
+      const r = annual / 12;
+      const emi = P * r * Math.pow(1 + r, n) / (Math.pow(1 + r, n) - 1);
+      const total = emi * n;
+      const intr = total - P;
+      document.getElementById('emi').textContent = fmt(emi);
+      document.getElementById('total').textContent = fmt(total);
+      document.getElementById('interest').textContent = fmt(intr);
+      document.getElementById('out').style.display = 'block';
+    }
+    calc();
+    ['principal','rate','years','months'].forEach(id => document.getElementById(id).addEventListener('input', calc));
+  </script>
+</body>
+</html>

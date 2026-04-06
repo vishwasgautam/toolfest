@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script src="../assets/js/site-analytics.js"></script>
+  <title>Merge PDF Files Online Free — ToolFest</title>
+  <meta name="description" content="Combine PDF files into one document online. Reorder files before merging. Free, private, runs in your browser." />
+  <link rel="canonical" href="https://toolfest.in/pdf-tools/merge-pdf.html" />
+  <meta name="robots" content="index, follow, max-image-preview:large" />
+  <link rel="alternate" hreflang="en-IN" href="https://toolfest.in/pdf-tools/merge-pdf.html" />
+  <link rel="alternate" hreflang="en-US" href="https://toolfest.in/pdf-tools/merge-pdf.html" />
+  <link rel="alternate" hreflang="x-default" href="https://toolfest.in/pdf-tools/merge-pdf.html" />
+  <meta property="og:locale" content="en_IN" />
+  <meta property="og:locale:alternate" content="en_US" />
+  <meta property="og:site_name" content="ToolFest" />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://toolfest.in/pdf-tools/merge-pdf.html" />
+  <meta property="og:title" content="Merge PDF Files Online Free — ToolFest" />
+  <meta property="og:description" content="Combine PDF files into one document online. Reorder files before merging. Free, private, runs in your browser." />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Merge PDF Files Online Free — ToolFest" />
+  <meta name="twitter:description" content="Combine PDF files into one document online. Reorder files before merging. Free, private, runs in your browser." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../assets/css/shared.css" />
+  <script src="https://unpkg.com/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
+</head>
+<body>
+  <nav>
+    <a href="../" class="logo">Tool<span>Fest</span></a>
+    <ul>
+      <li><a href="../pdf-tools/" style="color:var(--text)">PDF</a></li>
+      <li><a href="../image-tools/">Image</a></li>
+      <li><a href="../">Home</a></li>
+    </ul>
+  </nav>
+
+  <div class="page-hero">
+    <div class="page-hero-text">
+      <div class="breadcrumb"><a href="../">ToolFest</a> <span>›</span> <a href="./">PDF</a> <span>›</span> Merge</div>
+      <h1 class="page-title">Merge <span style="color:var(--pdf-color)">PDFs</span></h1>
+      <p class="page-desc">Upload two or more PDFs, drag to reorder, and download a single merged file. Processing happens only in your browser.</p>
+    </div>
+    <div class="page-hero-badge">🔗</div>
+  </div>
+
+  <div class="tool-layout">
+    <div class="tool-main">
+      <div class="ad-slot" aria-label="Advertisement">Ad slot</div>
+      <div class="dropzone" id="dz">
+        <input type="file" id="fi" accept="application/pdf" multiple />
+        <div class="dropzone-icon">📎</div>
+        <div class="dropzone-title">Add PDF files</div>
+        <div class="dropzone-sub">Select multiple files · PDF only</div>
+      </div>
+      <div id="listWrap" style="display:none" class="panel">
+        <div class="panel-title">Order (top = first in merged PDF)</div>
+        <ul id="fileList" style="list-style:none;display:flex;flex-direction:column;gap:0.5rem"></ul>
+      </div>
+      <div id="statusMsg" class="status-msg" style="display:none"></div>
+      <button class="btn btn-primary" id="mergeBtn" disabled>Merge PDFs</button>
+      <button class="btn btn-download" id="dlBtn" style="display:none">⬇ Download merged PDF</button>
+    </div>
+    <div class="tool-sidebar">
+      <div class="panel">
+        <div class="panel-title">How it works</div>
+        <p style="font-size:0.85rem;color:var(--muted);line-height:1.65">Each PDF’s pages are copied in order into a new document. Encrypted or owner-locked PDFs may fail to load.</p>
+      </div>
+      <div class="panel">
+        <div class="panel-title">More PDF tools</div>
+        <div class="other-tools-grid">
+          <a href="split-pdf.html" class="other-tool-link">✂️ Split PDF</a>
+          <a href="word-to-pdf.html" class="other-tool-link">📝 Word to PDF</a>
+          <a href="jpg-to-pdf.html" class="other-tool-link">📸 JPG to PDF</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="seo-section">
+    <div class="seo-card"><h3>Why merge PDFs?</h3><p>Combine invoices, bank statements, or application pages into one file for email or upload — common for tax season in the US and documentation in India.</p></div>
+    <div class="seo-card"><h3>Privacy</h3><p>We never see your files. pdf-lib runs entirely in your tab.</p></div>
+  </div>
+
+  <footer>
+    <div class="footer-logo">Tool<span>Fest</span></div>
+    <p><a href="../">Home</a> · <a href="./">PDF Tools</a></p>
+    <p style="margin-top:1rem;font-size:0.78rem;opacity:0.5">© 2026 ToolFest</p>
+  </footer>
+
+  <script>
+    let files = [];
+    let outBytes = null;
+    const dz = document.getElementById('dz');
+    const fi = document.getElementById('fi');
+
+    dz.addEventListener('dragover', e => { e.preventDefault(); dz.classList.add('drag-over'); });
+    dz.addEventListener('dragleave', () => dz.classList.remove('drag-over'));
+    dz.addEventListener('drop', e => { e.preventDefault(); dz.classList.remove('drag-over'); addFiles(e.dataTransfer.files); });
+    fi.addEventListener('change', () => addFiles(fi.files));
+
+    function addFiles(fileList) {
+      for (const f of fileList) {
+        if (f.type === 'application/pdf' || f.name.toLowerCase().endsWith('.pdf')) files.push(f);
+      }
+      if (!files.length) return;
+      renderList();
+      document.getElementById('listWrap').style.display = 'block';
+      document.getElementById('mergeBtn').disabled = files.length < 2;
+      document.getElementById('dlBtn').style.display = 'none';
+      outBytes = null;
+    }
+
+    function renderList() {
+      const ul = document.getElementById('fileList');
+      ul.innerHTML = files.map((f, i) => `
+        <li class="file-item" style="margin:0">
+          <span class="file-info"><span class="file-name">${f.name}</span></span>
+          <button type="button" class="btn btn-ghost" style="padding:0.35rem 0.6rem;font-size:0.8rem" onclick="move(${i},-1)" ${i===0?'disabled':''}>↑</button>
+          <button type="button" class="btn btn-ghost" style="padding:0.35rem 0.6rem;font-size:0.8rem" onclick="move(${i},1)" ${i===files.length-1?'disabled':''}>↓</button>
+          <button type="button" class="file-remove" onclick="remove(${i})">✕</button>
+        </li>`).join('');
+    }
+
+    function move(i, d) {
+      const j = i + d;
+      if (j < 0 || j >= files.length) return;
+      [files[i], files[j]] = [files[j], files[i]];
+      renderList();
+    }
+
+    function remove(i) {
+      files.splice(i, 1);
+      if (files.length < 2) document.getElementById('mergeBtn').disabled = true;
+      if (!files.length) document.getElementById('listWrap').style.display = 'none';
+      else renderList();
+    }
+
+    document.getElementById('mergeBtn').onclick = async () => {
+      if (files.length < 2) return;
+      const btn = document.getElementById('mergeBtn');
+      btn.disabled = true;
+      btn.textContent = 'Merging…';
+      try {
+        const merged = await PDFLib.PDFDocument.create();
+        for (const f of files) {
+          const buf = await f.arrayBuffer();
+          const src = await PDFLib.PDFDocument.load(buf, { ignoreEncryption: true });
+          const copied = await merged.copyPages(src, src.getPageIndices());
+          copied.forEach(p => merged.addPage(p));
+        }
+        outBytes = await merged.save({ useObjectStreams: true });
+        document.getElementById('dlBtn').style.display = 'flex';
+        show('✓ Merged successfully. Download your PDF.', 'success');
+      } catch (e) {
+        show('Could not merge. Check that all files are valid PDFs.', 'error');
+      }
+      btn.disabled = false;
+      btn.textContent = 'Merge PDFs';
+    };
+
+    document.getElementById('dlBtn').onclick = () => {
+      if (!outBytes) return;
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(new Blob([outBytes], { type: 'application/pdf' }));
+      a.download = 'toolfest_merged.pdf';
+      a.click();
+    };
+
+    function show(msg, type) {
+      const el = document.getElementById('statusMsg');
+      el.textContent = msg;
+      el.className = 'status-msg ' + type;
+      el.style.display = 'block';
+    }
+  </script>
+</body>
+</html>

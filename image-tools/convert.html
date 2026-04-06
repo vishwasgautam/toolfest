@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script src="../assets/js/site-analytics.js"></script>
+  <title>Convert Image Format — JPG PNG WebP | ToolFest</title>
+  <meta name="description" content="Convert images between JPG, PNG, and WebP online. Adjust quality. Files stay in your browser." />
+  <link rel="canonical" href="https://toolfest.in/image-tools/convert.html" />
+  <meta name="robots" content="index, follow, max-image-preview:large" />
+  <link rel="alternate" hreflang="en-IN" href="https://toolfest.in/image-tools/convert.html" />
+  <link rel="alternate" hreflang="en-US" href="https://toolfest.in/image-tools/convert.html" />
+  <link rel="alternate" hreflang="x-default" href="https://toolfest.in/image-tools/convert.html" />
+  <meta property="og:locale" content="en_IN" />
+  <meta property="og:locale:alternate" content="en_US" />
+  <meta property="og:site_name" content="ToolFest" />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://toolfest.in/image-tools/convert.html" />
+  <meta property="og:title" content="Convert Image Format — JPG PNG WebP | ToolFest" />
+  <meta property="og:description" content="Convert images between JPG, PNG, and WebP online. Adjust quality. Files stay in your browser." />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Convert Image Format — JPG PNG WebP | ToolFest" />
+  <meta name="twitter:description" content="Convert images between JPG, PNG, and WebP online. Adjust quality. Files stay in your browser." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../assets/css/shared.css" />
+  <style>
+    .preview-img-wrap { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1rem; text-align: center; display: none; }
+    .preview-img-wrap img { max-width: 100%; max-height: 320px; border-radius: 8px; }
+  </style>
+</head>
+<body>
+  <nav>
+    <a href="../" class="logo">Tool<span>Fest</span></a>
+    <ul>
+      <li><a href="../pdf-tools/">PDF</a></li>
+      <li><a href="../image-tools/" style="color:var(--text)">Image</a></li>
+      <li><a href="../">Home</a></li>
+    </ul>
+  </nav>
+
+  <div class="page-hero">
+    <div class="page-hero-text">
+      <div class="breadcrumb"><a href="../">ToolFest</a> <span>›</span> <a href="./">Image</a> <span>›</span> Convert</div>
+      <h1 class="page-title">Convert <span style="color:var(--img-color)">format</span></h1>
+      <p class="page-desc">Switch between JPG, PNG, and WebP for web uploads, forms, and storage — same workflow users expect in the US and India.</p>
+    </div>
+    <div class="page-hero-badge">🔄</div>
+  </div>
+
+  <div class="tool-layout">
+    <div class="tool-main">
+      <div class="ad-slot" aria-label="Advertisement">Ad slot</div>
+      <div class="dropzone" id="dz">
+        <input type="file" id="fi" accept="image/*" />
+        <div class="dropzone-icon">🖼</div>
+        <div class="dropzone-title">Drop an image</div>
+        <div class="dropzone-sub">JPG · PNG · WebP · GIF · BMP</div>
+      </div>
+      <div id="previewWrap" class="preview-img-wrap"><img id="prev" alt="Preview" /></div>
+      <div id="statusMsg" class="status-msg" style="display:none"></div>
+      <button class="btn btn-primary" id="goBtn" disabled>Convert &amp; download</button>
+    </div>
+    <div class="tool-sidebar">
+      <div class="panel">
+        <div class="panel-title">Output</div>
+        <div class="form-group">
+          <label class="form-label">Format</label>
+          <select class="form-select" id="fmt">
+            <option value="image/jpeg">JPEG</option>
+            <option value="image/png">PNG</option>
+            <option value="image/webp">WebP</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Quality</label>
+          <div class="range-wrap">
+            <input type="range" id="q" min="10" max="100" value="90" />
+            <span class="range-val" id="ql">90</span>
+          </div>
+        </div>
+      </div>
+      <div class="panel">
+        <div class="panel-title">More</div>
+        <div class="other-tools-grid">
+          <a href="compress.html" class="other-tool-link">🗜 Compress</a>
+          <a href="resize.html" class="other-tool-link">↔️ Resize</a>
+          <a href="crop.html" class="other-tool-link">✂️ Crop</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <div class="footer-logo">Tool<span>Fest</span></div>
+    <p><a href="../">Home</a> · <a href="./">Image Tools</a></p>
+    <p style="margin-top:1rem;font-size:0.78rem;opacity:0.5">© 2026 ToolFest</p>
+  </footer>
+
+  <script>
+    let imgEl = null, file = null;
+    const dz = document.getElementById('dz'), fi = document.getElementById('fi');
+    document.getElementById('q').addEventListener('input', e => document.getElementById('ql').textContent = e.target.value);
+
+    dz.addEventListener('dragover', e => { e.preventDefault(); dz.classList.add('drag-over'); });
+    dz.addEventListener('dragleave', () => dz.classList.remove('drag-over'));
+    dz.addEventListener('drop', e => { e.preventDefault(); dz.classList.remove('drag-over'); load(e.dataTransfer.files[0]); });
+    fi.addEventListener('change', () => load(fi.files[0]));
+
+    function load(f) {
+      if (!f || !f.type.startsWith('image/')) return;
+      file = f;
+      const url = URL.createObjectURL(f);
+      const im = new Image();
+      im.onload = () => {
+        imgEl = im;
+        document.getElementById('prev').src = url;
+        document.getElementById('previewWrap').style.display = 'block';
+        document.getElementById('goBtn').disabled = false;
+      };
+      im.src = url;
+    }
+
+    document.getElementById('goBtn').onclick = () => {
+      if (!imgEl || !file) return;
+      const mime = document.getElementById('fmt').value;
+      const q = parseInt(document.getElementById('q').value) / 100;
+      const c = document.createElement('canvas');
+      c.width = imgEl.naturalWidth;
+      c.height = imgEl.naturalHeight;
+      c.getContext('2d').drawImage(imgEl, 0, 0);
+      c.toBlob(blob => {
+        const ext = mime.split('/')[1];
+        const a = document.createElement('a');
+        a.href = URL.createObjectURL(blob);
+        a.download = (file.name.replace(/\.[^.]+$/, '') || 'image') + '_converted.' + ext;
+        a.click();
+        const el = document.getElementById('statusMsg');
+        el.textContent = '✓ Download started.';
+        el.className = 'status-msg success';
+        el.style.display = 'block';
+      }, mime, q);
+    };
+  </script>
+</body>
+</html>

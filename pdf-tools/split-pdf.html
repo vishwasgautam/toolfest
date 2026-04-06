@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script src="../assets/js/site-analytics.js"></script>
+  <title>Split PDF Online — One File Per Page ZIP | ToolFest</title>
+  <meta name="description" content="Split a PDF into separate page PDFs. Download all pages in one ZIP. Free and private in-browser tool." />
+  <link rel="canonical" href="https://toolfest.in/pdf-tools/split-pdf.html" />
+  <meta name="robots" content="index, follow, max-image-preview:large" />
+  <link rel="alternate" hreflang="en-IN" href="https://toolfest.in/pdf-tools/split-pdf.html" />
+  <link rel="alternate" hreflang="en-US" href="https://toolfest.in/pdf-tools/split-pdf.html" />
+  <link rel="alternate" hreflang="x-default" href="https://toolfest.in/pdf-tools/split-pdf.html" />
+  <meta property="og:locale" content="en_IN" />
+  <meta property="og:locale:alternate" content="en_US" />
+  <meta property="og:site_name" content="ToolFest" />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://toolfest.in/pdf-tools/split-pdf.html" />
+  <meta property="og:title" content="Split PDF Online — One File Per Page ZIP | ToolFest" />
+  <meta property="og:description" content="Split a PDF into separate page PDFs. Download all pages in one ZIP. Free and private in-browser tool." />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Split PDF Online — One File Per Page ZIP | ToolFest" />
+  <meta name="twitter:description" content="Split a PDF into separate page PDFs. Download all pages in one ZIP. Free and private in-browser tool." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../assets/css/shared.css" />
+  <script src="https://unpkg.com/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+</head>
+<body>
+  <nav>
+    <a href="../" class="logo">Tool<span>Fest</span></a>
+    <ul>
+      <li><a href="../pdf-tools/" style="color:var(--text)">PDF</a></li>
+      <li><a href="../image-tools/">Image</a></li>
+      <li><a href="../">Home</a></li>
+    </ul>
+  </nav>
+
+  <div class="page-hero">
+    <div class="page-hero-text">
+      <div class="breadcrumb"><a href="../">ToolFest</a> <span>›</span> <a href="./">PDF</a> <span>›</span> Split</div>
+      <h1 class="page-title">Split <span style="color:var(--pdf-color)">PDF</span></h1>
+      <p class="page-desc">Each page becomes its own PDF. Multiple pages download as a single ZIP archive.</p>
+    </div>
+    <div class="page-hero-badge">✂️</div>
+  </div>
+
+  <div class="tool-layout">
+    <div class="tool-main">
+      <div class="ad-slot" aria-label="Advertisement">Ad slot</div>
+      <div class="dropzone" id="dz">
+        <input type="file" id="fi" accept="application/pdf" />
+        <div class="dropzone-icon">📄</div>
+        <div class="dropzone-title">Drop one PDF here</div>
+        <div class="dropzone-sub">Click to browse</div>
+      </div>
+      <div id="statusMsg" class="status-msg" style="display:none"></div>
+      <button class="btn btn-primary" id="splitBtn" disabled>Split into pages (ZIP download)</button>
+    </div>
+    <div class="tool-sidebar">
+      <div class="panel">
+        <div class="panel-title">Output</div>
+        <p style="font-size:0.85rem;color:var(--muted);line-height:1.65">Files are named <code style="font-size:0.8rem">page_1.pdf</code>, <code style="font-size:0.8rem">page_2.pdf</code>, … inside the ZIP.</p>
+      </div>
+      <div class="panel">
+        <div class="panel-title">More tools</div>
+        <div class="other-tools-grid">
+          <a href="merge-pdf.html" class="other-tool-link">🔗 Merge PDFs</a>
+          <a href="pdf-to-jpg.html" class="other-tool-link">🖼 PDF to JPG</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <div class="footer-logo">Tool<span>Fest</span></div>
+    <p><a href="../">Home</a> · <a href="./">PDF Tools</a></p>
+    <p style="margin-top:1rem;font-size:0.78rem;opacity:0.5">© 2026 ToolFest</p>
+  </footer>
+
+  <script>
+    let file = null;
+    const dz = document.getElementById('dz');
+    const fi = document.getElementById('fi');
+
+    dz.addEventListener('dragover', e => { e.preventDefault(); dz.classList.add('drag-over'); });
+    dz.addEventListener('dragleave', () => dz.classList.remove('drag-over'));
+    dz.addEventListener('drop', e => { e.preventDefault(); dz.classList.remove('drag-over'); pick(e.dataTransfer.files[0]); });
+    fi.addEventListener('change', () => pick(fi.files[0]));
+
+    function pick(f) {
+      if (!f || (!f.type.includes('pdf') && !f.name.toLowerCase().endsWith('.pdf'))) return;
+      file = f;
+      document.getElementById('splitBtn').disabled = false;
+      document.getElementById('statusMsg').style.display = 'none';
+    }
+
+    document.getElementById('splitBtn').onclick = async () => {
+      if (!file) return;
+      const btn = document.getElementById('splitBtn');
+      btn.disabled = true;
+      btn.textContent = 'Splitting…';
+      try {
+        const bytes = await file.arrayBuffer();
+        const src = await PDFLib.PDFDocument.load(bytes, { ignoreEncryption: true });
+        const n = src.getPageCount();
+        const zip = new JSZip();
+        const base = file.name.replace(/\.pdf$/i, '') || 'document';
+
+        for (let i = 0; i < n; i++) {
+          const out = await PDFLib.PDFDocument.create();
+          const [copied] = await out.copyPages(src, [i]);
+          out.addPage(copied);
+          const pdfBytes = await out.save({ useObjectStreams: true });
+          zip.file(`${base}_page_${i + 1}.pdf`, pdfBytes);
+        }
+
+        const blob = await zip.generateAsync({ type: 'blob' });
+        const a = document.createElement('a');
+        a.href = URL.createObjectURL(blob);
+        a.download = `${base}_split.zip`;
+        a.click();
+        show(`✓ Created ${n} PDFs in ZIP.`, 'success');
+      } catch (e) {
+        show('Could not split this PDF. It may be encrypted or damaged.', 'error');
+      }
+      btn.disabled = false;
+      btn.textContent = 'Split into pages';
+    };
+
+    function show(msg, type) {
+      const el = document.getElementById('statusMsg');
+      el.textContent = msg;
+      el.className = 'status-msg ' + type;
+      el.style.display = 'block';
+    }
+  </script>
+</body>
+</html>

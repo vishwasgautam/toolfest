@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script src="../assets/js/site-analytics.js"></script>
+  <title>Crop Image Online — Free | ToolFest</title>
+  <meta name="description" content="Crop JPG, PNG, or WebP images with a draggable box. Download the cropped region instantly. Browser-only, no upload." />
+  <link rel="canonical" href="https://toolfest.in/image-tools/crop.html" />
+  <meta name="robots" content="index, follow, max-image-preview:large" />
+  <link rel="alternate" hreflang="en-IN" href="https://toolfest.in/image-tools/crop.html" />
+  <link rel="alternate" hreflang="en-US" href="https://toolfest.in/image-tools/crop.html" />
+  <link rel="alternate" hreflang="x-default" href="https://toolfest.in/image-tools/crop.html" />
+  <meta property="og:locale" content="en_IN" />
+  <meta property="og:locale:alternate" content="en_US" />
+  <meta property="og:site_name" content="ToolFest" />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://toolfest.in/image-tools/crop.html" />
+  <meta property="og:title" content="Crop Image Online — Free | ToolFest" />
+  <meta property="og:description" content="Crop JPG, PNG, or WebP images with a draggable box. Download the cropped region instantly. Browser-only, no upload." />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Crop Image Online — Free | ToolFest" />
+  <meta name="twitter:description" content="Crop JPG, PNG, or WebP images with a draggable box. Download the cropped region instantly. Browser-only, no upload." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../assets/css/shared.css" />
+  <style>
+    .crop-wrap {
+      position: relative;
+      display: inline-block;
+      max-width: 100%;
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      overflow: hidden;
+      background: #111;
+      line-height: 0;
+    }
+    .crop-wrap img { display: block; max-width: 100%; height: auto; user-select: none; pointer-events: none; }
+    .crop-box {
+      position: absolute;
+      border: 2px solid var(--accent);
+      box-shadow: 0 0 0 9999px rgba(0,0,0,0.55);
+      cursor: move;
+      min-width: 40px;
+      min-height: 40px;
+      box-sizing: border-box;
+    }
+    .crop-hint { font-size: 0.85rem; color: var(--muted); margin-top: 0.75rem; }
+  </style>
+</head>
+<body>
+  <nav>
+    <a href="../" class="logo">Tool<span>Fest</span></a>
+    <ul>
+      <li><a href="../pdf-tools/">PDF</a></li>
+      <li><a href="../image-tools/" style="color:var(--text)">Image</a></li>
+      <li><a href="../">Home</a></li>
+    </ul>
+  </nav>
+
+  <div class="page-hero">
+    <div class="page-hero-text">
+      <div class="breadcrumb"><a href="../">ToolFest</a> <span>›</span> <a href="./">Image</a> <span>›</span> Crop</div>
+      <h1 class="page-title">Crop <span style="color:var(--img-color)">image</span></h1>
+      <p class="page-desc">Drag the yellow frame to choose the area. Resize from the bottom-right corner handle.</p>
+    </div>
+    <div class="page-hero-badge">✂️</div>
+  </div>
+
+  <div class="tool-layout">
+    <div class="tool-main">
+      <div class="ad-slot" aria-label="Advertisement">Ad slot</div>
+      <div class="dropzone" id="dz">
+        <input type="file" id="fi" accept="image/*" />
+        <div class="dropzone-icon">🖼</div>
+        <div class="dropzone-title">Load image to crop</div>
+        <div class="dropzone-sub">JPG · PNG · WebP</div>
+      </div>
+      <div id="stage" style="display:none">
+        <div class="crop-wrap" id="cw">
+          <img id="cim" alt="Crop source" />
+          <div class="crop-box" id="box"></div>
+        </div>
+        <p class="crop-hint">Drag box to move · Drag bottom-right corner to resize</p>
+      </div>
+      <div id="statusMsg" class="status-msg" style="display:none"></div>
+      <button class="btn btn-primary" id="dlBtn" style="display:none">⬇ Download crop</button>
+    </div>
+    <div class="tool-sidebar">
+      <div class="panel">
+        <div class="panel-title">Export</div>
+        <div class="form-group">
+          <label class="form-label">Format</label>
+          <select class="form-select" id="fmt">
+            <option value="image/png">PNG (lossless)</option>
+            <option value="image/jpeg">JPEG</option>
+            <option value="image/webp">WebP</option>
+          </select>
+        </div>
+      </div>
+      <div class="panel">
+        <div class="panel-title">More</div>
+        <div class="other-tools-grid">
+          <a href="resize.html" class="other-tool-link">↔️ Resize</a>
+          <a href="convert.html" class="other-tool-link">🔄 Convert</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <div class="footer-logo">Tool<span>Fest</span></div>
+    <p><a href="../">Home</a> · <a href="./">Image Tools</a></p>
+    <p style="margin-top:1rem;font-size:0.78rem;opacity:0.5">© 2026 ToolFest</p>
+  </footer>
+
+  <script>
+    let natW = 0, natH = 0, scale = 1, file = null;
+    const box = document.getElementById('box');
+    const cw = document.getElementById('cw');
+    const cim = document.getElementById('cim');
+
+    document.getElementById('dz').addEventListener('dragover', e => { e.preventDefault(); document.getElementById('dz').classList.add('drag-over'); });
+    document.getElementById('dz').addEventListener('dragleave', () => document.getElementById('dz').classList.remove('drag-over'));
+    document.getElementById('dz').addEventListener('drop', e => { e.preventDefault(); document.getElementById('dz').classList.remove('drag-over'); load(e.dataTransfer.files[0]); });
+    document.getElementById('fi').addEventListener('change', function() { load(this.files[0]); });
+
+    function load(f) {
+      if (!f || !f.type.startsWith('image/')) return;
+      file = f;
+      cim.onload = () => {
+        natW = cim.naturalWidth;
+        natH = cim.naturalHeight;
+        scale = cim.clientWidth / natW;
+        document.getElementById('stage').style.display = 'block';
+        document.getElementById('dlBtn').style.display = 'flex';
+        layoutBox();
+      };
+      cim.src = URL.createObjectURL(f);
+    }
+
+    function layoutBox() {
+      const w = cim.clientWidth, h = cim.clientHeight;
+      const bw = Math.min(w, h) * 0.6;
+      box.style.left = ((w - bw) / 2) + 'px';
+      box.style.top = ((h - bw) / 2) + 'px';
+      box.style.width = bw + 'px';
+      box.style.height = bw + 'px';
+    }
+
+    let mode = null, start = {};
+    box.addEventListener('mousedown', e => {
+      const r = box.getBoundingClientRect();
+      const br = 14;
+      if (e.clientX > r.right - br && e.clientY > r.bottom - br) mode = 'resize';
+      else mode = 'move';
+      start = { x: e.clientX, y: e.clientY, l: box.offsetLeft, t: box.offsetTop, w: box.offsetWidth, h: box.offsetHeight };
+      e.preventDefault();
+    });
+    window.addEventListener('mousemove', e => {
+      if (!mode) return;
+      const dx = e.clientX - start.x, dy = e.clientY - start.y;
+      const maxW = cim.clientWidth, maxH = cim.clientHeight;
+      if (mode === 'move') {
+        let nl = start.l + dx, nt = start.t + dy;
+        nl = Math.max(0, Math.min(nl, maxW - box.offsetWidth));
+        nt = Math.max(0, Math.min(nt, maxH - box.offsetHeight));
+        box.style.left = nl + 'px';
+        box.style.top = nt + 'px';
+      } else {
+        let nw = Math.max(40, start.w + dx), nh = Math.max(40, start.h + dy);
+        nw = Math.min(nw, maxW - box.offsetLeft);
+        nh = Math.min(nh, maxH - box.offsetTop);
+        box.style.width = nw + 'px';
+        box.style.height = nh + 'px';
+      }
+    });
+    window.addEventListener('mouseup', () => { mode = null; });
+
+    window.addEventListener('resize', () => { if (cim.src) { scale = cim.clientWidth / natW; } });
+
+    document.getElementById('dlBtn').onclick = () => {
+      if (!file || !natW) return;
+      const scaleX = natW / cim.clientWidth;
+      const scaleY = natH / cim.clientHeight;
+      const sx = Math.round(box.offsetLeft * scaleX);
+      const sy = Math.round(box.offsetTop * scaleY);
+      const sw = Math.round(box.offsetWidth * scaleX);
+      const sh = Math.round(box.offsetHeight * scaleY);
+      const canvas = document.createElement('canvas');
+      canvas.width = sw;
+      canvas.height = sh;
+      const ctx = canvas.getContext('2d');
+      ctx.drawImage(cim, sx, sy, sw, sh, 0, 0, sw, sh);
+      const mime = document.getElementById('fmt').value;
+      const q = mime === 'image/png' ? undefined : 0.92;
+      canvas.toBlob(blob => {
+        const a = document.createElement('a');
+        a.href = URL.createObjectURL(blob);
+        a.download = (file.name.replace(/\.[^.]+$/, '') || 'crop') + '_crop.' + mime.split('/')[1];
+        a.click();
+        const el = document.getElementById('statusMsg');
+        el.textContent = '✓ Cropped image downloaded.';
+        el.className = 'status-msg success';
+        el.style.display = 'block';
+      }, mime, q);
+    };
+  </script>
+</body>
+</html>

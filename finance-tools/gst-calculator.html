@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script src="../assets/js/site-analytics.js"></script>
+  <title>GST Calculator India — Add or Remove GST | ToolFest</title>
+  <meta name="description" content="Calculate Indian GST: add 5%, 12%, 18%, or 28% to a base amount, or extract GST from an inclusive total. Free online." />
+  <link rel="canonical" href="https://toolfest.in/finance-tools/gst-calculator.html" />
+  <meta name="robots" content="index, follow, max-image-preview:large" />
+  <link rel="alternate" hreflang="en-IN" href="https://toolfest.in/finance-tools/gst-calculator.html" />
+  <link rel="alternate" hreflang="en-US" href="https://toolfest.in/finance-tools/gst-calculator.html" />
+  <link rel="alternate" hreflang="x-default" href="https://toolfest.in/finance-tools/gst-calculator.html" />
+  <meta property="og:locale" content="en_IN" />
+  <meta property="og:locale:alternate" content="en_US" />
+  <meta property="og:site_name" content="ToolFest" />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://toolfest.in/finance-tools/gst-calculator.html" />
+  <meta property="og:title" content="GST Calculator India — Add or Remove GST | ToolFest" />
+  <meta property="og:description" content="Calculate Indian GST: add 5%, 12%, 18%, or 28% to a base amount, or extract GST from an inclusive total. Free online." />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="GST Calculator India — Add or Remove GST | ToolFest" />
+  <meta name="twitter:description" content="Calculate Indian GST: add 5%, 12%, 18%, or 28% to a base amount, or extract GST from an inclusive total. Free online." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../assets/css/shared.css" />
+</head>
+<body>
+  <nav>
+    <a href="../" class="logo">Tool<span>Fest</span></a>
+    <ul>
+      <li><a href="../finance-tools/" style="color:var(--text)">Finance</a></li>
+      <li><a href="../">Home</a></li>
+    </ul>
+  </nav>
+
+  <div class="page-hero">
+    <div class="page-hero-text">
+      <div class="breadcrumb"><a href="../">ToolFest</a> <span>›</span> <a href="./">Finance</a> <span>›</span> GST</div>
+      <h1 class="page-title">GST <span style="color:var(--finance-color)">calculator</span></h1>
+      <p class="page-desc">Quick slab selection for common India GST rates. Add GST to an exclusive amount or split an inclusive total into base + tax.</p>
+    </div>
+    <div class="page-hero-badge">🧾</div>
+  </div>
+
+  <div class="tool-layout">
+    <div class="tool-main">
+      <div class="ad-slot">Ad slot</div>
+      <div class="panel">
+        <div class="form-group">
+          <label class="form-label">GST rate</label>
+          <select class="form-select" id="rate" onchange="calc()">
+            <option value="5">5%</option>
+            <option value="12">12%</option>
+            <option value="18" selected>18%</option>
+            <option value="28">28%</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Mode</label>
+          <select class="form-select" id="mode" onchange="calc()">
+            <option value="add">Amount excludes GST (add tax)</option>
+            <option value="remove">Amount includes GST (extract tax)</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Amount (₹)</label>
+          <input type="number" class="form-input" id="amt" value="10000" min="0" step="0.01" />
+        </div>
+        <button type="button" class="btn btn-primary" onclick="calc()">Calculate</button>
+      </div>
+      <div class="panel" id="out">
+        <div class="panel-title">Breakdown</div>
+        <div style="font-size:0.95rem;line-height:2;color:var(--muted)" id="lines"></div>
+      </div>
+    </div>
+    <div class="tool-sidebar">
+      <div class="panel">
+        <div class="panel-title">Slabs</div>
+        <p style="font-size:0.85rem;color:var(--muted);line-height:1.65">GST slabs change with law; verify current rates for your goods or services.</p>
+      </div>
+      <div class="panel">
+        <div class="other-tools-grid">
+          <a href="emi-calculator.html" class="other-tool-link">🏠 EMI</a>
+          <a href="sip-calculator.html" class="other-tool-link">📈 SIP</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <div class="footer-logo">Tool<span>Fest</span></div>
+    <p><a href="../">Home</a></p>
+    <p style="font-size:0.78rem;opacity:0.5;margin-top:1rem">© 2026 ToolFest</p>
+  </footer>
+
+  <script>
+    function fmt(n) {
+      return '₹' + n.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    }
+    function calc() {
+      const g = parseFloat(document.getElementById('rate').value) / 100;
+      const mode = document.getElementById('mode').value;
+      const a = parseFloat(document.getElementById('amt').value) || 0;
+      let base, tax, total;
+      if (mode === 'add') {
+        base = a;
+        tax = base * g;
+        total = base + tax;
+      } else {
+        total = a;
+        base = total / (1 + g);
+        tax = total - base;
+      }
+      document.getElementById('lines').innerHTML = `
+        <div>Taxable value (base): <strong style="color:var(--text)">${fmt(base)}</strong></div>
+        <div>GST (${document.getElementById('rate').value}%): <strong style="color:var(--text)">${fmt(tax)}</strong></div>
+        <div>Total: <strong style="color:var(--accent)">${fmt(total)}</strong></div>`;
+    }
+    calc();
+    document.getElementById('amt').addEventListener('input', calc);
+  </script>
+</body>
+</html>

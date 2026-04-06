@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script src="../assets/js/site-analytics.js"></script>
+  <title>QR Code Generator — Free PNG Download | ToolFest</title>
+  <meta name="description" content="Create a QR code from URL or text. Download PNG. Works for UPI, WiFi strings, menus, and vCards — in your browser only." />
+  <link rel="canonical" href="https://toolfest.in/generators/qr-code-generator.html" />
+  <meta name="robots" content="index, follow, max-image-preview:large" />
+  <link rel="alternate" hreflang="en-IN" href="https://toolfest.in/generators/qr-code-generator.html" />
+  <link rel="alternate" hreflang="en-US" href="https://toolfest.in/generators/qr-code-generator.html" />
+  <link rel="alternate" hreflang="x-default" href="https://toolfest.in/generators/qr-code-generator.html" />
+  <meta property="og:locale" content="en_IN" />
+  <meta property="og:locale:alternate" content="en_US" />
+  <meta property="og:site_name" content="ToolFest" />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://toolfest.in/generators/qr-code-generator.html" />
+  <meta property="og:title" content="QR Code Generator — Free PNG Download | ToolFest" />
+  <meta property="og:description" content="Create a QR code from URL or text. Download PNG. Works for UPI, WiFi strings, menus, and vCards — in your browser only." />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="QR Code Generator — Free PNG Download | ToolFest" />
+  <meta name="twitter:description" content="Create a QR code from URL or text. Download PNG. Works for UPI, WiFi strings, menus, and vCards — in your browser only." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../assets/css/shared.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+  <style>
+    #qrcode { display: inline-block; padding: 1rem; background: #fff; border-radius: 12px; margin-top: 0.5rem; }
+    #qrcode img { display: block; }
+  </style>
+</head>
+<body>
+  <nav>
+    <a href="../" class="logo">Tool<span>Fest</span></a>
+    <ul>
+      <li><a href="../generators/" style="color:var(--text)">Generators</a></li>
+      <li><a href="../">Home</a></li>
+    </ul>
+  </nav>
+
+  <div class="page-hero">
+    <div class="page-hero-text">
+      <div class="breadcrumb"><a href="../">ToolFest</a> <span>›</span> <a href="./">Generators</a> <span>›</span> QR</div>
+      <h1 class="page-title">QR <span style="color:var(--gen-color)">code</span></h1>
+      <p class="page-desc">Encode a website, payment link, or plain text. Right‑click the image to save, or use the download button.</p>
+    </div>
+    <div class="page-hero-badge">▣</div>
+  </div>
+
+  <div class="tool-layout">
+    <div class="tool-main">
+      <div class="ad-slot">Ad slot</div>
+      <div class="panel">
+        <div class="form-group">
+          <label class="form-label">Content</label>
+          <textarea class="form-textarea" id="txt" style="min-height:100px" placeholder="https://example.com or UPI string…"></textarea>
+        </div>
+        <div style="display:flex;gap:0.75rem;flex-wrap:wrap">
+          <button type="button" class="btn btn-primary" onclick="make()">Generate QR</button>
+          <button type="button" class="btn btn-ghost" id="dl" style="display:none" onclick="download()">⬇ Download PNG</button>
+        </div>
+      </div>
+      <div class="panel" id="wrap" style="display:none;text-align:center">
+        <div class="panel-title">Preview</div>
+        <div id="qrcode"></div>
+      </div>
+      <div id="statusMsg" class="status-msg" style="display:none"></div>
+    </div>
+    <div class="tool-sidebar">
+      <div class="panel">
+        <div class="panel-title">Ideas</div>
+        <p style="font-size:0.85rem;color:var(--muted);line-height:1.65">Wi‑Fi: <code style="font-size:0.75rem">WIFI:T:WPA;S:name;P:pass;;</code> · UPI pay links · Store URLs for menus.</p>
+      </div>
+      <div class="panel">
+        <a href="password-generator.html" class="other-tool-link" style="display:block">Password generator →</a>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <div class="footer-logo">Tool<span>Fest</span></div>
+    <p><a href="../">Home</a></p>
+    <p style="margin-top:1rem;font-size:0.78rem;opacity:0.5">© 2026 ToolFest</p>
+  </footer>
+
+  <script>
+    let qrInstance = null;
+    function show(msg, ok) {
+      const el = document.getElementById('statusMsg');
+      el.textContent = msg;
+      el.className = 'status-msg ' + (ok ? 'success' : 'error');
+      el.style.display = 'block';
+    }
+    function make() {
+      const text = document.getElementById('txt').value.trim();
+      if (!text) {
+        show('Enter some text or a URL.', false);
+        return;
+      }
+      const host = document.getElementById('qrcode');
+      host.innerHTML = '';
+      try {
+        const L = QRCode.CorrectLevel || {};
+        qrInstance = new QRCode(host, { text, width: 220, height: 220, correctLevel: L.M != null ? L.M : 0 });
+        document.getElementById('wrap').style.display = 'block';
+        document.getElementById('dl').style.display = 'inline-flex';
+        show('✓ QR generated.', true);
+      } catch (e) {
+        show('Could not generate (content too long?).', false);
+      }
+    }
+    function download() {
+      const img = document.querySelector('#qrcode img');
+      if (!img || !img.src) return;
+      const a = document.createElement('a');
+      a.href = img.src;
+      a.download = 'toolfest-qr.png';
+      a.click();
+    }
+  </script>
+</body>
+</html>

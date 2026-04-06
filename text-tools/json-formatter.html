@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script src="../assets/js/site-analytics.js"></script>
+  <title>JSON Formatter — Prettify & Minify Online | ToolFest</title>
+  <meta name="description" content="Format JSON with indentation or minify to a single line. Validates JSON in your browser. No data leaves your device." />
+  <link rel="canonical" href="https://toolfest.in/text-tools/json-formatter.html" />
+  <meta name="robots" content="index, follow, max-image-preview:large" />
+  <link rel="alternate" hreflang="en-IN" href="https://toolfest.in/text-tools/json-formatter.html" />
+  <link rel="alternate" hreflang="en-US" href="https://toolfest.in/text-tools/json-formatter.html" />
+  <link rel="alternate" hreflang="x-default" href="https://toolfest.in/text-tools/json-formatter.html" />
+  <meta property="og:locale" content="en_IN" />
+  <meta property="og:locale:alternate" content="en_US" />
+  <meta property="og:site_name" content="ToolFest" />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://toolfest.in/text-tools/json-formatter.html" />
+  <meta property="og:title" content="JSON Formatter — Prettify &amp; Minify Online | ToolFest" />
+  <meta property="og:description" content="Format JSON with indentation or minify to a single line. Validates JSON in your browser. No data leaves your device." />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="JSON Formatter — Prettify &amp; Minify Online | ToolFest" />
+  <meta name="twitter:description" content="Format JSON with indentation or minify to a single line. Validates JSON in your browser. No data leaves your device." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../assets/css/shared.css" />
+  <style>
+    #out { font-family: ui-monospace, monospace; font-size: 0.82rem; line-height: 1.5; white-space: pre-wrap; word-break: break-all; }
+  </style>
+</head>
+<body>
+  <nav>
+    <a href="../" class="logo">Tool<span>Fest</span></a>
+    <ul>
+      <li><a href="../text-tools/" style="color:var(--text)">Text</a></li>
+      <li><a href="../">Home</a></li>
+    </ul>
+  </nav>
+
+  <div class="page-hero">
+    <div class="page-hero-text">
+      <div class="breadcrumb"><a href="../">ToolFest</a> <span>›</span> <a href="./">Text</a> <span>›</span> JSON</div>
+      <h1 class="page-title">JSON <span style="color:var(--text-tool-color)">formatter</span></h1>
+      <p class="page-desc">Paste API responses or config snippets. Prettify for reading or minify for production payloads.</p>
+    </div>
+    <div class="page-hero-badge">{ }</div>
+  </div>
+
+  <div class="tool-layout">
+    <div class="tool-main">
+      <div class="ad-slot">Ad slot</div>
+      <div class="panel">
+        <div class="form-group">
+          <label class="form-label">Input</label>
+          <textarea class="form-textarea" id="in" placeholder='{"hello":"world"}'></textarea>
+        </div>
+        <div style="display:flex;gap:0.75rem;flex-wrap:wrap">
+          <button type="button" class="btn btn-primary" onclick="pretty()">Prettify</button>
+          <button type="button" class="btn btn-ghost" onclick="mini()">Minify</button>
+        </div>
+      </div>
+      <div id="statusMsg" class="status-msg" style="display:none"></div>
+      <div class="panel" id="outPanel" style="display:none">
+        <div class="panel-title">Output</div>
+        <pre id="out"></pre>
+        <button type="button" class="btn btn-download" style="margin-top:1rem" onclick="copyOut()">Copy to clipboard</button>
+      </div>
+    </div>
+    <div class="tool-sidebar">
+      <div class="panel">
+        <div class="panel-title">Privacy</div>
+        <p style="font-size:0.85rem;color:var(--muted);line-height:1.65">Parsing uses the browser <code>JSON.parse</code> — nothing is uploaded.</p>
+      </div>
+      <div class="panel">
+        <a href="word-counter.html" class="other-tool-link" style="display:block">Word counter →</a>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <div class="footer-logo">Tool<span>Fest</span></div>
+    <p><a href="../">Home</a></p>
+    <p style="margin-top:1rem;font-size:0.78rem;opacity:0.5">© 2026 ToolFest</p>
+  </footer>
+
+  <script>
+    let last = '';
+    function show(msg, ok) {
+      const el = document.getElementById('statusMsg');
+      el.textContent = msg;
+      el.className = 'status-msg ' + (ok ? 'success' : 'error');
+      el.style.display = 'block';
+    }
+    function pretty() {
+      try {
+        const o = JSON.parse(document.getElementById('in').value);
+        last = JSON.stringify(o, null, 2);
+        document.getElementById('out').textContent = last;
+        document.getElementById('outPanel').style.display = 'block';
+        show('✓ Valid JSON.', 'success');
+      } catch (e) {
+        document.getElementById('outPanel').style.display = 'none';
+        show('Invalid JSON: ' + e.message, false);
+      }
+    }
+    function mini() {
+      try {
+        const o = JSON.parse(document.getElementById('in').value);
+        last = JSON.stringify(o);
+        document.getElementById('out').textContent = last;
+        document.getElementById('outPanel').style.display = 'block';
+        show('✓ Minified.', 'success');
+      } catch (e) {
+        document.getElementById('outPanel').style.display = 'none';
+        show('Invalid JSON: ' + e.message, false);
+      }
+    }
+    async function copyOut() {
+      if (!last) return;
+      await navigator.clipboard.writeText(last);
+      show('✓ Copied.', 'success');
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script src="../assets/js/site-analytics.js"></script>
+  <title>JPG PNG to PDF — Images to One PDF | ToolFest</title>
+  <meta name="description" content="Convert JPG, PNG, or WebP images into a single PDF. Order pages before export. Free browser-based tool." />
+  <link rel="canonical" href="https://toolfest.in/pdf-tools/jpg-to-pdf.html" />
+  <meta name="robots" content="index, follow, max-image-preview:large" />
+  <link rel="alternate" hreflang="en-IN" href="https://toolfest.in/pdf-tools/jpg-to-pdf.html" />
+  <link rel="alternate" hreflang="en-US" href="https://toolfest.in/pdf-tools/jpg-to-pdf.html" />
+  <link rel="alternate" hreflang="x-default" href="https://toolfest.in/pdf-tools/jpg-to-pdf.html" />
+  <meta property="og:locale" content="en_IN" />
+  <meta property="og:locale:alternate" content="en_US" />
+  <meta property="og:site_name" content="ToolFest" />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://toolfest.in/pdf-tools/jpg-to-pdf.html" />
+  <meta property="og:title" content="JPG PNG to PDF — Images to One PDF | ToolFest" />
+  <meta property="og:description" content="Convert JPG, PNG, or WebP images into a single PDF. Order pages before export. Free browser-based tool." />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="JPG PNG to PDF — Images to One PDF | ToolFest" />
+  <meta name="twitter:description" content="Convert JPG, PNG, or WebP images into a single PDF. Order pages before export. Free browser-based tool." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../assets/css/shared.css" />
+  <script src="https://unpkg.com/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
+</head>
+<body>
+  <nav>
+    <a href="../" class="logo">Tool<span>Fest</span></a>
+    <ul>
+      <li><a href="../pdf-tools/" style="color:var(--text)">PDF</a></li>
+      <li><a href="../image-tools/">Image</a></li>
+      <li><a href="../">Home</a></li>
+    </ul>
+  </nav>
+
+  <div class="page-hero">
+    <div class="page-hero-text">
+      <div class="breadcrumb"><a href="../">ToolFest</a> <span>›</span> <a href="./">PDF</a> <span>›</span> JPG to PDF</div>
+      <h1 class="page-title">Images → <span style="color:var(--pdf-color)">PDF</span></h1>
+      <p class="page-desc">Stack photos or scans into one PDF — useful for applications, e‑mails, and printing in India and abroad.</p>
+    </div>
+    <div class="page-hero-badge">📸</div>
+  </div>
+
+  <div class="tool-layout">
+    <div class="tool-main">
+      <div class="ad-slot" aria-label="Advertisement">Ad slot</div>
+      <div class="dropzone" id="dz">
+        <input type="file" id="fi" accept="image/jpeg,image/png,image/webp" multiple />
+        <div class="dropzone-icon">🖼</div>
+        <div class="dropzone-title">Add images</div>
+        <div class="dropzone-sub">JPG · PNG · WebP · One page per image</div>
+      </div>
+      <div id="listWrap" style="display:none" class="panel">
+        <div class="panel-title">Page order</div>
+        <ul id="fileList" style="list-style:none;display:flex;flex-direction:column;gap:0.5rem"></ul>
+      </div>
+      <div id="statusMsg" class="status-msg" style="display:none"></div>
+      <button class="btn btn-primary" id="goBtn" disabled>Create PDF</button>
+      <button class="btn btn-download" id="dlBtn" style="display:none">⬇ Download PDF</button>
+    </div>
+    <div class="tool-sidebar">
+      <div class="panel">
+        <div class="panel-title">Limits</div>
+        <p style="font-size:0.85rem;color:var(--muted);line-height:1.65">Very large images are embedded at full resolution — huge PDFs may be slow on older phones. Compress images first if needed.</p>
+      </div>
+      <div class="panel">
+        <div class="panel-title">More</div>
+        <div class="other-tools-grid">
+          <a href="merge-pdf.html" class="other-tool-link">🔗 Merge PDFs</a>
+          <a href="pdf-to-jpg.html" class="other-tool-link">🖼 PDF to JPG</a>
+          <a href="../image-tools/compress.html" class="other-tool-link">🗜 Compress image</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <div class="footer-logo">Tool<span>Fest</span></div>
+    <p><a href="../">Home</a> · <a href="./">PDF Tools</a></p>
+    <p style="margin-top:1rem;font-size:0.78rem;opacity:0.5">© 2026 ToolFest</p>
+  </footer>
+
+  <script>
+    let files = [];
+    let outBytes = null;
+
+    const dz = document.getElementById('dz');
+    const fi = document.getElementById('fi');
+    dz.addEventListener('dragover', e => { e.preventDefault(); dz.classList.add('drag-over'); });
+    dz.addEventListener('dragleave', () => dz.classList.remove('drag-over'));
+    dz.addEventListener('drop', e => { e.preventDefault(); dz.classList.remove('drag-over'); add(e.dataTransfer.files); });
+    fi.addEventListener('change', () => add(fi.files));
+
+    function add(list) {
+      for (const f of list) {
+        if (f.type.startsWith('image/')) files.push(f);
+      }
+      if (!files.length) return;
+      render();
+      document.getElementById('listWrap').style.display = 'block';
+      document.getElementById('goBtn').disabled = false;
+      document.getElementById('dlBtn').style.display = 'none';
+      outBytes = null;
+    }
+
+    function render() {
+      document.getElementById('fileList').innerHTML = files.map((f, i) => `
+        <li class="file-item" style="margin:0">
+          <span class="file-info"><span class="file-name">${f.name}</span></span>
+          <button type="button" class="btn btn-ghost" style="padding:0.35rem 0.6rem;font-size:0.8rem" onclick="move(${i},-1)" ${i===0?'disabled':''}>↑</button>
+          <button type="button" class="btn btn-ghost" style="padding:0.35rem 0.6rem;font-size:0.8rem" onclick="move(${i},1)" ${i===files.length-1?'disabled':''}>↓</button>
+          <button type="button" class="file-remove" onclick="remove(${i})">✕</button>
+        </li>`).join('');
+    }
+
+    function move(i, d) {
+      const j = i + d;
+      if (j < 0 || j >= files.length) return;
+      [files[i], files[j]] = [files[j], files[i]];
+      render();
+    }
+
+    function remove(i) {
+      files.splice(i, 1);
+      if (!files.length) {
+        document.getElementById('listWrap').style.display = 'none';
+        document.getElementById('goBtn').disabled = true;
+      } else render();
+    }
+
+    document.getElementById('goBtn').onclick = async () => {
+      if (!files.length) return;
+      const btn = document.getElementById('goBtn');
+      btn.disabled = true;
+      btn.textContent = 'Building PDF…';
+      try {
+        const pdf = await PDFLib.PDFDocument.create();
+        for (const f of files) {
+          const buf = await f.arrayBuffer();
+          let img, w, h;
+          const type = f.type;
+          if (type === 'image/png' || f.name.toLowerCase().endsWith('.png')) {
+            img = await pdf.embedPng(buf);
+          } else if (type === 'image/jpeg' || /\.jpe?g$/i.test(f.name)) {
+            img = await pdf.embedJpg(buf);
+          } else {
+            const bitmap = await createImageBitmap(new Blob([buf], { type: type || 'image/webp' }));
+            const canvas = document.createElement('canvas');
+            canvas.width = bitmap.width;
+            canvas.height = bitmap.height;
+            canvas.getContext('2d').drawImage(bitmap, 0, 0);
+            const png = await new Promise(r => canvas.toBlob(r, 'image/png'));
+            img = await pdf.embedPng(await png.arrayBuffer());
+          }
+          w = img.width;
+          h = img.height;
+          const page = pdf.addPage([w, h]);
+          page.drawImage(img, { x: 0, y: 0, width: w, height: h });
+        }
+        outBytes = await pdf.save({ useObjectStreams: true });
+        document.getElementById('dlBtn').style.display = 'flex';
+        show('✓ PDF ready.', 'success');
+      } catch (e) {
+        show('Could not build PDF from these images.', 'error');
+      }
+      btn.disabled = false;
+      btn.textContent = 'Create PDF';
+    };
+
+    document.getElementById('dlBtn').onclick = () => {
+      if (!outBytes) return;
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(new Blob([outBytes], { type: 'application/pdf' }));
+      a.download = 'toolfest_images.pdf';
+      a.click();
+    };
+
+    function show(msg, type) {
+      const el = document.getElementById('statusMsg');
+      el.textContent = msg;
+      el.className = 'status-msg ' + type;
+      el.style.display = 'block';
+    }
+  </script>
+</body>
+</html>

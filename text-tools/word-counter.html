@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script src="../assets/js/site-analytics.js"></script>
+  <title>Word Counter — Characters, Reading Time | ToolFest</title>
+  <meta name="description" content="Count words and characters online. Reading time estimate for blogs and school essays. Free, private, instant." />
+  <link rel="canonical" href="https://toolfest.in/text-tools/word-counter.html" />
+  <meta name="robots" content="index, follow, max-image-preview:large" />
+  <link rel="alternate" hreflang="en-IN" href="https://toolfest.in/text-tools/word-counter.html" />
+  <link rel="alternate" hreflang="en-US" href="https://toolfest.in/text-tools/word-counter.html" />
+  <link rel="alternate" hreflang="x-default" href="https://toolfest.in/text-tools/word-counter.html" />
+  <meta property="og:locale" content="en_IN" />
+  <meta property="og:locale:alternate" content="en_US" />
+  <meta property="og:site_name" content="ToolFest" />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://toolfest.in/text-tools/word-counter.html" />
+  <meta property="og:title" content="Word Counter — Characters, Reading Time | ToolFest" />
+  <meta property="og:description" content="Count words and characters online. Reading time estimate for blogs and school essays. Free, private, instant." />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Word Counter — Characters, Reading Time | ToolFest" />
+  <meta name="twitter:description" content="Count words and characters online. Reading time estimate for blogs and school essays. Free, private, instant." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../assets/css/shared.css" />
+  <style>
+    .stats { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 0.75rem; margin-top: 1rem; }
+    .stat-box { background: var(--surface2); border: 1px solid var(--border); border-radius: 10px; padding: 1rem; text-align: center; }
+    .stat-box .n { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 1.5rem; color: var(--text-tool-color); }
+    .stat-box .l { font-size: 0.72rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em; margin-top: 0.25rem; }
+  </style>
+</head>
+<body>
+  <nav>
+    <a href="../" class="logo">Tool<span>Fest</span></a>
+    <ul>
+      <li><a href="../text-tools/" style="color:var(--text)">Text</a></li>
+      <li><a href="../">Home</a></li>
+    </ul>
+  </nav>
+
+  <div class="page-hero">
+    <div class="page-hero-text">
+      <div class="breadcrumb"><a href="../">ToolFest</a> <span>›</span> <a href="./">Text</a> <span>›</span> Word counter</div>
+      <h1 class="page-title">Word <span style="color:var(--text-tool-color)">counter</span></h1>
+      <p class="page-desc">Paste or type below. Everything is computed locally — ideal for resumes, SOPs, and meta descriptions (US/India SEO norms).</p>
+    </div>
+    <div class="page-hero-badge">🔢</div>
+  </div>
+
+  <div class="tool-layout">
+    <div class="tool-main">
+      <div class="ad-slot">Ad slot</div>
+      <div class="panel" style="padding:0;overflow:hidden">
+        <textarea class="form-textarea" id="t" style="min-height:280px;border:none;border-radius:var(--radius)" placeholder="Start typing or paste text here…"></textarea>
+      </div>
+      <div class="stats">
+        <div class="stat-box"><div class="n" id="w">0</div><div class="l">Words</div></div>
+        <div class="stat-box"><div class="n" id="c">0</div><div class="l">Characters</div></div>
+        <div class="stat-box"><div class="n" id="nw">0</div><div class="l">No spaces</div></div>
+        <div class="stat-box"><div class="n" id="s">0</div><div class="l">Sentences</div></div>
+        <div class="stat-box"><div class="n" id="p">0</div><div class="l">Paragraphs</div></div>
+        <div class="stat-box"><div class="n" id="rt">0</div><div class="l">Min read (~200 wpm)</div></div>
+      </div>
+    </div>
+    <div class="tool-sidebar">
+      <div class="panel">
+        <div class="panel-title">Tips</div>
+        <p style="font-size:0.85rem;color:var(--muted);line-height:1.65">Reading speed varies; 200 wpm is a common average for adults reading English.</p>
+      </div>
+      <div class="panel">
+        <a href="json-formatter.html" class="other-tool-link" style="display:block">JSON formatter →</a>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <div class="footer-logo">Tool<span>Fest</span></div>
+    <p><a href="../">Home</a></p>
+    <p style="margin-top:1rem;font-size:0.78rem;opacity:0.5">© 2026 ToolFest</p>
+  </footer>
+
+  <script>
+    const el = document.getElementById('t');
+    function run() {
+      const text = el.value || '';
+      const words = text.trim() ? text.trim().split(/\s+/).length : 0;
+      const chars = text.length;
+      const nospace = text.replace(/\s/g, '').length;
+      const sentences = text.split(/[.!?]+/).filter(s => s.trim().length).length || 0;
+      const paras = text.split(/\n\s*\n/).filter(p => p.trim().length).length || (text.trim() ? 1 : 0);
+      const rt = words ? Math.max(1, Math.ceil(words / 200)) : 0;
+      document.getElementById('w').textContent = words;
+      document.getElementById('c').textContent = chars;
+      document.getElementById('nw').textContent = nospace;
+      document.getElementById('s').textContent = sentences;
+      document.getElementById('p').textContent = paras;
+      document.getElementById('rt').textContent = rt;
+    }
+    el.addEventListener('input', run);
+  </script>
+</body>
+</html>

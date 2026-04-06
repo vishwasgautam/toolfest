@@ -1,0 +1,6 @@
+# https://www.robotstxt.org/robotstxt.html
+User-agent: *
+Allow: /
+
+# Sitemap for ToolFest (toolfest.in)
+Sitemap: https://toolfest.in/sitemap.xml
