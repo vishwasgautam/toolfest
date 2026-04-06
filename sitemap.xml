@@ -2,6 +2,8 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url><loc>https://toolfest.in/</loc><changefreq>weekly</changefreq><priority>1</priority></url>
   <url><loc>https://toolfest.in/privacy.html</loc><changefreq>monthly</changefreq><priority>0.4</priority></url>
+  <url><loc>https://toolfest.in/about.html</loc><changefreq>monthly</changefreq><priority>0.5</priority></url>
+  <url><loc>https://toolfest.in/terms.html</loc><changefreq>monthly</changefreq><priority>0.5</priority></url>
   <url><loc>https://toolfest.in/pdf-tools/</loc><changefreq>weekly</changefreq><priority>0.9</priority></url>
   <url><loc>https://toolfest.in/pdf-tools/word-to-pdf.html</loc><changefreq>weekly</changefreq><priority>0.95</priority></url>
   <url><loc>https://toolfest.in/pdf-tools/merge-pdf.html</loc><changefreq>weekly</changefreq><priority>0.85</priority></url>
