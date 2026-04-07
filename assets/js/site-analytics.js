@@ -2,6 +2,25 @@
 (function () {
   var ADSENSE_CLIENT = 'ca-pub-1957013406466053';
   var GA_MEASUREMENT_ID = 'G-Y6CJS2NH91';
+  var FAVICON_PATH = '/assets/icons/toolfest-favicon.svg';
+
+  function ensureFavicon() {
+    var hasIcon = document.querySelector('link[rel="icon"], link[rel="shortcut icon"]');
+    if (hasIcon) return;
+
+    var icon = document.createElement('link');
+    icon.rel = 'icon';
+    icon.type = 'image/svg+xml';
+    icon.href = FAVICON_PATH;
+    document.head.appendChild(icon);
+
+    var shortcut = document.createElement('link');
+    shortcut.rel = 'shortcut icon';
+    shortcut.href = FAVICON_PATH;
+    document.head.appendChild(shortcut);
+  }
+
+  ensureFavicon();
 
   var a = document.createElement('script');
   a.async = true;

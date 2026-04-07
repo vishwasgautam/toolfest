@@ -24,6 +24,8 @@
   <meta name="keywords" content="toolfest, toolfest.in, free online tools, Word to PDF, merge PDF, PDF to JPG, image compressor, EMI calculator India, SIP calculator, GST calculator, JSON formatter, word counter, password generator, QR code generator" />
   <meta name="author" content="ToolFest" />
   <meta name="theme-color" content="#0a0a0f" />
+  <link rel="icon" type="image/svg+xml" href="assets/icons/toolfest-favicon.svg" />
+  <link rel="shortcut icon" href="assets/icons/toolfest-favicon.svg" />
   <!-- After Google Search Console verification, add: <meta name="google-site-verification" content="YOUR_CODE" /> -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -99,6 +101,40 @@
       padding-top: 3.5rem;
       margin-top: 1rem;
       border-top: 1px solid var(--border);
+    }
+
+    .quick-actions-wrap {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 1.4rem 2rem 0.6rem;
+    }
+    .quick-actions {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 0.7rem;
+    }
+    .quick-action {
+      text-decoration: none;
+      color: var(--text);
+      background: linear-gradient(180deg, rgba(255,255,255,0.05), rgba(255,255,255,0.02));
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 0.75rem 0.85rem;
+      font-size: 0.84rem;
+      line-height: 1.35;
+      transition: transform 0.2s ease, border-color 0.2s ease;
+    }
+    .quick-action strong {
+      display: block;
+      color: var(--accent);
+      font-family: 'Syne', sans-serif;
+      font-size: 0.92rem;
+      margin-bottom: 0.2rem;
+      letter-spacing: -0.02em;
+    }
+    .quick-action:hover {
+      transform: translateY(-2px);
+      border-color: rgba(232,255,71,0.35);
     }
 
     .site-footer-links a {
@@ -803,6 +839,17 @@
       <div class="stat-label">Private & Secure</div>
     </div>
   </div>
+
+  <section class="quick-actions-wrap animate-in" aria-label="Popular quick actions">
+    <div class="quick-actions">
+      <a class="quick-action" href="pdf-tools/word-to-pdf.html"><strong>Word to PDF</strong>Convert docx in one click</a>
+      <a class="quick-action" href="image-tools/compress.html"><strong>Compress Image</strong>Reduce file size for uploads</a>
+      <a class="quick-action" href="finance-tools/emi-calculator.html"><strong>EMI Calculator</strong>Monthly payment planning</a>
+      <a class="quick-action" href="finance-tools/gst-guides/"><strong>GST Scenarios</strong>Quick 5/12/18/28% examples</a>
+      <a class="quick-action" href="finance-tools/emi-guides/"><strong>EMI Scenarios</strong>Rate + tenure combinations</a>
+      <a class="quick-action" href="convert/"><strong>Unit Converters</strong>cm/feet, kg/lbs, C/F, MB/GB</a>
+    </div>
+  </section>
 
   <!-- PDF SECTION -->
   <div class="section" id="all-tools">
