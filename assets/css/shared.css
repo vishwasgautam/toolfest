@@ -488,6 +488,41 @@ footer {
 
 .publisher-content strong { color: var(--text); font-weight: 500; }
 
+.hub-quick-strip {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 2rem 1.5rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 0.7rem;
+}
+
+.hub-quick-link {
+  display: block;
+  text-decoration: none;
+  color: var(--text);
+  background: linear-gradient(180deg, rgba(255,255,255,0.05), rgba(255,255,255,0.02));
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 0.7rem 0.8rem;
+  font-size: 0.83rem;
+  line-height: 1.35;
+  transition: transform 0.2s, border-color 0.2s;
+}
+
+.hub-quick-link:hover {
+  transform: translateY(-2px);
+  border-color: rgba(255,255,255,0.22);
+}
+
+.hub-quick-link strong {
+  display: block;
+  margin-bottom: 0.15rem;
+  font-family: 'Syne', sans-serif;
+  font-size: 0.9rem;
+  letter-spacing: -0.02em;
+}
+
 .site-footer-links {
   margin-bottom: 1rem;
   line-height: 1.9;
