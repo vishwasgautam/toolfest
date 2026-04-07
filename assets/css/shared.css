@@ -77,9 +77,23 @@ nav ul a {
   font-size: 0.85rem;
   letter-spacing: 0.02em;
   transition: color 0.2s;
+  position: relative;
 }
 
 nav ul a:hover { color: var(--text); }
+
+nav ul a::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -0.28rem;
+  width: 0;
+  height: 1px;
+  background: rgba(232, 255, 71, 0.7);
+  transition: width 0.2s ease;
+}
+
+nav ul a:hover::after { width: 100%; }
 
 /* AdSense: replace ins with your unit after approval */
 .ad-slot {
@@ -427,6 +441,12 @@ nav ul a:hover { color: var(--text); }
   border: 1px solid var(--border);
   border-radius: var(--radius);
   padding: 1.5rem;
+  transition: transform 0.2s, border-color 0.2s;
+}
+
+.seo-card:hover {
+  transform: translateY(-2px);
+  border-color: rgba(255, 255, 255, 0.16);
 }
 
 .seo-card h3 {
@@ -507,12 +527,13 @@ footer {
   padding: 0.7rem 0.8rem;
   font-size: 0.83rem;
   line-height: 1.35;
-  transition: transform 0.2s, border-color 0.2s;
+  transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s;
 }
 
 .hub-quick-link:hover {
   transform: translateY(-2px);
   border-color: rgba(255,255,255,0.22);
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.22);
 }
 
 .hub-quick-link strong {
