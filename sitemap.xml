@@ -28,4 +28,9 @@
   <url><loc>https://toolfest.in/generators/</loc><changefreq>weekly</changefreq><priority>0.85</priority></url>
   <url><loc>https://toolfest.in/generators/password-generator.html</loc><changefreq>weekly</changefreq><priority>0.85</priority></url>
   <url><loc>https://toolfest.in/generators/qr-code-generator.html</loc><changefreq>weekly</changefreq><priority>0.85</priority></url>
+  <url><loc>https://toolfest.in/convert/</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://toolfest.in/convert/length/</loc><changefreq>weekly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://toolfest.in/convert/weight/</loc><changefreq>weekly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://toolfest.in/convert/temperature/</loc><changefreq>weekly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://toolfest.in/convert/data-size/</loc><changefreq>weekly</changefreq><priority>0.75</priority></url>
 </urlset>
