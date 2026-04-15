@@ -46,6 +46,7 @@
       --img-color: #47c8ff;
       --finance-color: #a78bfa;
       --text-tool-color: #34d399;
+      --health-color: #22c55e;
       --gen-color: #fb923c;
     }
 
@@ -446,6 +447,9 @@
     .tool-card.gen::before {
       background: radial-gradient(circle at top left, rgba(251,146,60,0.08), transparent 60%);
     }
+    .tool-card.health::before {
+      background: radial-gradient(circle at top left, rgba(34,197,94,0.1), transparent 60%);
+    }
 
     .tool-card:hover { transform: translateY(-4px); border-color: rgba(255,255,255,0.15); box-shadow: 0 14px 30px rgba(0,0,0,0.24); }
     .tool-card:hover::before { opacity: 1; }
@@ -464,6 +468,7 @@
     .tool-icon.img { background: rgba(71,200,255,0.15); }
     .tool-icon.finance { background: rgba(167,139,250,0.15); }
     .tool-icon.text { background: rgba(52,211,153,0.15); }
+    .tool-icon.health { background: rgba(34,197,94,0.15); }
     .tool-icon.gen { background: rgba(251,146,60,0.15); }
 
     .tool-name {
@@ -495,6 +500,7 @@
     .tool-tag.img { background: rgba(71,200,255,0.12); color: var(--img-color); }
     .tool-tag.finance { background: rgba(167,139,250,0.12); color: var(--finance-color); }
     .tool-tag.text { background: rgba(52,211,153,0.12); color: var(--text-tool-color); }
+    .tool-tag.health { background: rgba(34,197,94,0.12); color: var(--health-color); }
     .tool-tag.gen { background: rgba(251,146,60,0.12); color: var(--gen-color); }
 
     .tool-arrow {
@@ -796,6 +802,24 @@
           "position": 12,
           "name": "QR code generator",
           "url": "https://toolfest.in/generators/qr-code-generator.html"
+        },
+        {
+          "@type": "ListItem",
+          "position": 13,
+          "name": "BMI calculator",
+          "url": "https://toolfest.in/health-tools/bmi-calculator.html"
+        },
+        {
+          "@type": "ListItem",
+          "position": 14,
+          "name": "Protein calculator",
+          "url": "https://toolfest.in/health-tools/protein-calculator.html"
+        },
+        {
+          "@type": "ListItem",
+          "position": 15,
+          "name": "Calorie deficit calculator",
+          "url": "https://toolfest.in/health-tools/calorie-deficit-calculator.html"
         }
       ]
     }
@@ -1035,6 +1059,46 @@
         <div class="tool-name">Unit converters</div>
         <p class="tool-desc">Common conversions for cm to feet, kg to lbs, C to F, and MB to GB with formula notes.</p>
         <div class="tool-tag text">Convert</div>
+        <span class="tool-arrow">↗</span>
+      </a>
+    </div>
+
+    <!-- HEALTH -->
+    <div class="section-header animate-in" style="margin-top: 5rem">
+      <div>
+        <div class="section-tag">💪 Category</div>
+        <div class="section-title">Health calculators</div>
+      </div>
+      <a href="health-tools/" class="section-link">View all →</a>
+    </div>
+
+    <div class="tools-grid animate-in">
+      <a href="health-tools/bmi-calculator.html" class="tool-card health">
+        <div class="tool-icon health">⚖️</div>
+        <div class="tool-name">BMI calculator</div>
+        <p class="tool-desc">Calculate BMI from height and weight with an instant category output.</p>
+        <div class="tool-tag health">Health</div>
+        <span class="tool-arrow">↗</span>
+      </a>
+      <a href="health-tools/protein-calculator.html" class="tool-card health">
+        <div class="tool-icon health">🥚</div>
+        <div class="tool-name">Protein calculator</div>
+        <p class="tool-desc">Estimate daily protein intake in grams based on body weight and goal.</p>
+        <div class="tool-tag health">Nutrition</div>
+        <span class="tool-arrow">↗</span>
+      </a>
+      <a href="health-tools/calorie-deficit-calculator.html" class="tool-card health">
+        <div class="tool-icon health">📉</div>
+        <div class="tool-name">Calorie deficit</div>
+        <p class="tool-desc">Set a daily calorie target using your maintenance estimate and chosen deficit.</p>
+        <div class="tool-tag health">Calories</div>
+        <span class="tool-arrow">↗</span>
+      </a>
+      <a href="health-tools/" class="tool-card health">
+        <div class="tool-icon health">💧</div>
+        <div class="tool-name">Health tools hub</div>
+        <p class="tool-desc">Open all health tools including BMR/TDEE, macros, hydration, and scenario pages.</p>
+        <div class="tool-tag health">Hub</div>
         <span class="tool-arrow">↗</span>
       </a>
     </div>
