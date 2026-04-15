@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script src="../assets/js/site-analytics.js"></script>
+  <title>Water Intake Calculator — Daily Hydration Estimate | ToolFest</title>
+  <meta name="description" content="Estimate daily water intake based on body weight, activity, and climate factors." />
+  <link rel="canonical" href="https://toolfest.in/health-tools/water-intake-calculator.html" />
+  <meta name="robots" content="index, follow, max-image-preview:large" />
+  <link rel="stylesheet" href="../assets/css/shared.css" />
+</head>
+<body data-health-tool="water">
+  <nav><a href="../" class="logo">Tool<span>Fest</span></a><ul><li><a href="./" style="color:var(--text)">Health</a></li><li><a href="../">Home</a></li></ul></nav>
+  <div class="page-hero">
+    <div class="page-hero-text">
+      <div class="breadcrumb"><a href="../">ToolFest</a> <span>›</span> <a href="./">Health</a> <span>›</span> Water intake</div>
+      <h1 class="page-title">Water intake <span style="color:var(--text-tool-color)">calculator</span></h1>
+      <p class="page-desc">Daily hydration estimate using body weight with activity and climate multipliers.</p>
+    </div>
+    <div class="page-hero-badge">💧</div>
+  </div>
+  <article class="publisher-content" itemscope itemtype="https://schema.org/Article">
+    <meta itemprop="author" content="ToolFest" />
+    <h2>Hydration estimate</h2>
+    <p>This estimator uses a baseline ml-per-kg method and adjusts for activity and hotter conditions. It is useful for planning routine hydration.</p>
+    <p><strong>Not medical advice:</strong> fluid requirements can vary due to kidney, cardiac, endocrine, and medication factors.</p>
+  </article>
+  <div class="tool-layout">
+    <div class="tool-main">
+      <div class="panel">
+        <div class="form-group"><label class="form-label">Weight (kg)</label><input id="weightKg" class="form-input" type="number" value="70" min="20" max="250" step="0.1" /></div>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Activity</label>
+            <select id="activity" class="form-select">
+              <option value="1" selected>Normal day</option>
+              <option value="1.1">Light workout day</option>
+              <option value="1.2">Heavy training day</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Climate</label>
+            <select id="climate" class="form-select">
+              <option value="1" selected>Temperate</option>
+              <option value="1.1">Warm/humid</option>
+              <option value="1.2">Hot climate</option>
+            </select>
+          </div>
+        </div>
+        <button id="calcBtn" class="btn btn-primary" type="button">Estimate Water</button>
+      </div>
+      <div class="panel" id="out" style="display:none">
+        <div class="panel-title">Result</div>
+        <p class="result-highlight" id="primary">—</p>
+        <p style="color:var(--muted);margin-top:0.7rem" id="secondary">—</p>
+      </div>
+    </div>
+    <div class="tool-sidebar"><div class="panel"><a class="other-tool-link" href="protein-calculator.html">🥚 Protein calculator</a></div></div>
+  </div>
+  <footer><div class="footer-logo">Tool<span>Fest</span></div><p class="site-footer-links"><a href="./">Health tools</a> · <a href="../privacy.html">Privacy</a></p><p style="font-size:0.78rem;opacity:0.5;margin-top:0.75rem">© 2026 ToolFest</p></footer>
+  <script src="../assets/js/health-tools.js"></script>
+</body>
+</html>

@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script src="../assets/js/site-analytics.js"></script>
+  <title>Health Calculators — BMI, Calories, Protein, Macros | ToolFest</title>
+  <meta name="description" content="Free health calculators for BMI, BMR/TDEE, protein, calorie deficit, macros, and water intake. Browser-based and informational only." />
+  <link rel="canonical" href="https://toolfest.in/health-tools/" />
+  <meta name="robots" content="index, follow, max-image-preview:large" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="ToolFest" />
+  <meta property="og:url" content="https://toolfest.in/health-tools/" />
+  <meta property="og:title" content="Health Calculators — BMI, Calories, Protein, Macros | ToolFest" />
+  <meta property="og:description" content="Free health calculators for BMI, BMR/TDEE, protein, calorie deficit, macros, and water intake." />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Health Calculators — BMI, Calories, Protein, Macros | ToolFest" />
+  <meta name="twitter:description" content="Free health calculators for BMI, BMR/TDEE, protein, calorie deficit, macros, and water intake." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../assets/css/shared.css" />
+  <style>
+    .hub-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 1rem; max-width: 1100px; margin: 0 auto; padding: 0 2rem 3rem; }
+    .hub-card { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 1.4rem; text-decoration: none; color: inherit; transition: transform 0.2s, border-color 0.2s; }
+    .hub-card:hover { transform: translateY(-3px); border-color: rgba(52, 211, 153, 0.45); }
+    .hub-card h2 { font-family: 'Syne', sans-serif; font-size: 1.05rem; margin-bottom: 0.45rem; letter-spacing: -0.02em; }
+    .hub-card p { color: var(--muted); font-size: 0.86rem; line-height: 1.6; }
+    .hub-emoji { display: block; font-size: 1.6rem; margin-bottom: 0.5rem; }
+  </style>
+</head>
+<body>
+  <nav>
+    <a href="../" class="logo">Tool<span>Fest</span></a>
+    <ul>
+      <li><a href="../pdf-tools/">PDF</a></li>
+      <li><a href="../image-tools/">Image</a></li>
+      <li><a href="../finance-tools/">Finance</a></li>
+      <li><a href="../text-tools/">Text</a></li>
+      <li><a href="../generators/">Generators</a></li>
+      <li><a href="../convert/">Converters</a></li>
+      <li><a href="../health-tools/" style="color:var(--text)">Health</a></li>
+      <li><a href="../">Home</a></li>
+    </ul>
+  </nav>
+
+  <div class="page-hero">
+    <div class="page-hero-text">
+      <div class="breadcrumb"><a href="../">ToolFest</a> <span>›</span> Health tools</div>
+      <h1 class="page-title">Health <span style="color:var(--text-tool-color)">calculators</span></h1>
+      <p class="page-desc">Simple nutrition and fitness estimators for planning: BMI, calories, protein, macros, and hydration targets.</p>
+    </div>
+    <div class="page-hero-badge">💪</div>
+  </div>
+
+  <section class="hub-quick-strip" aria-label="Popular health quick actions">
+    <a class="hub-quick-link" href="bmi-calculator.html"><strong>BMI</strong>Height + weight category</a>
+    <a class="hub-quick-link" href="bmr-tdee-calculator.html"><strong>BMR/TDEE</strong>Daily energy estimate</a>
+    <a class="hub-quick-link" href="protein-calculator.html"><strong>Protein</strong>Grams per day target</a>
+    <a class="hub-quick-link" href="macro-calculator.html"><strong>Macros</strong>Carb/protein/fat split</a>
+    <a class="hub-quick-link" href="bmi/"><strong>BMI Guides</strong>Height/weight example pages</a>
+    <a class="hub-quick-link" href="protein/"><strong>Protein Guides</strong>Weight-based quick lookups</a>
+  </section>
+
+  <article class="publisher-content" itemscope itemtype="https://schema.org/Article">
+    <meta itemprop="author" content="ToolFest" />
+    <h2>Informational calculators only</h2>
+    <p>These tools are for planning and education. They estimate values using common formulas (for example, Mifflin-St Jeor for BMR). Results vary by age, body composition, activity tracking quality, and local clinical guidance.</p>
+    <h3>Important disclaimer</h3>
+    <p><strong>Not medical advice:</strong> ToolFest does not diagnose, treat, or prescribe. If you have a condition, are pregnant, or have dietary restrictions, consult a licensed doctor or registered dietitian before acting on estimates.</p>
+  </article>
+
+  <div class="hub-grid">
+    <a class="hub-card" href="bmi-calculator.html"><span class="hub-emoji">⚖️</span><h2>BMI calculator</h2><p>Body mass index from height and weight with standard category output.</p></a>
+    <a class="hub-card" href="bmr-tdee-calculator.html"><span class="hub-emoji">🔥</span><h2>BMR + TDEE calculator</h2><p>Estimate resting energy and maintenance calories by activity level.</p></a>
+    <a class="hub-card" href="protein-calculator.html"><span class="hub-emoji">🥚</span><h2>Protein calculator</h2><p>Daily protein grams based on body weight and training goal.</p></a>
+    <a class="hub-card" href="calorie-deficit-calculator.html"><span class="hub-emoji">📉</span><h2>Calorie deficit</h2><p>Set a practical daily calorie target from maintenance values.</p></a>
+    <a class="hub-card" href="macro-calculator.html"><span class="hub-emoji">🥗</span><h2>Macro calculator</h2><p>Split calories into carbs, protein, and fat grams.</p></a>
+    <a class="hub-card" href="water-intake-calculator.html"><span class="hub-emoji">💧</span><h2>Water intake</h2><p>Hydration estimate based on body weight and activity/climate factors.</p></a>
+    <a class="hub-card" href="bmi/"><span class="hub-emoji">📚</span><h2>BMI scenario pages</h2><p>Pre-calculated BMI pages for common height and weight combinations.</p></a>
+    <a class="hub-card" href="protein/"><span class="hub-emoji">📘</span><h2>Protein scenario pages</h2><p>Daily protein estimates by body weight for common goals.</p></a>
+    <a class="hub-card" href="calorie-deficit/"><span class="hub-emoji">🗂</span><h2>Deficit scenario pages</h2><p>Common calorie-deficit values with quick context for planning.</p></a>
+  </div>
+
+  <footer>
+    <div class="footer-logo">Tool<span>Fest</span></div>
+    <p class="site-footer-links"><a href="../">Home</a> · <a href="../finance-tools/">Finance</a> · <a href="../convert/">Converters</a> · <a href="../privacy.html">Privacy</a> · <a href="../terms.html">Terms</a></p>
+    <p style="font-size:0.78rem;opacity:0.5;margin-top:0.75rem">© 2026 ToolFest · Informational tools only.</p>
+  </footer>
+</body>
+</html>

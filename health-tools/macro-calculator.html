@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script src="../assets/js/site-analytics.js"></script>
+  <title>Macro Calculator — Carbs, Protein, Fat in Grams | ToolFest</title>
+  <meta name="description" content="Convert calorie targets into carb, protein, and fat grams using custom percentage splits." />
+  <link rel="canonical" href="https://toolfest.in/health-tools/macro-calculator.html" />
+  <meta name="robots" content="index, follow, max-image-preview:large" />
+  <link rel="stylesheet" href="../assets/css/shared.css" />
+</head>
+<body data-health-tool="macros">
+  <nav><a href="../" class="logo">Tool<span>Fest</span></a><ul><li><a href="./" style="color:var(--text)">Health</a></li><li><a href="../">Home</a></li></ul></nav>
+  <div class="page-hero">
+    <div class="page-hero-text">
+      <div class="breadcrumb"><a href="../">ToolFest</a> <span>›</span> <a href="./">Health</a> <span>›</span> Macro calculator</div>
+      <h1 class="page-title">Macro <span style="color:var(--text-tool-color)">calculator</span></h1>
+      <p class="page-desc">Translate daily calories into grams of carbs, protein, and fat.</p>
+    </div>
+    <div class="page-hero-badge">🥗</div>
+  </div>
+  <article class="publisher-content" itemscope itemtype="https://schema.org/Article">
+    <meta itemprop="author" content="ToolFest" />
+    <h2>Macro split calculator</h2>
+    <p>Carbs and protein use 4 kcal/gram, fat uses 9 kcal/gram. Enter a total daily calorie target and macro percentages that sum to 100%.</p>
+    <p><strong>Not medical advice:</strong> use clinician guidance if you have disease-specific dietary requirements.</p>
+  </article>
+  <div class="tool-layout">
+    <div class="tool-main">
+      <div class="panel">
+        <div class="form-group"><label class="form-label">Calories per day</label><input id="calories" class="form-input" type="number" value="2200" min="1200" max="7000" /></div>
+        <div class="form-row">
+          <div class="form-group"><label class="form-label">Carbs %</label><input id="carbPct" class="form-input" type="number" value="40" min="0" max="100" /></div>
+          <div class="form-group"><label class="form-label">Protein %</label><input id="proteinPct" class="form-input" type="number" value="30" min="0" max="100" /></div>
+        </div>
+        <div class="form-group"><label class="form-label">Fat %</label><input id="fatPct" class="form-input" type="number" value="30" min="0" max="100" /></div>
+        <button id="calcBtn" class="btn btn-primary" type="button">Calculate Macros</button>
+      </div>
+      <div class="panel" id="out" style="display:none">
+        <div class="panel-title">Result</div>
+        <p class="result-highlight" id="primary">—</p>
+        <p style="color:var(--muted);margin-top:0.7rem" id="secondary">—</p>
+      </div>
+    </div>
+    <div class="tool-sidebar">
+      <div class="panel"><div class="panel-title">Need calories first?</div><a class="other-tool-link" href="bmr-tdee-calculator.html">🔥 BMR + TDEE calculator</a></div>
+    </div>
+  </div>
+  <footer><div class="footer-logo">Tool<span>Fest</span></div><p class="site-footer-links"><a href="./">Health tools</a> · <a href="../terms.html">Terms</a></p><p style="font-size:0.78rem;opacity:0.5;margin-top:0.75rem">© 2026 ToolFest</p></footer>
+  <script src="../assets/js/health-tools.js"></script>
+</body>
+</html>

@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script src="../assets/js/site-analytics.js"></script>
+  <title>BMR and TDEE Calculator — Daily Calorie Estimate | ToolFest</title>
+  <meta name="description" content="Estimate BMR and TDEE using age, sex, height, weight, and activity level. Informational calorie planning only." />
+  <link rel="canonical" href="https://toolfest.in/health-tools/bmr-tdee-calculator.html" />
+  <meta name="robots" content="index, follow, max-image-preview:large" />
+  <link rel="stylesheet" href="../assets/css/shared.css" />
+</head>
+<body data-health-tool="bmr-tdee">
+  <nav><a href="../" class="logo">Tool<span>Fest</span></a><ul><li><a href="./" style="color:var(--text)">Health</a></li><li><a href="../">Home</a></li></ul></nav>
+  <div class="page-hero">
+    <div class="page-hero-text">
+      <div class="breadcrumb"><a href="../">ToolFest</a> <span>›</span> <a href="./">Health</a> <span>›</span> BMR + TDEE</div>
+      <h1 class="page-title">BMR + <span style="color:var(--text-tool-color)">TDEE</span></h1>
+      <p class="page-desc">Estimate resting calories and maintenance calories using activity multipliers.</p>
+    </div>
+    <div class="page-hero-badge">🔥</div>
+  </div>
+  <article class="publisher-content" itemscope itemtype="https://schema.org/Article">
+    <meta itemprop="author" content="ToolFest" />
+    <h2>Calories for planning, not prescription</h2>
+    <p>This tool uses Mifflin-St Jeor for BMR and multiplies by activity factor for TDEE. Treat outputs as a starting estimate and adjust with real progress over 2-4 weeks.</p>
+    <p><strong>Not medical advice:</strong> if you have endocrine, metabolic, or eating concerns, consult professionals.</p>
+  </article>
+  <div class="tool-layout">
+    <div class="tool-main">
+      <div class="panel">
+        <div class="form-row">
+          <div class="form-group"><label class="form-label">Sex</label><select id="sex" class="form-select"><option value="male">Male</option><option value="female">Female</option></select></div>
+          <div class="form-group"><label class="form-label">Age</label><input id="age" class="form-input" type="number" value="30" min="12" max="90" /></div>
+        </div>
+        <div class="form-row">
+          <div class="form-group"><label class="form-label">Height (cm)</label><input id="heightCm" class="form-input" type="number" value="170" min="100" max="230" step="0.1" /></div>
+          <div class="form-group"><label class="form-label">Weight (kg)</label><input id="weightKg" class="form-input" type="number" value="70" min="20" max="250" step="0.1" /></div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Activity level</label>
+          <select id="activity" class="form-select">
+            <option value="1.2">Sedentary (desk work)</option>
+            <option value="1.375">Lightly active</option>
+            <option value="1.55" selected>Moderately active</option>
+            <option value="1.725">Very active</option>
+            <option value="1.9">Athlete/high activity</option>
+          </select>
+        </div>
+        <button id="calcBtn" class="btn btn-primary" type="button">Estimate Calories</button>
+      </div>
+      <div class="panel" id="out" style="display:none">
+        <div class="panel-title">Result</div>
+        <p class="result-highlight" id="primary">—</p>
+        <p style="color:var(--muted);margin-top:0.7rem">BMR (resting energy)</p>
+        <p style="color:var(--text);margin-top:0.65rem;font-weight:500" id="secondary">—</p>
+        <p style="color:var(--muted);font-size:0.83rem;margin-top:0.7rem">TDEE (maintenance calories per day)</p>
+      </div>
+    </div>
+    <div class="tool-sidebar">
+      <div class="panel"><div class="panel-title">Related</div><div class="other-tools-grid"><a class="other-tool-link" href="calorie-deficit-calculator.html">📉 Calorie deficit</a><a class="other-tool-link" href="macro-calculator.html">🥗 Macro calculator</a></div></div>
+    </div>
+  </div>
+  <footer><div class="footer-logo">Tool<span>Fest</span></div><p class="site-footer-links"><a href="./">Health tools</a> · <a href="../privacy.html">Privacy</a></p><p style="font-size:0.78rem;opacity:0.5;margin-top:0.75rem">© 2026 ToolFest</p></footer>
+  <script src="../assets/js/health-tools.js"></script>
+</body>
+</html>

@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script src="../assets/js/site-analytics.js"></script>
+  <title>BMI Calculator — Body Mass Index by Height and Weight | ToolFest</title>
+  <meta name="description" content="Calculate BMI using height and weight. Get body mass index value and standard range category instantly." />
+  <link rel="canonical" href="https://toolfest.in/health-tools/bmi-calculator.html" />
+  <meta name="robots" content="index, follow, max-image-preview:large" />
+  <link rel="stylesheet" href="../assets/css/shared.css" />
+</head>
+<body data-health-tool="bmi">
+  <nav>
+    <a href="../" class="logo">Tool<span>Fest</span></a>
+    <ul>
+      <li><a href="./" style="color:var(--text)">Health</a></li>
+      <li><a href="../">Home</a></li>
+    </ul>
+  </nav>
+
+  <div class="page-hero">
+    <div class="page-hero-text">
+      <div class="breadcrumb"><a href="../">ToolFest</a> <span>›</span> <a href="./">Health</a> <span>›</span> BMI</div>
+      <h1 class="page-title">BMI <span style="color:var(--text-tool-color)">calculator</span></h1>
+      <p class="page-desc">Estimate body mass index using your height in cm and weight in kg.</p>
+    </div>
+    <div class="page-hero-badge">⚖️</div>
+  </div>
+
+  <article class="publisher-content" itemscope itemtype="https://schema.org/Article">
+    <meta itemprop="author" content="ToolFest" />
+    <h2>BMI estimate for screening only</h2>
+    <p>BMI is a screening metric and does not directly measure body fat percentage. Athletes and older adults can have misleading BMI outcomes due to muscle mass or body composition differences.</p>
+    <p><strong>Not medical advice:</strong> consult licensed clinicians for diagnosis and personalized targets.</p>
+  </article>
+
+  <div class="tool-layout">
+    <div class="tool-main">
+      <div class="panel">
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Height (cm)</label>
+            <input id="heightCm" class="form-input" type="number" value="170" min="80" max="250" step="0.1" />
+          </div>
+          <div class="form-group">
+            <label class="form-label">Weight (kg)</label>
+            <input id="weightKg" class="form-input" type="number" value="70" min="20" max="300" step="0.1" />
+          </div>
+        </div>
+        <button id="calcBtn" class="btn btn-primary" type="button">Calculate BMI</button>
+      </div>
+      <div class="panel" id="out" style="display:none">
+        <div class="panel-title">Result</div>
+        <p class="result-highlight" id="primary">—</p>
+        <p style="color:var(--muted);margin-top:0.7rem" id="secondary">—</p>
+      </div>
+    </div>
+    <div class="tool-sidebar">
+      <div class="panel">
+        <div class="panel-title">Formula</div>
+        <p style="font-size:0.84rem;color:var(--muted);line-height:1.65">BMI = weight(kg) / (height in meters)<sup>2</sup>.</p>
+      </div>
+      <div class="panel">
+        <div class="other-tools-grid">
+          <a class="other-tool-link" href="bmr-tdee-calculator.html">🔥 BMR + TDEE</a>
+          <a class="other-tool-link" href="protein-calculator.html">🥚 Protein calculator</a>
+          <a class="other-tool-link" href="water-intake-calculator.html">💧 Water intake</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <div class="footer-logo">Tool<span>Fest</span></div>
+    <p class="site-footer-links"><a href="./">Health tools</a> · <a href="../privacy.html">Privacy</a> · <a href="../terms.html">Terms</a></p>
+    <p style="font-size:0.78rem;opacity:0.5;margin-top:0.75rem">© 2026 ToolFest · Informational only, not diagnosis.</p>
+  </footer>
+
+  <script src="../assets/js/health-tools.js"></script>
+</body>
+</html>

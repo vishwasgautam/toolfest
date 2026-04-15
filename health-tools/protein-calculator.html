@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script src="../assets/js/site-analytics.js"></script>
+  <title>Protein Calculator — Daily Protein Intake by Body Weight | ToolFest</title>
+  <meta name="description" content="Estimate daily protein target in grams from body weight and activity goal." />
+  <link rel="canonical" href="https://toolfest.in/health-tools/protein-calculator.html" />
+  <meta name="robots" content="index, follow, max-image-preview:large" />
+  <link rel="stylesheet" href="../assets/css/shared.css" />
+</head>
+<body data-health-tool="protein">
+  <nav><a href="../" class="logo">Tool<span>Fest</span></a><ul><li><a href="./" style="color:var(--text)">Health</a></li><li><a href="../">Home</a></li></ul></nav>
+  <div class="page-hero">
+    <div class="page-hero-text">
+      <div class="breadcrumb"><a href="../">ToolFest</a> <span>›</span> <a href="./">Health</a> <span>›</span> Protein</div>
+      <h1 class="page-title">Protein <span style="color:var(--text-tool-color)">calculator</span></h1>
+      <p class="page-desc">Quick protein gram target using body weight and training intensity.</p>
+    </div>
+    <div class="page-hero-badge">🥚</div>
+  </div>
+  <article class="publisher-content" itemscope itemtype="https://schema.org/Article">
+    <meta itemprop="author" content="ToolFest" />
+    <h2>Daily protein estimate</h2>
+    <p>Common ranges are 0.8-2.2 g/kg depending on age, activity, and goals. This tool provides a simple estimate for planning meals.</p>
+    <p><strong>Not medical advice:</strong> kidney, liver, and clinical diet constraints require professional guidance.</p>
+  </article>
+  <div class="tool-layout">
+    <div class="tool-main">
+      <div class="panel">
+        <div class="form-row">
+          <div class="form-group"><label class="form-label">Weight (kg)</label><input id="weightKg" class="form-input" type="number" value="70" min="25" max="250" step="0.1" /></div>
+          <div class="form-group"><label class="form-label">Goal profile</label><select id="goal" class="form-select"><option value="0.8">General health (0.8 g/kg)</option><option value="1.2" selected>Active lifestyle (1.2 g/kg)</option><option value="1.6">Strength training (1.6 g/kg)</option><option value="2.0">Cutting/recomp (2.0 g/kg)</option></select></div>
+        </div>
+        <button id="calcBtn" class="btn btn-primary" type="button">Estimate Protein</button>
+      </div>
+      <div class="panel" id="out" style="display:none">
+        <div class="panel-title">Result</div>
+        <p class="result-highlight" id="primary">—</p>
+        <p style="color:var(--muted);margin-top:0.7rem" id="secondary">—</p>
+      </div>
+    </div>
+    <div class="tool-sidebar">
+      <div class="panel"><div class="panel-title">Related</div><div class="other-tools-grid"><a class="other-tool-link" href="macro-calculator.html">🥗 Macro calculator</a><a class="other-tool-link" href="water-intake-calculator.html">💧 Water intake</a></div></div>
+    </div>
+  </div>
+  <footer><div class="footer-logo">Tool<span>Fest</span></div><p class="site-footer-links"><a href="./">Health tools</a> · <a href="../terms.html">Terms</a></p><p style="font-size:0.78rem;opacity:0.5;margin-top:0.75rem">© 2026 ToolFest</p></footer>
+  <script src="../assets/js/health-tools.js"></script>
+</body>
+</html>

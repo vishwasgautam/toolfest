@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script src="../assets/js/site-analytics.js"></script>
+  <title>Calorie Deficit Calculator — Daily Target Calories | ToolFest</title>
+  <meta name="description" content="Estimate calorie target from maintenance calories and planned deficit." />
+  <link rel="canonical" href="https://toolfest.in/health-tools/calorie-deficit-calculator.html" />
+  <meta name="robots" content="index, follow, max-image-preview:large" />
+  <link rel="stylesheet" href="../assets/css/shared.css" />
+</head>
+<body data-health-tool="deficit">
+  <nav><a href="../" class="logo">Tool<span>Fest</span></a><ul><li><a href="./" style="color:var(--text)">Health</a></li><li><a href="../">Home</a></li></ul></nav>
+  <div class="page-hero">
+    <div class="page-hero-text">
+      <div class="breadcrumb"><a href="../">ToolFest</a> <span>›</span> <a href="./">Health</a> <span>›</span> Calorie deficit</div>
+      <h1 class="page-title">Calorie <span style="color:var(--text-tool-color)">deficit</span> calculator</h1>
+      <p class="page-desc">Subtract a planned deficit from maintenance calories to get a daily target.</p>
+    </div>
+    <div class="page-hero-badge">📉</div>
+  </div>
+  <article class="publisher-content" itemscope itemtype="https://schema.org/Article">
+    <meta itemprop="author" content="ToolFest" />
+    <h2>Deficit planning</h2>
+    <p>A moderate deficit is often easier to sustain than aggressive cuts. This estimate applies simple subtraction and a conservative lower bound to avoid impractically low targets.</p>
+    <p><strong>Not medical advice:</strong> individualized nutrition plans should come from qualified professionals.</p>
+  </article>
+  <div class="tool-layout">
+    <div class="tool-main">
+      <div class="panel">
+        <div class="form-row">
+          <div class="form-group"><label class="form-label">Maintenance calories (kcal/day)</label><input id="maintenance" class="form-input" type="number" value="2200" min="1200" max="6000" /></div>
+          <div class="form-group"><label class="form-label">Desired deficit (kcal/day)</label><input id="deficit" class="form-input" type="number" value="500" min="0" max="1200" /></div>
+        </div>
+        <button id="calcBtn" class="btn btn-primary" type="button">Calculate Target</button>
+      </div>
+      <div class="panel" id="out" style="display:none">
+        <div class="panel-title">Result</div>
+        <p class="result-highlight" id="primary">—</p>
+        <p style="color:var(--muted);margin-top:0.7rem" id="secondary">—</p>
+      </div>
+    </div>
+    <div class="tool-sidebar">
+      <div class="panel"><div class="panel-title">Next steps</div><div class="other-tools-grid"><a class="other-tool-link" href="bmr-tdee-calculator.html">🔥 Estimate maintenance first</a><a class="other-tool-link" href="macro-calculator.html">🥗 Split target into macros</a></div></div>
+    </div>
+  </div>
+  <footer><div class="footer-logo">Tool<span>Fest</span></div><p class="site-footer-links"><a href="./">Health tools</a> · <a href="../privacy.html">Privacy</a></p><p style="font-size:0.78rem;opacity:0.5;margin-top:0.75rem">© 2026 ToolFest</p></footer>
+  <script src="../assets/js/health-tools.js"></script>
+</body>
+</html>

@@ -33,4 +33,14 @@
   <url><loc>https://toolfest.in/convert/weight/</loc><changefreq>weekly</changefreq><priority>0.75</priority></url>
   <url><loc>https://toolfest.in/convert/temperature/</loc><changefreq>weekly</changefreq><priority>0.75</priority></url>
   <url><loc>https://toolfest.in/convert/data-size/</loc><changefreq>weekly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://toolfest.in/health-tools/</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://toolfest.in/health-tools/bmi-calculator.html</loc><changefreq>weekly</changefreq><priority>0.78</priority></url>
+  <url><loc>https://toolfest.in/health-tools/bmr-tdee-calculator.html</loc><changefreq>weekly</changefreq><priority>0.78</priority></url>
+  <url><loc>https://toolfest.in/health-tools/protein-calculator.html</loc><changefreq>weekly</changefreq><priority>0.78</priority></url>
+  <url><loc>https://toolfest.in/health-tools/calorie-deficit-calculator.html</loc><changefreq>weekly</changefreq><priority>0.78</priority></url>
+  <url><loc>https://toolfest.in/health-tools/macro-calculator.html</loc><changefreq>weekly</changefreq><priority>0.78</priority></url>
+  <url><loc>https://toolfest.in/health-tools/water-intake-calculator.html</loc><changefreq>weekly</changefreq><priority>0.78</priority></url>
+  <url><loc>https://toolfest.in/health-tools/bmi/</loc><changefreq>weekly</changefreq><priority>0.72</priority></url>
+  <url><loc>https://toolfest.in/health-tools/protein/</loc><changefreq>weekly</changefreq><priority>0.72</priority></url>
+  <url><loc>https://toolfest.in/health-tools/calorie-deficit/</loc><changefreq>weekly</changefreq><priority>0.72</priority></url>
 </urlset>
