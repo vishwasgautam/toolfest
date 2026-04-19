@@ -32,7 +32,7 @@ def head(title: str, description: str, canonical_path: str, up: str = "..") -> s
   <title>{title}</title>
   <meta name="description" content="{description}" />
   <link rel="canonical" href="{canonical}" />
-  <meta name="robots" content="index, follow, max-image-preview:large" />
+  <meta name="robots" content="noindex, follow, max-image-preview:large" />
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="ToolFest" />
   <meta property="og:url" content="{canonical}" />
@@ -421,9 +421,11 @@ def main() -> None:
     ])
     urls.extend(length_urls + weight_urls + temp_urls + data_urls)
 
-    lines = ['<?xml version="1.0" encoding="UTF-8"?>', '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">']
-    for u in urls:
-        lines.append(f"  <url><loc>{u}</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>")
+    lines = [
+        '<?xml version="1.0" encoding="UTF-8"?>',
+        '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">',
+        "  <!-- Programmatic converter URLs are noindex and intentionally omitted. -->",
+    ]
     lines.append("</urlset>")
     write(ROOT / "sitemap-programmatic-converters.xml", "\n".join(lines) + "\n")
 

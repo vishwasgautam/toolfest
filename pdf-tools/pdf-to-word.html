@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script src="../assets/js/site-analytics.js"></script>
+  <title>PDF to Word Online Free — Extract PDF Text to DOC | ToolFest</title>
+  <meta name="description" content="Convert PDF to editable Word-compatible DOC file online. Extract text from PDF pages in your browser with no signup." />
+  <link rel="canonical" href="https://toolfest.in/pdf-tools/pdf-to-word.html" />
+  <meta name="robots" content="index, follow, max-image-preview:large" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="ToolFest" />
+  <meta property="og:url" content="https://toolfest.in/pdf-tools/pdf-to-word.html" />
+  <meta property="og:title" content="PDF to Word — Extract PDF Text to DOC | ToolFest" />
+  <meta property="og:description" content="Extract PDF text into an editable Word-compatible DOC file directly in your browser." />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="PDF to Word — Extract PDF Text to DOC | ToolFest" />
+  <meta name="twitter:description" content="Extract PDF text into an editable Word-compatible DOC file directly in your browser." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../assets/css/shared.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+  <style>
+    .preview-box {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1rem;
+      min-height: 260px;
+      color: var(--muted);
+      font-size: 0.88rem;
+      line-height: 1.65;
+      white-space: pre-wrap;
+      overflow: auto;
+      max-height: 420px;
+    }
+    .btn-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      margin-top: 0.75rem;
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    <a href="../" class="logo">Tool<span>Fest</span></a>
+    <ul>
+      <li><a href="../pdf-tools/" style="color:var(--text)">PDF</a></li>
+      <li><a href="../text-tools/">Text</a></li>
+      <li><a href="../">Home</a></li>
+    </ul>
+  </nav>
+
+  <div class="page-hero">
+    <div class="page-hero-text">
+      <div class="breadcrumb"><a href="../">ToolFest</a> <span>›</span> <a href="./">PDF</a> <span>›</span> PDF to Word</div>
+      <h1 class="page-title">PDF to <span style="color:var(--pdf-color)">Word</span></h1>
+      <p class="page-desc">Extract text from PDF pages and download a Word-compatible .doc file directly from your browser.</p>
+    </div>
+    <div class="page-hero-badge">📄→📝</div>
+  </div>
+
+  <article class="publisher-content" itemscope itemtype="https://schema.org/Article">
+    <meta itemprop="author" content="ToolFest" />
+    <h2>Turn PDF text into an editable document</h2>
+    <p>This tool is best for <strong>text-based PDFs</strong> such as reports, notes, and agreements where you need editable content in Word. It extracts text layer content page by page and packages it into a Word-compatible document.</p>
+    <p><strong>Important:</strong> scanned PDFs or image-only pages may return little text. For those files, run OCR first in a dedicated OCR app, then edit in Word.</p>
+  </article>
+
+  <div class="tool-layout">
+    <div class="tool-main">
+      <div class="dropzone" id="dz">
+        <input type="file" id="fi" accept="application/pdf" />
+        <div class="dropzone-icon">📄</div>
+        <div class="dropzone-title">Drop your PDF here</div>
+        <div class="dropzone-sub">Text-based PDFs work best</div>
+      </div>
+
+      <div id="statusMsg" class="status-msg" style="display:none"></div>
+      <button class="btn btn-primary" id="extractBtn" disabled>Extract to Word</button>
+      <div class="btn-row">
+        <button class="btn btn-ghost" id="copyBtn" style="display:none">Copy text</button>
+        <button class="btn btn-download" id="downloadBtn" style="display:none">Download .doc</button>
+      </div>
+
+      <div class="panel" style="margin-top:1rem">
+        <div class="panel-title">Extracted preview</div>
+        <div class="preview-box" id="preview">Your extracted text will appear here.</div>
+      </div>
+    </div>
+
+    <div class="tool-sidebar">
+      <div class="panel">
+        <div class="panel-title">How it works</div>
+        <p style="font-size:0.85rem;color:var(--muted);line-height:1.65">Uses PDF.js in your browser to read text content from each page and generate a Word-compatible document.</p>
+      </div>
+      <div class="panel">
+        <div class="panel-title">More PDF tools</div>
+        <div class="other-tools-grid">
+          <a href="word-to-pdf.html" class="other-tool-link">📝 Word to PDF</a>
+          <a href="merge-pdf.html" class="other-tool-link">🔗 Merge PDF</a>
+          <a href="pdf-to-jpg.html" class="other-tool-link">🖼 PDF to JPG</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <div class="footer-logo">Tool<span>Fest</span></div>
+    <p><a href="../">Home</a> · <a href="./">PDF Tools</a> · <a href="../privacy.html">Privacy</a> · <a href="../terms.html">Terms</a></p>
+    <p style="margin-top:1rem;font-size:0.78rem;opacity:0.5">© 2026 ToolFest</p>
+  </footer>
+
+  <script>
+    pdfjsLib.GlobalWorkerOptions.workerSrc = "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
+
+    let pdfFile = null;
+    let extractedText = "";
+
+    const dz = document.getElementById("dz");
+    const fi = document.getElementById("fi");
+    const extractBtn = document.getElementById("extractBtn");
+    const copyBtn = document.getElementById("copyBtn");
+    const downloadBtn = document.getElementById("downloadBtn");
+    const preview = document.getElementById("preview");
+
+    dz.addEventListener("dragover", (e) => {
+      e.preventDefault();
+      dz.classList.add("drag-over");
+    });
+    dz.addEventListener("dragleave", () => dz.classList.remove("drag-over"));
+    dz.addEventListener("drop", (e) => {
+      e.preventDefault();
+      dz.classList.remove("drag-over");
+      pickFile(e.dataTransfer.files[0]);
+    });
+    fi.addEventListener("change", () => pickFile(fi.files[0]));
+
+    function pickFile(file) {
+      if (!file || (!file.type.includes("pdf") && !file.name.toLowerCase().endsWith(".pdf"))) return;
+      pdfFile = file;
+      extractBtn.disabled = false;
+      show("PDF selected. Click Extract to Word.", "success");
+    }
+
+    function show(message, type) {
+      const el = document.getElementById("statusMsg");
+      el.textContent = message;
+      el.className = "status-msg " + type;
+      el.style.display = "block";
+    }
+
+    function escapeHtml(text) {
+      return text
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;");
+    }
+
+    extractBtn.onclick = async () => {
+      if (!pdfFile) return;
+      extractBtn.disabled = true;
+      extractBtn.textContent = "Extracting...";
+      extractedText = "";
+
+      try {
+        const bytes = new Uint8Array(await pdfFile.arrayBuffer());
+        const pdf = await pdfjsLib.getDocument({ data: bytes }).promise;
+        const pages = [];
+
+        for (let p = 1; p <= pdf.numPages; p++) {
+          const page = await pdf.getPage(p);
+          const content = await page.getTextContent();
+          const text = content.items.map((i) => i.str).join(" ").replace(/\s+/g, " ").trim();
+          pages.push("Page " + p + "\n" + (text || "[No text found on this page]"));
+        }
+
+        extractedText = pages.join("\n\n");
+        preview.textContent = extractedText;
+        copyBtn.style.display = "inline-flex";
+        downloadBtn.style.display = "inline-flex";
+        show("Extraction complete. Download your Word-compatible file.", "success");
+      } catch (err) {
+        show("Could not extract text. The PDF may be image-only, encrypted, or unsupported.", "error");
+      }
+
+      extractBtn.disabled = false;
+      extractBtn.textContent = "Extract to Word";
+    };
+
+    copyBtn.onclick = async () => {
+      if (!extractedText) return;
+      try {
+        await navigator.clipboard.writeText(extractedText);
+        show("Copied extracted text to clipboard.", "success");
+      } catch (err) {
+        show("Clipboard copy failed on this browser.", "error");
+      }
+    };
+
+    downloadBtn.onclick = () => {
+      if (!extractedText) return;
+      const sourceName = (pdfFile ? pdfFile.name.replace(/\.pdf$/i, "") : "converted") + ".doc";
+      const htmlDoc = [
+        "<html><head><meta charset='utf-8'></head><body>",
+        "<h2>PDF to Word extract</h2>",
+        "<p style='color:#666'>Generated by ToolFest</p>",
+        "<pre style='white-space:pre-wrap;font-family:Calibri,Arial,sans-serif;font-size:12pt;'>",
+        escapeHtml(extractedText),
+        "</pre></body></html>",
+      ].join("");
+      const blob = new Blob([htmlDoc], { type: "application/msword" });
+      const a = document.createElement("a");
+      a.href = URL.createObjectURL(blob);
+      a.download = sourceName;
+      a.click();
+      setTimeout(() => URL.revokeObjectURL(a.href), 3000);
+    };
+  </script>
+</body>
+</html>

@@ -35,7 +35,7 @@ def head(title: str, desc: str, canonical_path: str, up: str = "../..") -> str:
   <title>{title}</title>
   <meta name="description" content="{desc}" />
   <link rel="canonical" href="{canonical}" />
-  <meta name="robots" content="index, follow, max-image-preview:large" />
+  <meta name="robots" content="noindex, follow, max-image-preview:large" />
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="ToolFest" />
   <meta property="og:url" content="{canonical}" />
@@ -350,11 +350,11 @@ def main() -> None:
         ),
     )
 
-    sitemap_lines = ['<?xml version="1.0" encoding="UTF-8"?>', '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">']
-    for url in urls:
-        sitemap_lines.append(
-            f"  <url><loc>{url}</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>"
-        )
+    sitemap_lines = [
+        '<?xml version="1.0" encoding="UTF-8"?>',
+        '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">',
+        "  <!-- Programmatic health URLs are noindex and intentionally omitted. -->",
+    ]
     sitemap_lines.append("</urlset>")
     write(ROOT / "sitemap-programmatic-health.xml", "\n".join(sitemap_lines) + "\n")
 
