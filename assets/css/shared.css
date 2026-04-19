@@ -190,15 +190,21 @@ nav ul a:focus-visible::after { width: 100%; }
 }
 
 .page-hero-badge {
-  width: 80px;
-  height: 80px;
+  min-width: 80px;
+  height: 76px;
+  padding: 0 0.85rem;
   border-radius: var(--r-lg);
   background: linear-gradient(180deg, rgba(255, 255, 255, 0.035), rgba(255, 255, 255, 0.015));
   border: 1px solid var(--border);
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 2.2rem;
+  font-size: 0.74rem;
+  font-family: "Syne", sans-serif;
+  font-weight: 700;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  white-space: nowrap;
 }
 
 .tool-layout {
@@ -248,7 +254,21 @@ nav ul a:focus-visible::after { width: 100%; }
   cursor: pointer;
 }
 
-.dropzone-icon { font-size: 2.35rem; margin-bottom: var(--space-3); }
+.dropzone-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 50px;
+  padding: 0.35rem 0.55rem;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  font-size: 0.72rem;
+  font-family: "Syne", sans-serif;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: var(--space-3);
+}
 .dropzone-title { font-family: "Syne", sans-serif; font-weight: 700; font-size: 1.08rem; margin-bottom: 0.35rem; }
 .dropzone-sub { font-size: 0.84rem; color: var(--muted); }
 
@@ -416,7 +436,20 @@ nav ul a:focus-visible::after { width: 100%; }
   border: 1px solid var(--border);
 }
 
-.file-icon { font-size: 1.55rem; }
+.file-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 40px;
+  padding: 0.22rem 0.45rem;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  font-size: 0.66rem;
+  font-family: "Syne", sans-serif;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
 .file-info { flex: 1; min-width: 0; }
 .file-name { font-weight: 500; font-size: 0.9rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .file-size { font-size: 0.78rem; color: var(--muted); margin-top: 0.2rem; }
